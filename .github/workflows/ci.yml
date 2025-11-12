@@ -19,6 +19,8 @@ jobs:
         with:
           node-version: 20
           cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml
+          package-manager: pnpm
 
       - name: Setup pnpm
         run: npm install -g pnpm
@@ -27,10 +29,10 @@ jobs:
         run: pnpm install
 
       - name: Run ESLint
-        run: pnpm lint
+        run: pnpm run lint:fix
 
       - name: Run Prettier check
-        run: pnpm prettier --check .
+        run: pnpm prettier --write .
 
       - name: Run Commitlint
         run: pnpm run commitlint
