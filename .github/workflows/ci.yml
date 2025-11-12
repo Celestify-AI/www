@@ -8,6 +8,7 @@ on:
 
 jobs:
   lint-and-commit:
+    name: Lint, Prettier, & Commitlint
     runs-on: ubuntu-latest
     strategy:
       matrix:
