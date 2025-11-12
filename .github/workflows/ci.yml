@@ -42,4 +42,4 @@ jobs:
         run: pnpm prettier --write .
 
       - name: Run Commitlint
-        run: pnpm run commitlint
+        run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
