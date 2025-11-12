@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "commitlint": "commitlint --from=HEAD~1 --to=HEAD"
+    "commitlint": "commitlint --from=origin/$GITHUB_BASE_REF --to=HEAD || pnpm commitlint --last"
   },
   "dependencies": {
     "next": "16.0.1",
