@@ -42,4 +42,5 @@ jobs:
         run: pnpm prettier --write .
 
       - name: Run Commitlint
+        if: ${{ github.event_name == 'pull_request' }}
         run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
