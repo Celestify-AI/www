@@ -3,6 +3,11 @@
 @theme {
   --background: #181818;
   --foreground: #fefefe;
+  --muted: #d1d1d1;
+  --border: #2f2f2f;
+
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Geist Mono", mono;
 }
 
 body {

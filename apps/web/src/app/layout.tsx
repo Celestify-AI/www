@@ -1,7 +1,11 @@
-import { Inter } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
@@ -12,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter} antialiased`}>{children}</body>
+      <body className={`${inter} ${geistMono} antialiased`}>{children}</body>
     </html>
   );
 }
