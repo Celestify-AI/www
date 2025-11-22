@@ -1,4 +1,5 @@
-import type Metadata from "next";
+import type { Metadata } from "next";
+import { HomeHeader } from "@repo/ui/home-header";
 
 export const metadata: Metadata = {
   title: "Celestify • App",
@@ -7,8 +8,11 @@ export const metadata: Metadata = {
 
 export default function AppHome() {
   return (
-    <main className="min-h-screen w-full flex justify-center items-center">
-      <div className="flex flex-col gap-4 items-center h-full w-5/6 max-w-lg"></div>
+    <main className="min-h-screen w-full flex justify-center px-8">
+      <div className="flex flex-col gap-24 items-center h-full w-5/6 max-w-lg pt-16">
+        <HomeHeader userName="Kyle" />
+        <div></div>
+      </div>
     </main>
   );
 }
