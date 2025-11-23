@@ -5,6 +5,8 @@
   "exports": {
     "./styles.css": "./styles.css",
     "./button": "./src/components/Button/Button.tsx",
+    "./platform-logo": "./src/components/PlatformLogo/PlatformLogo.tsx",
+    "./notification-card": "./src/components/NotificationCard/NotificationCard.tsx",
     "./auth": "./src/components/Auth/Auth.tsx",
     "./home-header": "./src/components/HomeHeader/HomeHeader.tsx"
   },
