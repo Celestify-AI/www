@@ -6,6 +6,7 @@
   --muted: #d1d1d1;
   --border: #2f2f2f;
 
+  --font-headline: "DM Serif Display", serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "Geist Mono", mono;
 }
