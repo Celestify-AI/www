@@ -10,7 +10,10 @@ export const metadata: Metadata = {
 const AppHome = () => {
   return (
     <main className="min-h-screen w-full flex justify-center px-8">
-      <div className="flex flex-col gap-24 items-center h-full w-full max-w-lg pt-16">
+      <div
+        className="flex flex-col gap-24 items-center h-full w-full max-w-lg pt-32
+      "
+      >
         <HomeHeader userName="Kyle" />
         <div className="flex flex-col gap-2">
           <NotificationCard

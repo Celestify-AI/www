@@ -56,7 +56,7 @@ const KnowledgeGraph: React.FC<{ maximized?: boolean }> = ({
         d3
           .forceLink<Node, Link>(links)
           .id((d) => d.id)
-          .distance(80)
+          .distance(80),
       )
       .force("charge", d3.forceManyBody<Node>().strength(-200))
       .force("center", d3.forceCenter(width / 2, height / 2));
@@ -103,7 +103,7 @@ const KnowledgeGraph: React.FC<{ maximized?: boolean }> = ({
           if (!event.active) simulation.alphaTarget(0);
           d.fx = null;
           d.fy = null;
-        })
+        }),
     );
 
     // Update positions every tick
