@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Sign in to Google to access Celestify.",
 };
 
-export default function Home() {
+export default function Login() {
   return (
     <main className="min-h-screen w-full flex justify-center items-center px-8">
       <Auth mode="login" />
