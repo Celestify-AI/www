@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./time": "./src/time/time.ts"
+    "./time": "./src/time/time.ts",
+    "./client": "./src/supabase/client.ts",
+    "./server": "./src/supabase/server.ts",
+    "./middleware": "./src/supabase/middleware.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

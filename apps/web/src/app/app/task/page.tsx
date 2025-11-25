@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Read a workflow briefing of a task in Celestify.",
 };
 
-const Task = () => {
+export default function Task() {
   return (
     <main className="min-h-screen w-full flex justify-center px-8">
       <div className="flex flex-col gap-16 items-center h-full w-full max-w-lg pt-16 pb-16">
@@ -25,6 +25,4 @@ const Task = () => {
       </div>
     </main>
   );
-};
-
-export default Task;
+}

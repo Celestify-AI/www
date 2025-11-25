@@ -2,24 +2,25 @@
 
 import React from "react";
 import { Button } from "../Button/Button";
-import { useState, useEffect } from "react";
+import { createClient } from "@repo/utils/client";
 
 interface AuthProps {
   mode: "login" | "signup";
 }
 
 const Auth = ({ mode }: AuthProps) => {
-  const [authUrl, setAuthUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("/api/auth")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to get auth link");
-        return res.json();
-      })
-      .then((data) => setAuthUrl(data.authorization_url))
-      .catch((err) => console.error("Error:", err));
-  }, []);
+  const supabase = createClient();
+  async function googleLogin() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=/app`,
+      },
+    });
+    if (error) {
+      console.error("Error signing in: ", error);
+    } else console.log("Success: ", data);
+  }
 
   return (
     <div className="flex flex-col gap-4 items-center w-auto">
@@ -33,15 +34,7 @@ const Auth = ({ mode }: AuthProps) => {
             : "Sign up with Google to access Celestify"}
         </h2>
       </div>
-      <Button
-        disabled={!authUrl}
-        onClick={() => {
-          if (authUrl) {
-            window.location.href = authUrl;
-            console.log(authUrl);
-          }
-        }}
-      >
+      <Button onClick={googleLogin}>
         <svg
           width="16"
           height="16"

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Use Celestify, your personal AI knowledge base",
 };
 
-const AppHome = () => {
+export default function AppHome() {
   return (
     <main className="min-h-screen w-full flex justify-center px-8">
       <div className="flex flex-col gap-24 items-center h-full w-full max-w-lg pt-32 pb-16">
@@ -23,6 +23,4 @@ const AppHome = () => {
       </div>
     </main>
   );
-};
-
-export default AppHome;
+}
