@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="min-h-screen w-full flex justify-center items-center px-8">
-      <Auth mode="login" redirectTo="/app" />
+      <Auth mode="login" />
     </main>
   );
 }

@@ -8,7 +8,10 @@
     "./platform-logo": "./src/components/PlatformLogo/PlatformLogo.tsx",
     "./notification-card": "./src/components/NotificationCard/NotificationCard.tsx",
     "./auth": "./src/components/Auth/Auth.tsx",
-    "./home-header": "./src/components/HomeHeader/HomeHeader.tsx"
+    "./clock-client": "./src/components/ClockClient/ClockClient.tsx",
+    "./home-header": "./src/components/HomeHeader/HomeHeader.tsx",
+    "./knowledge-graph": "./src/components/KnowledgeGraph/KnowledgeGraph.tsx",
+    "./decision-tree": "./src/components/DecisionTree/DecisionTree.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

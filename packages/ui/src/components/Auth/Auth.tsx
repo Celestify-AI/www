@@ -2,13 +2,25 @@
 
 import React from "react";
 import { Button } from "../Button/Button";
+import { useState, useEffect } from "react";
 
 interface AuthProps {
   mode: "login" | "signup";
-  redirectTo: string;
 }
 
-const Auth = ({ mode, redirectTo }: AuthProps) => {
+const Auth = ({ mode }: AuthProps) => {
+  const [authUrl, setAuthUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to get auth link");
+        return res.json();
+      })
+      .then((data) => setAuthUrl(data.authorization_url))
+      .catch((err) => console.error("Error:", err));
+  }, []);
+
   return (
     <div className="flex flex-col gap-4 items-center w-auto">
       <div className="flex flex-col items-center gap-1">
@@ -22,8 +34,12 @@ const Auth = ({ mode, redirectTo }: AuthProps) => {
         </h2>
       </div>
       <Button
+        disabled={!authUrl}
         onClick={() => {
-          window.location.href = redirectTo;
+          if (authUrl) {
+            window.location.href = authUrl;
+            console.log(authUrl);
+          }
         }}
       >
         <svg

@@ -18,12 +18,12 @@ describe("formatTime", () => {
   });
   it("throws if input is the wrong type", () => {
     expect(() => formatTime("not a date lmao" as unknown as Date)).toThrow(
-      TypeError
+      TypeError,
     );
   });
   it("throws if date is a non-calendar date", () => {
     expect(() => formatTime(new Date("2025-13-01T26:00:00"))).toThrow(
-      "Invalid Date: the date is not a valid calendar date"
+      "Invalid Date: the date is not a valid calendar date",
     );
   });
 });
