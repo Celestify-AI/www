@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { PlatformLogo } from "@repo/ui/platform-logo";
 
@@ -18,7 +16,7 @@ const NotificationCard = ({
 }: NotificationCardProps) => {
   return (
     <Link href={redirect}>
-      <article className="border-2 border-(--border) rounded-2xl flex items-center gap-4 p-4 w-full bg-(--background)">
+      <article className="border-2 border-(--border) rounded-2xl flex items-center gap-4 p-4 w-full bg-(--background) shadow-md/75">
         <div className="w-16 h-16 bg-(--background) border-2 border-(--border) rounded-xl flex items-center justify-center shrink-0">
           <PlatformLogo
             platform={platform}
