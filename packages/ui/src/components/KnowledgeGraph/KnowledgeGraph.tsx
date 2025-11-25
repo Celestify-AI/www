@@ -95,7 +95,7 @@ const KnowledgeGraph: React.FC<{ maximized?: boolean }> = ({
         d3
           .forceLink<Node, Link>(links)
           .id((d) => d.id)
-          .distance(80)
+          .distance(80),
       )
       .force("charge", d3.forceManyBody<Node>().strength(-300))
       .force("center", d3.forceCenter(width / 2, height / 2))
@@ -103,7 +103,7 @@ const KnowledgeGraph: React.FC<{ maximized?: boolean }> = ({
         "collision",
         d3
           .forceCollide<Node>()
-          .radius((d) => (d.id === "marketing-decision" ? 20 : 15))
+          .radius((d) => (d.id === "marketing-decision" ? 20 : 15)),
       );
 
     const link = container
@@ -123,7 +123,7 @@ const KnowledgeGraph: React.FC<{ maximized?: boolean }> = ({
       .join("circle")
       .attr("r", (d) => (d.id === "marketing-decision" ? 15 : 10))
       .attr("fill", (d) =>
-        d.id === "marketing-decision" ? "#5d6cdc" : "#3C4BB9"
+        d.id === "marketing-decision" ? "#5d6cdc" : "#3C4BB9",
       )
       .style("cursor", "move");
 
@@ -134,10 +134,10 @@ const KnowledgeGraph: React.FC<{ maximized?: boolean }> = ({
       .join("text")
       .text((d) => d.label)
       .attr("font-size", (d) =>
-        d.id === "marketing-decision" ? "14px" : "12px"
+        d.id === "marketing-decision" ? "14px" : "12px",
       )
       .attr("font-weight", (d) =>
-        d.id === "marketing-decision" ? "bold" : "normal"
+        d.id === "marketing-decision" ? "bold" : "normal",
       )
       .attr("fill", "#d1d1d1")
       .attr("text-anchor", "middle")

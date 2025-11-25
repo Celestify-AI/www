@@ -73,7 +73,7 @@ const DecisionTree: React.FC<{ maximized?: boolean }> = ({
     // Function to wrap text into lines
     const wrapTextIntoLines = (
       text: string,
-      maxLineWidth: number
+      maxLineWidth: number,
     ): string[] => {
       const words = text.split(" ");
       const lines: string[] = [];
@@ -106,11 +106,11 @@ const DecisionTree: React.FC<{ maximized?: boolean }> = ({
       // Calculate dimensions based on wrapped text
       const wrappedWidth = Math.max(
         ...lines.map((line) => measureTextWidth(line)),
-        minBoxWidth - paddingX * 2
+        minBoxWidth - paddingX * 2,
       );
       const wrappedHeight = Math.max(
         lines.length * lineHeight,
-        minBoxHeight - paddingY * 2
+        minBoxHeight - paddingY * 2,
       );
 
       return {
@@ -168,7 +168,7 @@ const DecisionTree: React.FC<{ maximized?: boolean }> = ({
     const drawFlowchartLine = (
       from: TextBox,
       to: TextBox,
-      isVertical: boolean = false
+      isVertical: boolean = false,
     ) => {
       const fromX = from.x + from.width / 2;
       const fromY = from.y + from.height;
@@ -193,7 +193,7 @@ const DecisionTree: React.FC<{ maximized?: boolean }> = ({
           .append("path")
           .attr(
             "d",
-            `M ${fromX} ${fromY} L ${fromX} ${midY} L ${toX} ${midY} L ${toX} ${toY}`
+            `M ${fromX} ${fromY} L ${fromX} ${midY} L ${toX} ${midY} L ${toX} ${toY}`,
           )
           .attr("fill", "none")
           .attr("stroke", "#b3aeaa")
