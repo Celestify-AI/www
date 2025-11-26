@@ -12,3 +12,35 @@
 # About
 
 Celestify is a web app that helps everyone manage the chaos of the digital world. By positioning AI at the inflow of information sources, it's able to gather context on users through building a Vector DB and querying it for RAG. This makes agentic workflows much more effective and gives your AI the necessary context.
+
+# Structure
+
+This repo contains only the frontend of the Celestify app. This repo contains the logic for connecting to Supabase, which is used only for user authentication and OAuth2 integrations. It's structured into a Turborepo, which allows us to extend into desktop apps in the future without making a whole new repository.
+
+# Build Instructions
+
+The package manager used for this project is PNPM. If you don't have it, run:
+
+```bash
+npm install -g pnpm
+```
+
+Then install Turborepo globally using pnpm:
+
+```bash
+pnpm add turbo --global
+```
+
+Finally, `cd` into this project folder's root and install all dependencies with:
+
+```
+pnpm install
+```
+
+To get a local dev server, run:
+
+```
+turbo dev
+```
+
+Navigating to `http://localhost:3000` will get you the local dev server.
