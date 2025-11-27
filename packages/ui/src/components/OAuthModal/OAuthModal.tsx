@@ -1,5 +1,5 @@
 import { Modal } from "@repo/ui/modal";
-import { IntegrationCard } from "@repo/ui/integration-card";
+import { ProviderList } from "@repo/ui/provider-list";
 
 interface OAuthModalProps {
   isOpen: boolean;
@@ -16,22 +16,7 @@ const OAuthModal = ({ isOpen, onClose }: OAuthModalProps) => {
         <h2 className="font-mono text-(--muted) text-sm text-center">
           Integrate Celestify with other platforms
         </h2>
-      </div>
-      <div className="mt-8 flex flex-col gap-4 items-center px-4">
-        <IntegrationCard
-          platformSlug="google-drive"
-          platformName="Google Drive"
-          description="Allow Celestify to read Google Drive files"
-          connected={true}
-          oauthUrl="https://celestify.ai"
-        />
-        <IntegrationCard
-          platformSlug="gmail"
-          platformName="Gmail"
-          description="Allow Celestify to read your Gmail inbox"
-          connected={false}
-          oauthUrl="https://celestify.ai"
-        />
+        <ProviderList />
       </div>
     </Modal>
   );

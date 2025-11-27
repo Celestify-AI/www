@@ -9,6 +9,7 @@
     "./platform-logo": "./src/components/PlatformLogo/PlatformLogo.tsx",
     "./notification-card": "./src/components/NotificationCard/NotificationCard.tsx",
     "./auth": "./src/components/Auth/Auth.tsx",
+    "./provider-list": "./src/components/ProviderList/ProviderList.tsx",
     "./oauth-modal": "./src/components/OAuthModal/OAuthModal.tsx",
     "./integration-card": "./src/components/IntegrationCard/IntegrationCard.tsx",
     "./clock-client": "./src/components/ClockClient/ClockClient.tsx",
