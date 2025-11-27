@@ -9,7 +9,7 @@ export async function updateSession(request: NextRequest) {
 
   const serviceSupabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
+    process.env.SUPABASE_SECRET_KEY!
   );
 
   const supabase = createServerClient(
@@ -22,27 +22,27 @@ export async function updateSession(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
+            request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
   // IMPORTANT: Nothing between client creation and getClaims()
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
-  const userID = user?.sub;
+  const userId = user?.sub;
 
   if (request.nextUrl.pathname.startsWith("/app")) {
     if (!user) {
       console.log(
-        "The attempted login did not come from a user and they were redirected to login.",
+        "The attempted login did not come from a user and they were redirected to login."
       );
       const url = request.nextUrl.clone();
       url.pathname = "/login";
@@ -50,11 +50,11 @@ export async function updateSession(request: NextRequest) {
     }
   }
   let accountActivated = false;
-  if (userID) {
+  if (userId) {
     const { data: userRow, error: userError } = await serviceSupabase
       .from("users")
       .select("account_activated")
-      .eq("id", userID)
+      .eq("id", userId)
       .maybeSingle();
     if (userError) {
       console.error("Error checking author row:", userError);
@@ -67,7 +67,7 @@ export async function updateSession(request: NextRequest) {
 
   if (request.nextUrl.pathname.startsWith("/app")) {
     console.log(
-      "The attempted login came from a user, now determining whether subscribed or not.",
+      "The attempted login came from a user, now determining whether subscribed or not."
     );
     if (!accountActivated) {
       console.log("The user was not subscribed.");
@@ -80,7 +80,7 @@ export async function updateSession(request: NextRequest) {
   // Drop a cookie into the client to see if the user is authorized or not
   supabaseResponse.cookies.set(
     "account_activated",
-    accountActivated ? "true" : "false",
+    accountActivated ? "true" : "false"
   );
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
