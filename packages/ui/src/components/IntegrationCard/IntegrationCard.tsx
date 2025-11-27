@@ -1,5 +1,5 @@
 import { PlatformLogo } from "@repo/ui/platform-logo";
-import { Check, Plug } from "lucide-react";
+import { Check, Plug, X } from "lucide-react";
 
 interface IntegrationCardProps {
   platformSlug: string;
@@ -42,10 +42,16 @@ const IntegrationCard = ({
         </p>
       </div>
       {connected ? (
-        <div className="ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border-2 border-(--primary-muted-border) flex gap-1.5 items-center">
-          Connected
-          <Check size={14} />
-        </div>
+        <button className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border-2 border-(--primary-muted-border) hover:cursor-pointer hover:bg-red-500 hover:border-red-400">
+          <div className="flex group-hover:hidden gap-1.5 items-center">
+            Connected
+            <Check size={14} />
+          </div>
+          <div className="group-hover:flex gap-1.5 items-center hidden">
+            Disconnect
+            <X size={14} />
+          </div>
+        </button>
       ) : (
         <button
           disabled={connected}
