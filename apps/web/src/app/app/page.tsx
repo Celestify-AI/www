@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import AppClient from "../../client/AppClient";
 
 export const metadata: Metadata = {
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function AppHome() {
   return (
     <>
-      <AppClient />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AppClient />
+      </Suspense>
     </>
   );
 }
