@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
       code,
       client_id: clientId,
       client_secret: clientSecret,
-      redirect_uri: `http://localhost:3000/api/integration/callback`,
+      redirect_uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/integration/callback`,
     };
 
     if (providerRow.additional_token_params) {
