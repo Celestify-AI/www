@@ -77,6 +77,13 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  // Redirect logged-in and activated users from root to /app
+  if (request.nextUrl.pathname === "/" && user && accountActivated) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/app";
+    return NextResponse.redirect(url);
+  }
+
   // Drop a cookie into the client to see if the user is authorized or not
   supabaseResponse.cookies.set(
     "account_activated",
