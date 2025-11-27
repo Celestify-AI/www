@@ -34,7 +34,7 @@ const Auth = ({ mode }: AuthProps) => {
             : "Sign up with Google to access Celestify"}
         </h2>
       </div>
-      <Button onClick={googleLogin}>
+      <Button onClick={googleLogin} className="shadow-sm/75">
         <svg
           width="16"
           height="16"

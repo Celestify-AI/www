@@ -6,6 +6,10 @@
   --card-background: #1e1e1e;
   --muted: #d1d1d1;
   --border: #2f2f2f;
+  --primary: #3c4bb9;
+  --primary-border: #5d6cdc;
+  --primary-muted: #6672cc;
+  --primary-muted-border: #7987f2;
 
   --font-headline: "DM Serif Display", serif;
   --font-sans: "Inter", sans-serif;
