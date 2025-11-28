@@ -10,7 +10,13 @@ export const metadata: Metadata = {
 export default function AppHome() {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center font-mono w-screen h-screen">
+            Loading...
+          </div>
+        }
+      >
         <AppClient />
       </Suspense>
     </>

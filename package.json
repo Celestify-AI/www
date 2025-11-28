@@ -16,8 +16,8 @@
   "dependencies": {
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.84.0",
-    "cookie": "^1.1.1",
     "d3": "^7.9.0",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.554.0",
     "motion": "^12.23.24",
     "next": "16.0.3",
@@ -39,6 +39,7 @@
     "@testing-library/react": "^16.3.0",
     "@types/d3": "^7.4.3",
     "@types/jest": "^30.0.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
