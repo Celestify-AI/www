@@ -7,10 +7,12 @@ import { OAuthModal } from "@repo/ui/oauth-modal";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import cookie from "cookie";
 
 export default function AppClient() {
   const params = useSearchParams();
   const [oauthModalOpen, setOAuthModalOpen] = useState(false);
+  const [givenName, setGivenName] = useState("User");
 
   useEffect(() => {
     const raw = params.get("oauth_modal_open");
@@ -21,12 +23,16 @@ export default function AppClient() {
     }
 
     setOAuthModalOpen(raw === "true");
+
+    // Read cookies for user name
+    const cookies = cookie.parse(document.cookie || "");
+    setGivenName(cookies.given_name || "User");
   }, [params]);
 
   return (
     <main className="min-h-screen w-full flex justify-center px-8">
       <div className="flex flex-col gap-24 items-center h-full w-full max-w-lg pt-32 pb-16">
-        <HomeHeader userName="Kyle" />
+        <HomeHeader userName={givenName} />
         <div className="flex flex-col gap-4">
           <button
             className="cursor-pointer w-fit"
