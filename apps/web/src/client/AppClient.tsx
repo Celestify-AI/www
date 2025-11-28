@@ -7,27 +7,28 @@ import { OAuthModal } from "@repo/ui/oauth-modal";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import cookie from "cookie";
+import Cookies from "js-cookie";
 
 export default function AppClient() {
   const params = useSearchParams();
   const [oauthModalOpen, setOAuthModalOpen] = useState(false);
-  const [givenName, setGivenName] = useState("User");
+  const [givenName, setGivenName] = useState<string | null>(null);
 
   useEffect(() => {
     const raw = params.get("oauth_modal_open");
-
     if (raw === null) {
       setOAuthModalOpen(false);
       return;
     }
-
     setOAuthModalOpen(raw === "true");
-
-    // Read cookies for user name
-    const cookies = cookie.parse(document.cookie || "");
-    setGivenName(cookies.given_name || "User");
   }, [params]);
+
+  useEffect(() => {
+    const name = Cookies.get("given_name") ?? null;
+    setGivenName(name);
+  }, []);
+
+  if (!givenName) return <></>;
 
   return (
     <main className="min-h-screen w-full flex justify-center px-8">

@@ -38,8 +38,6 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
   const userId = user?.sub;
-  const fullName = user?.raw_user_meta_data?.full_name || "User User";
-  const givenName = fullName.split(" ")[0];
 
   if (request.nextUrl.pathname.startsWith("/app")) {
     if (!user) {
@@ -52,18 +50,20 @@ export async function updateSession(request: NextRequest) {
     }
   }
   let accountActivated = false;
+  let givenName = "User";
   if (userId) {
     const { data: userRow, error: userError } = await serviceSupabase
       .from("users")
-      .select("account_activated")
+      .select("*")
       .eq("id", userId)
       .maybeSingle();
     if (userError) {
-      console.error("Error checking author row:", userError);
+      console.error("Error checking user row:", userError);
       const url = request.nextUrl.clone();
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
+    givenName = userRow.given_name;
     accountActivated = Boolean(userRow?.account_activated);
   }
 
