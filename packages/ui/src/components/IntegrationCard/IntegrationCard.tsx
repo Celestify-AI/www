@@ -1,5 +1,5 @@
 import { PlatformLogo } from "@repo/ui/platform-logo";
-import { Check, Plug } from "lucide-react";
+import { Check, Plug, X } from "lucide-react";
 
 interface IntegrationCardProps {
   platformSlug: string;
@@ -26,6 +26,14 @@ const IntegrationCard = ({
       console.error("Failed to generate OAuth URL: ", err);
     }
   };
+
+  const revokeIntegration = async () => {
+    try {
+      window.location.href = `/api/integration/revoke?platform_slug=${platformSlug}`;
+    } catch (err) {
+      console.error("Failed to revoke integration: ", err);
+    }
+  };
   return (
     <article
       className={`bg-(--background) w-full border-2 border-(--border) rounded-2xl flex items-center gap-4 p-2 shadow-md/75 max-w-lg`}
@@ -42,10 +50,19 @@ const IntegrationCard = ({
         </p>
       </div>
       {connected ? (
-        <div className="ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border-2 border-(--primary-muted-border) flex gap-1.5 items-center">
-          Connected
-          <Check size={14} />
-        </div>
+        <button
+          onClick={revokeIntegration}
+          className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border-2 border-(--primary-muted-border) hover:cursor-pointer hover:bg-red-500 hover:border-red-400"
+        >
+          <div className="flex group-hover:hidden gap-1.5 items-center">
+            Connected
+            <Check size={14} />
+          </div>
+          <div className="group-hover:flex gap-1.5 items-center hidden">
+            Disconnect
+            <X size={14} />
+          </div>
+        </button>
       ) : (
         <button
           disabled={connected}
