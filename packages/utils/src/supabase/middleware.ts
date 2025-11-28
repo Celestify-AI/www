@@ -38,6 +38,8 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
   const userId = user?.sub;
+  const fullName = user?.raw_user_meta_data?.full_name || "User User";
+  const givenName = fullName.split(" ")[0];
 
   if (request.nextUrl.pathname.startsWith("/app")) {
     if (!user) {
@@ -89,6 +91,8 @@ export async function updateSession(request: NextRequest) {
     "account_activated",
     accountActivated ? "true" : "false"
   );
+
+  supabaseResponse.cookies.set("given_name", givenName);
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
