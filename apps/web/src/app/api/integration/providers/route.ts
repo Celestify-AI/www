@@ -37,11 +37,11 @@ export async function GET(req: NextRequest) {
 
     const { data: userIntegrations } = await serviceSupabase
       .from("user_integrations")
-      .select("provider_id")
+      .select("provider_id, revoked")
       .eq("user_id", userId);
 
     const connectedProviderIds = new Set(
-      userIntegrations?.map((ui) => ui.provider_id)
+      userIntegrations?.filter((ui) => !ui.revoked).map((ui) => ui.provider_id)
     );
 
     const { data: allProviders, error: providersError } = await serviceSupabase

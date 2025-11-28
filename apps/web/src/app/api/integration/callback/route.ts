@@ -56,8 +56,9 @@ export async function GET(req: NextRequest) {
 
     const { data: authData } = await supabase.auth.getClaims();
     const user = authData?.claims;
-    if (!user)
+    if (!user) {
       return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
+    }
 
     const userId = user.sub;
 
@@ -124,7 +125,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    console.log("Upserted row:", integrationRow);
+    console.log("DB response: ", integrationRow);
 
     const redirectUrl = new URL("/app", req.url);
     redirectUrl.searchParams.set("oauth_modal_open", "true");
