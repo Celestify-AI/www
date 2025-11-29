@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 
 const serviceSupabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!
+  process.env.SUPABASE_SECRET_KEY!,
 );
 
 export async function GET(req: NextRequest) {
@@ -19,11 +19,11 @@ export async function GET(req: NextRequest) {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value }) =>
-              req.cookies.set(name, value)
+              req.cookies.set(name, value),
             );
           },
         },
-      }
+      },
     );
 
     const { data } = await supabase.auth.getClaims();
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
       .eq("user_id", userId);
 
     const connectedProviderIds = new Set(
-      userIntegrations?.filter((ui) => !ui.revoked).map((ui) => ui.provider_id)
+      userIntegrations?.filter((ui) => !ui.revoked).map((ui) => ui.provider_id),
     );
 
     const { data: allProviders, error: providersError } = await serviceSupabase
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
     console.error(err);
     return NextResponse.json(
       { error: "Failed to fetch user providers" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

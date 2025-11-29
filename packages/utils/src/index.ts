@@ -1,4 +1,3 @@
 export { updateSession } from "./supabase/middleware";
-export { createClient as createBrowserClient } from "./supabase/client";
-export { createClient as createServerClient } from "./supabase/server";
+export { createClient } from "./supabase/client";
 export { formatTime } from "./time/time";
