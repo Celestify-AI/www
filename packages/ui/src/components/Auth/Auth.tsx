@@ -2,14 +2,14 @@
 
 import React from "react";
 import { Button } from "../Button/Button";
-import { createClient } from "@repo/utils/client";
+import { createBrowserClient } from "@repo/utils";
 
 interface AuthProps {
   mode: "login" | "signup";
 }
 
 const Auth = ({ mode }: AuthProps) => {
-  const supabase = createClient();
+  const supabase = createBrowserClient();
   async function googleLogin() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
