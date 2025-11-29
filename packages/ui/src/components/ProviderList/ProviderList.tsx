@@ -1,6 +1,6 @@
 "use client";
 
-import { IntegrationCard } from "@repo/ui/integration-card";
+import { IntegrationCard } from "@repo/ui";
 import { useState, useEffect } from "react";
 
 interface Provider {

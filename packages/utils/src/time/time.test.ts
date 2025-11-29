@@ -1,4 +1,4 @@
-import { formatTime } from "@repo/utils/time";
+import { formatTime } from "@repo/utils";
 
 describe("formatTime", () => {
   it("formats midnight correctly", () => {

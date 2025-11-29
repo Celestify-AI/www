@@ -1,9 +1,7 @@
 "use client";
 
-import { HomeHeader } from "@repo/ui/home-header";
-import { NotificationCard } from "@repo/ui/notification-card";
+import { HomeHeader, NotificationCard, OAuthModal } from "@repo/ui";
 import { Plus } from "lucide-react";
-import { OAuthModal } from "@repo/ui/oauth-modal";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";

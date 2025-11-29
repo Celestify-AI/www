@@ -1,4 +1,4 @@
-import { PlatformLogo } from "@repo/ui/platform-logo";
+import { PlatformLogo } from "@repo/ui";
 import { Check, Plug, X } from "lucide-react";
 
 interface IntegrationCardProps {

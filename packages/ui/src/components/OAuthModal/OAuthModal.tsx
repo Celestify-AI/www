@@ -1,5 +1,4 @@
-import { Modal } from "@repo/ui/modal";
-import { ProviderList } from "@repo/ui/provider-list";
+import { Modal, ProviderList } from "@repo/ui";
 
 interface OAuthModalProps {
   isOpen: boolean;

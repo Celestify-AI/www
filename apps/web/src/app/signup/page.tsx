@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Auth } from "@repo/ui/auth";
+import { Auth } from "@repo/ui";
 
 export const metadata: Metadata = {
   title: "Celestify • Sign Up",

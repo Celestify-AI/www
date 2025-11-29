@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@repo/utils/server";
+import { createClient } from "@repo/utils";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);

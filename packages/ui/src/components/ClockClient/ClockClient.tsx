@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
-import { formatTime } from "@repo/utils/time";
+import { formatTime } from "@repo/utils";
 
 const ClockClient = () => {
   const [time, setTime] = useState<Date | null>(null);

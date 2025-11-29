@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PlatformLogo } from "@repo/ui/platform-logo";
+import { PlatformLogo } from "@repo/ui";
 
 interface NotificationCardProps {
   platform: string;

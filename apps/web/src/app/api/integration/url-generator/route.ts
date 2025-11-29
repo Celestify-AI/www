@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 const serviceSupabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!
+  process.env.SUPABASE_SECRET_KEY!,
 );
 
 export async function GET(req: NextRequest) {
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     if (!providerId) {
       return NextResponse.json(
         { error: "Missing provider param" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("Generating OAuth URL for ", providerId);
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     if (providerError || !provider) {
       return NextResponse.json(
         { error: "Provider not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
     console.error("Error generating OAuth URL:", err);
     return NextResponse.json(
       { error: "Failed to generate OAuth URL" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

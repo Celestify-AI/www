@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "../Button/Button";
-import { createClient } from "@repo/utils/client";
+import { createClient } from "@repo/utils";
 
 interface AuthProps {
   mode: "login" | "signup";

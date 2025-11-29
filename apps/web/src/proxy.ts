@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { updateSession } from "@repo/utils/middleware";
+import { updateSession } from "@repo/utils";
 
 export async function proxy(request: NextRequest) {
   return await updateSession(request);
