@@ -1,4 +1,4 @@
-import { ClockClient } from "@repo/ui/clock-client";
+import { ClockClient } from "@repo/ui";
 
 interface HomeHeaderProps {
   userName: string;
