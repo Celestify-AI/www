@@ -26,12 +26,12 @@ export default function AppClient() {
     setGivenName(name);
   }, []);
 
-  if (!givenName) return <></>;
+  if (!givenName) setGivenName("Kyle");
 
   return (
     <main className="min-h-screen w-full flex justify-center px-8">
       <div className="flex flex-col gap-24 items-center h-full w-full max-w-lg pt-32 pb-16">
-        <HomeHeader userName={givenName} />
+        <HomeHeader userName="Kyle" />
         <div className="flex flex-col gap-4">
           <button
             className="cursor-pointer w-fit"

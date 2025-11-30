@@ -1,111 +1,88 @@
-import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createServerClient } from "@repo/utils/server";
+import { createServiceClient } from "@repo/utils/server";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+  let supabaseResponse = NextResponse.next({ request });
+  const originalCookies = supabaseResponse.cookies.getAll();
 
-  const serviceSupabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-  );
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
-        },
-      },
-    },
-  );
+  const serviceSupabase = createServiceClient();
+  const supabase = await createServerClient();
   // IMPORTANT: Nothing between client creation and getClaims()
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
   const userId = user?.sub;
 
-  if (request.nextUrl.pathname.startsWith("/app")) {
-    if (!user) {
-      console.log(
-        "The attempted login did not come from a user and they were redirected to login.",
-      );
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-  }
+  // Variables for cookies to set later
   let accountActivated = false;
   let givenName = "User";
+
   if (userId) {
     const { data: userRow, error: userError } = await serviceSupabase
       .from("users")
       .select("*")
       .eq("id", userId)
-      .maybeSingle();
-    if (userError) {
-      console.error("Error checking user row:", userError);
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
+      .single();
+    if (!userRow || userError) {
+      console.error("Error finding user information in database");
     }
-    givenName = userRow.given_name;
+    givenName = userRow?.given_name;
     accountActivated = Boolean(userRow?.account_activated);
   }
 
   if (request.nextUrl.pathname.startsWith("/app")) {
-    console.log(
-      "The attempted login came from a user, now determining whether subscribed or not.",
-    );
+    if (!userId) {
+      console.log(
+        "The attempted login did not come from a user and they were redirected to login"
+      );
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+
+      supabaseResponse = NextResponse.redirect(url);
+
+      originalCookies.forEach((cookie) => {
+        supabaseResponse.cookies.set(cookie.name, cookie.value);
+      });
+
+      return supabaseResponse;
+    }
     if (!accountActivated) {
-      console.log("The user was not subscribed.");
+      console.log(
+        "The user's account was not activated and redirected to pricing"
+      );
       const url = request.nextUrl.clone();
       url.pathname = "/pricing";
-      return NextResponse.redirect(url);
+
+      supabaseResponse = NextResponse.redirect(url);
+
+      originalCookies.forEach((cookie) => {
+        supabaseResponse.cookies.set(cookie.name, cookie.value);
+      });
+
+      return supabaseResponse;
     }
   }
 
-  // Redirect logged-in and activated users from root to /app
-  if (request.nextUrl.pathname === "/" && user && accountActivated) {
+  // Redirect logged-in activated users to app
+  if (request.nextUrl.pathname === "/" && userId && accountActivated) {
     const url = request.nextUrl.clone();
     url.pathname = "/app";
-    return NextResponse.redirect(url);
+
+    supabaseResponse = NextResponse.redirect(url);
+
+    originalCookies.forEach((cookie) => {
+      supabaseResponse.cookies.set(cookie.name, cookie.value);
+    });
+
+    return supabaseResponse;
   }
 
-  // Drop a cookie into the client to see if the user is authorized or not
+  // Drop cookies for client convenience
   supabaseResponse.cookies.set(
     "account_activated",
-    accountActivated ? "true" : "false",
+    accountActivated ? "true" : "false"
   );
-
   supabaseResponse.cookies.set("given_name", givenName);
-
-  // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
-  // creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
 
   return supabaseResponse;
 }
