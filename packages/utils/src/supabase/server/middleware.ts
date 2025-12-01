@@ -33,7 +33,7 @@ export async function updateSession(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/app")) {
     if (!userId) {
       console.log(
-        "The attempted login did not come from a user and they were redirected to login"
+        "The attempted login did not come from a user and they were redirected to login",
       );
       const url = request.nextUrl.clone();
       url.pathname = "/login";
@@ -48,7 +48,7 @@ export async function updateSession(request: NextRequest) {
     }
     if (!accountActivated) {
       console.log(
-        "The user's account was not activated and redirected to pricing"
+        "The user's account was not activated and redirected to pricing",
       );
       const url = request.nextUrl.clone();
       url.pathname = "/pricing";
@@ -80,7 +80,7 @@ export async function updateSession(request: NextRequest) {
   // Drop cookies for client convenience
   supabaseResponse.cookies.set(
     "account_activated",
-    accountActivated ? "true" : "false"
+    accountActivated ? "true" : "false",
   );
   supabaseResponse.cookies.set("given_name", givenName);
 
