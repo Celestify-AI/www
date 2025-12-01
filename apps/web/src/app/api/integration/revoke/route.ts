@@ -15,7 +15,7 @@ interface RevokeSchema {
 
 function injectVars(
   schema: RevokeSchema,
-  vars: Record<string, string>
+  vars: Record<string, string>,
 ): RevokeSchema {
   const replaceVars = (str: string): string => {
     return str.replace(/\{\{(\w+)\}\}/g, (match, key) => {
@@ -24,7 +24,7 @@ function injectVars(
   };
 
   const processObject = (
-    obj: Record<string, string>
+    obj: Record<string, string>,
   ): Record<string, string> => {
     const result: Record<string, string> = {};
     for (const [key, value] of Object.entries(obj)) {
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
     if (!platformSlug) {
       return NextResponse.json(
         { error: "Missing platform parameter" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     if (!platformData || platformError) {
       return NextResponse.json(
         { error: "Provider not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
     if (!tokenData || tokenError) {
       return NextResponse.json(
         { error: "Access token not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -116,7 +116,7 @@ export async function GET(req: NextRequest) {
     if (!providerData || providerError) {
       return NextResponse.json(
         { error: "Provider data not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -151,7 +151,7 @@ export async function GET(req: NextRequest) {
       providerData.client_secret
     ) {
       const credentials = Buffer.from(
-        `${providerData.client_id}:${providerData.client_secret}`
+        `${providerData.client_id}:${providerData.client_secret}`,
       ).toString("base64");
       headers["Authorization"] = `Basic ${credentials}`;
     } else if (injectedSchema.auth === "bearer" && tokenData.access_token) {
@@ -180,7 +180,7 @@ export async function GET(req: NextRequest) {
       console.error(
         "Revoke request failed:",
         revokeResponse.status,
-        revokeResponse.statusText
+        revokeResponse.statusText,
       );
     }
     console.log(revokeResponse);
@@ -192,7 +192,7 @@ export async function GET(req: NextRequest) {
     console.error(err);
     return NextResponse.json(
       { error: "Failed to revoke the OAuth integration" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

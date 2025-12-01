@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     if (!providerId) {
       return NextResponse.json(
         { error: "Missing provider param" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("Generating OAuth URL for ", providerId);
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     if (providerError || !providerData) {
       return NextResponse.json(
         { error: "Provider not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
     console.error("Error generating OAuth URL:", err);
     return NextResponse.json(
       { error: "Failed to generate OAuth URL" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

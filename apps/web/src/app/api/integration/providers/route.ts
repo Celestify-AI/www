@@ -20,7 +20,7 @@ export async function GET() {
       .eq("user_id", userId);
 
     const connectedProviderIds = new Set(
-      userIntegrations?.filter((ui) => !ui.revoked).map((ui) => ui.provider_id)
+      userIntegrations?.filter((ui) => !ui.revoked).map((ui) => ui.provider_id),
     );
 
     const { data: allProviders, error: providersError } = await serviceSupabase
@@ -44,7 +44,7 @@ export async function GET() {
     console.error(err);
     return NextResponse.json(
       { error: "Failed to fetch user providers" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
