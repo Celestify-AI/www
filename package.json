@@ -16,6 +16,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.84.0",
+    "@xyflow/react": "^12.9.3",
     "d3": "^7.9.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.554.0",
