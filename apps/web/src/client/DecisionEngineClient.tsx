@@ -1,16 +1,7 @@
 "use client";
 
-import React, { useCallback } from "react";
-import {
-  ReactFlow,
-  Background,
-  Controls,
-  MiniMap,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Position,
-} from "@xyflow/react";
+import React from "react";
+import { ReactFlow, Background, useNodesState, Position } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
 
@@ -46,46 +37,12 @@ const initialNodes = [
   },
 ];
 
-const initialEdges = [
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-    animated: true,
-  },
-  {
-    id: "e1-3",
-    source: "1",
-    target: "3",
-  },
-  {
-    id: "e1-4",
-    source: "1",
-    target: "4",
-  },
-];
-
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  const onConnect = useCallback(
-    (params) => setEdges((els) => addEdge(params, els)),
-    []
-  );
+  const [nodes] = useNodesState(initialNodes);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      fitView
-    >
+    <ReactFlow nodes={nodes} fitView>
       <Background />
-      <Controls />
-      <MiniMap />
     </ReactFlow>
   );
 };
