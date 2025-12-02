@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createServerClient } from "@repo/utils/server";
+import { createServiceClient } from "@repo/utils/server";
 
-const serviceSupabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-);
+const serviceSupabase = createServiceClient();
 
 interface RevokeSchema {
   method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
@@ -56,7 +53,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Get platform ID
     const { data: platformData, error: platformError } = await serviceSupabase
       .from("oauth_providers")
       .select("id")
@@ -73,22 +69,7 @@ export async function GET(req: NextRequest) {
     const platformId = platformData?.id;
 
     // Get UUID
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return req.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              req.cookies.set(name, value),
-            );
-          },
-        },
-      },
-    );
+    const supabase = await createServerClient();
 
     const { data: authData } = await supabase.auth.getClaims();
     const user = authData?.claims;
@@ -202,7 +183,7 @@ export async function GET(req: NextRequest) {
         revokeResponse.statusText,
       );
     }
-
+    console.log(revokeResponse);
     const redirectUrl = new URL("/app", req.url);
     redirectUrl.searchParams.set("oauth_modal_open", "true");
 

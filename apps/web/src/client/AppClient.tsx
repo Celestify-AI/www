@@ -26,7 +26,7 @@ export default function AppClient() {
     setGivenName(name);
   }, []);
 
-  if (!givenName) return <></>;
+  if (!givenName) return null;
 
   return (
     <main className="min-h-screen w-full flex justify-center px-8">

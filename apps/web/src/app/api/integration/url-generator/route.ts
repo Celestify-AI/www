@@ -1,11 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServiceClient } from "@repo/utils/server";
 import crypto from "crypto";
 
-const serviceSupabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-);
+const serviceSupabase = createServiceClient();
 
 export async function GET(req: NextRequest) {
   try {
@@ -19,36 +16,29 @@ export async function GET(req: NextRequest) {
     }
     console.log("Generating OAuth URL for ", providerId);
 
-    const { data: provider, error: providerError } = await serviceSupabase
+    const { data: providerData, error: providerError } = await serviceSupabase
       .from("oauth_providers")
       .select("*")
       .eq("id", providerId)
       .maybeSingle();
 
-    if (providerError || !provider) {
+    if (providerError || !providerData) {
       return NextResponse.json(
         { error: "Provider not found" },
         { status: 404 },
       );
     }
 
-    let scopes: string[] = [];
-    if (provider.scope) {
-      if (typeof provider.scope === "string") {
-        scopes = JSON.parse(provider.scope)?.scopes || [];
-      } else if (typeof provider.scope === "object") {
-        scopes = provider.scope.scopes || [];
-      }
-    }
+    const scopes: string[] = Array.isArray(providerData.scope?.scopes)
+      ? providerData.scope.scopes
+      : [];
 
-    let additionalParams: Record<string, unknown> = {};
-    if (provider.additional_params) {
-      if (typeof provider.additional_params === "string") {
-        additionalParams = JSON.parse(provider.additional_params);
-      } else if (typeof provider.additional_params === "object") {
-        additionalParams = provider.additional_params;
-      }
-    }
+    const additionalParams: Record<string, unknown> =
+      providerData.additional_params &&
+      typeof providerData.additional_params === "object" &&
+      !Array.isArray(providerData.additional_params)
+        ? providerData.additional_params
+        : {};
 
     const additionalParamsString: Record<string, string> = {};
     for (const [key, value] of Object.entries(additionalParams)) {
@@ -59,14 +49,14 @@ export async function GET(req: NextRequest) {
     const state = `${csrf}:${providerId}`;
 
     const queryParams = new URLSearchParams({
-      client_id: provider.client_id,
+      client_id: providerData.client_id,
       redirect_uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/integration/callback`,
       scope: scopes.join(" "),
       state,
-      ...additionalParams,
+      ...additionalParamsString,
     });
 
-    const oauthUrl = `${provider.auth_url}?${queryParams.toString()}`;
+    const oauthUrl = `${providerData.auth_url}?${queryParams.toString()}`;
     console.log("Generated OAuth URL:", oauthUrl);
     const response = NextResponse.json({ oauthUrl }, { status: 200 });
     const expires = new Date(Date.now() + 10 * 60 * 1000);

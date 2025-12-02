@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import AppClient from "../../client/AppClient";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Celestify • App",
@@ -12,7 +12,7 @@ export default function AppHome() {
     <>
       <Suspense
         fallback={
-          <div className="flex items-center justify-center font-mono w-screen h-screen">
+          <div className="w-screen h-screen flex items-center justify-center font-mono">
             Loading...
           </div>
         }

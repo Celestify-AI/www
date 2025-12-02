@@ -1,39 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-import { createServerClient } from "@supabase/ssr";
+import { NextResponse } from "next/server";
+import {
+  createServiceClient,
+  createClient as createServerClient,
+} from "@repo/utils/server";
 
-const serviceSupabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-);
+const serviceSupabase = createServiceClient();
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return req.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              req.cookies.set(name, value),
-            );
-          },
-        },
-      },
-    );
+    const supabase = await createServerClient();
 
     const { data } = await supabase.auth.getClaims();
     const user = data?.claims;
-
-    if (!user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-    }
-
-    const userId = user.sub;
+    const userId = user?.sub;
 
     const { data: userIntegrations } = await serviceSupabase
       .from("user_integrations")

@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
+import {
+  createServiceClient,
+  createClient as createServerClient,
+} from "@repo/utils/server";
 
-const serviceSupabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-);
+const serviceSupabase = createServiceClient();
 
 export async function GET(req: NextRequest) {
   try {
@@ -37,30 +36,10 @@ export async function GET(req: NextRequest) {
     response.cookies.delete({ name: "oauth_state", path: "/" });
 
     // Get UUID
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return req.cookies.getAll();
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              req.cookies.set(name, value),
-            );
-          },
-        },
-      },
-    );
-
+    const supabase = await createServerClient();
     const { data: authData } = await supabase.auth.getClaims();
     const user = authData?.claims;
-    if (!user) {
-      return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
-    }
-
-    const userId = user.sub;
+    const userId = user?.sub;
 
     // Token exchange
     const { data: providerRow, error: providerError } = await serviceSupabase
