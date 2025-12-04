@@ -1,28 +1,53 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { ReactFlow, Background, useNodesState } from "@xyflow/react";
 import { DecisionEngineNode } from "@repo/ui";
 import "@xyflow/react/dist/style.css";
 
-const proOptions = { hideAttribution: true };
+import nodeData from "./nodes.json";
 
-const initialNodes = [
-  {
-    id: "1",
-    type: "decisionNode",
-    position: { x: 0, y: 0 },
-    data: {
-      heading: "Reels Performance Concern",
-      body: "The team's last 5 reels haven't been performing well. Kyle suggests adding an outrageous, attention grabbing hook at the beginning.",
-    },
-    draggable: true,
-  },
-];
+const proOptions = { hideAttribution: true };
 
 const nodeTypes = { decisionNode: DecisionEngineNode };
 
+// Configuration for the layout
+const SPACING_FACTOR = 250; // How far apart nodes are spread
+const GOLDEN_ANGLE = 137.5 * (Math.PI / 180); // 2.399 radians
+
 const Flow = () => {
+  const initialNodes = useMemo(() => {
+    // Sort by importance DESC so highest importance is at index 0 (center)
+    const sortedData = [...nodeData].sort(
+      (a, b) => b.importance - a.importance
+    );
+
+    return sortedData.map((item, index) => {
+      const radius = SPACING_FACTOR * Math.sqrt(index);
+      const angle = index * GOLDEN_ANGLE;
+
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+
+      // Calculate Scale based on importance (1-10)
+      // Importance 10 = Scale 1.0
+      // Importance 1 = Scale 0.6
+      const scale = 0.6 + (item.importance / 10) * 0.4;
+
+      return {
+        id: item.id,
+        type: "decisionNode",
+        position: { x, y },
+        data: {
+          ...item,
+          // Pass the computed scale to data just in case the component uses it internally
+          scale: scale,
+        },
+        draggable: true,
+      };
+    });
+  }, []);
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 
   return (
@@ -30,11 +55,15 @@ const Flow = () => {
       nodes={nodes}
       nodeTypes={nodeTypes}
       onNodesChange={onNodesChange}
-      fitView
       nodesDraggable
       proOptions={proOptions}
+      fitView
+      fitViewOptions={{
+        padding: 0.2,
+        maxZoom: 1,
+      }}
     >
-      <Background color="#3f3f3f" />
+      <Background color="#d1d1d1" gap={24} />
     </ReactFlow>
   );
 };

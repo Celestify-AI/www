@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "heading": "Reels Performance Concern",
+    "body": "The team's last 5 reels haven't been performing well. Kyle suggests adding an outrageous, attention grabbing hook.",
+    "importance": 10,
+    "sources": ["gmail", "slack"]
+  },
+  {
+    "id": "2",
+    "heading": "Q3 Budget Review",
+    "body": "Marketing spend is 15% over budget due to the new LinkedIn campaign. We need to cut costs in other areas or request approval.",
+    "importance": 8,
+    "sources": ["microsoft", "google-drive"]
+  },
+  {
+    "id": "3",
+    "heading": "Client Feedback: Acme Corp",
+    "body": "Acme is unhappy with the turnaround time on the latest deliverables. They are requesting a meeting with the lead dev.",
+    "importance": 9,
+    "sources": ["gmail", "linkedin"]
+  },
+  {
+    "id": "4",
+    "heading": "Office Wifi Upgrades",
+    "body": "IT is scheduling downtime for Sunday at 2am. No action needed, just an FYI for night owls.",
+    "importance": 2,
+    "sources": ["slack"]
+  },
+  {
+    "id": "5",
+    "heading": "New Hire Onboarding",
+    "body": "Sarah starts next Monday. Her laptop is configured, but she needs access to the repo and the design drive.",
+    "importance": 6,
+    "sources": ["google-drive", "slack", "microsoft"]
+  },
+  {
+    "id": "6",
+    "heading": "Coffee Machine Broken",
+    "body": "The espresso machine on the 3rd floor is leaking. Maintenance has been called.",
+    "importance": 1,
+    "sources": ["slack"]
+  },
+  {
+    "id": "7",
+    "heading": "Competitor Analysis",
+    "body": "Competitor X just launched a feature similar to our roadmap item. We might need to pivot strategy.",
+    "importance": 7,
+    "sources": ["linkedin", "google-drive"]
+  },
+  {
+    "id": "8",
+    "heading": "Holiday Party Planning",
+    "body": "Voting for the venue closes this Friday. Options are the Bowling Alley or the Rooftop Bar.",
+    "importance": 3,
+    "sources": ["gmail"]
+  }
+]
