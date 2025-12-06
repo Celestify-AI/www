@@ -69,7 +69,7 @@ const Flow = () => {
         "collide",
         forceCollide<D3Node>()
           .radius((n) => 180 * n.data.scale)
-          .iterations(1)
+          .iterations(1),
       )
       .force("x", forceX(0).strength(0.08))
       .force("y", forceY(0).strength(0.08))
@@ -126,7 +126,7 @@ const Flow = () => {
       const filteredChanges = changes.filter((c) => c.type !== "position");
       setNodes((nds) => applyNodeChanges(filteredChanges, nds));
     },
-    [setNodes]
+    [setNodes],
   );
 
   // 3. DRAG HANDLERS
@@ -142,7 +142,7 @@ const Flow = () => {
       // Re-heat the simulation so other nodes react to the drag
       simulationRef.current.alphaTarget(0.3).restart();
     },
-    []
+    [],
   );
 
   const onNodeDrag: OnNodeDrag = useCallback((_event, node) => {
