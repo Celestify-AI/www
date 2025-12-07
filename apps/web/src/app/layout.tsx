@@ -1,4 +1,9 @@
-import { Inter, Geist_Mono, DM_Serif_Display } from "next/font/google";
+import {
+  Inter,
+  Geist_Mono,
+  DM_Serif_Display,
+  Roboto_Slab,
+} from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,6 +18,10 @@ const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
 });
 
+const robotoSlab = Roboto_Slab({
+  subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter} ${geistMono} ${dmSerifDisplay} antialiased`}>
+      <body
+        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} antialiased`}
+      >
         {children}
       </body>
     </html>

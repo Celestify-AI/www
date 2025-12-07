@@ -1,0 +1,142 @@
+[
+  {
+    "id": "1",
+    "heading": "Reels Performance Concern",
+    "body": "The team's last 5 reels haven't been performing well. Kyle suggests adding an outrageous, attention grabbing hook.",
+    "importance": 10,
+    "sources": ["gmail", "slack"]
+  },
+  {
+    "id": "2",
+    "heading": "Q3 Budget Review",
+    "body": "Marketing spend is 15% over budget due to the new LinkedIn campaign. We need to cut costs in other areas or request approval.",
+    "importance": 8,
+    "sources": ["microsoft", "google-drive"]
+  },
+  {
+    "id": "3",
+    "heading": "Client Feedback: Acme Corp",
+    "body": "Acme is unhappy with the turnaround time on the latest deliverables. They are requesting a meeting with the lead dev.",
+    "importance": 9,
+    "sources": ["gmail", "linkedin"]
+  },
+  {
+    "id": "4",
+    "heading": "Office Wifi Upgrades",
+    "body": "IT is scheduling downtime for Sunday at 2am. No action needed, just an FYI for night owls.",
+    "importance": 2,
+    "sources": ["slack"]
+  },
+  {
+    "id": "5",
+    "heading": "New Hire Onboarding",
+    "body": "Sarah starts next Monday. Her laptop is configured, but she needs access to the repo and the design drive.",
+    "importance": 6,
+    "sources": ["google-drive", "slack", "microsoft"]
+  },
+  {
+    "id": "6",
+    "heading": "Coffee Machine Broken",
+    "body": "The espresso machine on the 3rd floor is leaking. Maintenance has been called.",
+    "importance": 1,
+    "sources": ["slack"]
+  },
+  {
+    "id": "7",
+    "heading": "Competitor Analysis",
+    "body": "Competitor X just launched a feature similar to our roadmap item. We might need to pivot strategy.",
+    "importance": 7,
+    "sources": ["linkedin", "google-drive"]
+  },
+  {
+    "id": "8",
+    "heading": "Holiday Party Planning",
+    "body": "Voting for the venue closes this Friday. Options are the Bowling Alley or the Rooftop Bar.",
+    "importance": 3,
+    "sources": ["gmail"]
+  },
+  {
+    "id": "9",
+    "heading": "Product Launch Timeline",
+    "body": "The launch for our new app feature is slipping by a week. Dev team needs more QA resources.",
+    "importance": 9,
+    "sources": ["slack", "google-drive"]
+  },
+  {
+    "id": "10",
+    "heading": "Team Retrospective Insights",
+    "body": "The last sprint revealed communication gaps between design and dev. Action plan: weekly sync.",
+    "importance": 5,
+    "sources": ["microsoft"]
+  },
+  {
+    "id": "11",
+    "heading": "Server Maintenance Notice",
+    "body": "Servers will be down for 3 hours this Saturday. Notify clients if they rely on real-time data.",
+    "importance": 6,
+    "sources": ["slack", "gmail"]
+  },
+  {
+    "id": "12",
+    "heading": "Marketing Collateral Review",
+    "body": "The new brochure draft needs final approval before printing. Design team awaiting feedback.",
+    "importance": 4,
+    "sources": ["google-drive", "microsoft"]
+  },
+  {
+    "id": "13",
+    "heading": "Sales Pipeline Update",
+    "body": "Q4 projections are below target. Sales team should follow up with warm leads more aggressively.",
+    "importance": 8,
+    "sources": ["linkedin", "gmail"]
+  },
+  {
+    "id": "14",
+    "heading": "Weekly Newsletter Draft",
+    "body": "The newsletter draft is ready for review. Add CTA to boost engagement.",
+    "importance": 3,
+    "sources": ["gmail", "slack"]
+  },
+  {
+    "id": "15",
+    "heading": "Office Renovation Plans",
+    "body": "Floor 2 will have new desks installed next month. Minor noise expected during weekdays.",
+    "importance": 2,
+    "sources": ["slack", "microsoft"]
+  },
+  {
+    "id": "16",
+    "heading": "Customer Support Metrics",
+    "body": "Ticket resolution time has increased by 20%. Investigate staffing and training needs.",
+    "importance": 7,
+    "sources": ["gmail", "google-drive"]
+  },
+  {
+    "id": "17",
+    "heading": "Security Audit Prep",
+    "body": "Annual security audit scheduled. Ensure access logs and permission lists are updated.",
+    "importance": 9,
+    "sources": ["microsoft", "slack"]
+  },
+  {
+    "id": "18",
+    "heading": "Design System Updates",
+    "body": "Component library updated with new typography standards. Devs need to sync their repos.",
+    "importance": 5,
+    "sources": ["google-drive", "slack"]
+  },
+  {
+    "id": "19",
+    "heading": "Team Building Exercise",
+    "body": "Outdoor retreat scheduled for next month. RSVP required by Friday.",
+    "importance": 4,
+    "sources": ["gmail", "microsoft"]
+  },
+  {
+    "id": "20",
+    "heading": "Vendor Contract Renewal",
+    "body": "Contract with Vendor Y is up for renewal. Legal review needed before signing.",
+    "importance": 8,
+    "sources": ["microsoft", "linkedin"]
+  }
+]

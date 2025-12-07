@@ -1,6 +1,8 @@
 export { Auth } from "./components/Auth/Auth";
 export { Button } from "./components/Button/Button";
 export { ClockClient } from "./components/ClockClient/ClockClient";
+export { DecisionEngineNode } from "./components/DecisionEngineNode/DecisionEngineNode";
+export { FloatingAction } from "./components/FloatingAction/FloatingAction";
 export { HomeHeader } from "./components/HomeHeader/HomeHeader";
 export { IntegrationCard } from "./components/IntegrationCard/IntegrationCard";
 export { Modal } from "./components/Modal/Modal";

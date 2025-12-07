@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
+import Flow from "../../../client/DecisionEngineClient";
+import { FloatingAction } from "@repo/ui";
 
 export const metadata: Metadata = {
   title: "Celestify • Task",
-  description: "Read a workflow briefing of a task in Celestify.",
+  description: "Access the Celestify decision engine.",
 };
 
 export default function Task() {
   return (
-    <main className="min-h-screen w-full flex justify-center px-8">
-      <div className="flex flex-col gap-16 items-center h-full w-full max-w-lg pt-16 pb-16">
-        <h1 className="font-headline text-5xl">{`Celestify Marketing Strategies`}</h1>
-        <div className="flex flex-col gap-8 w-full"></div>
+    <div className="w-screen h-screen">
+      <div className="fixed flex w-full bottom-10 items-center justify-center z-50">
+        <FloatingAction
+          primaryLabel="Dispatch Celestia"
+          secondaryLabel="Manual Briefing"
+          className="shadow-md/50"
+        />
       </div>
-    </main>
+      <Flow />
+    </div>
   );
 }
