@@ -36,9 +36,9 @@ const IntegrationCard = ({
   };
   return (
     <article
-      className={`bg-(--background) w-full border-2 border-(--border) rounded-2xl flex items-center gap-4 p-2 shadow-md/75 max-w-lg`}
+      className={`bg-(--background) w-full border border-(--border) rounded-2xl flex items-center gap-4 p-2 shadow-md/75 max-w-lg`}
     >
-      <div className="w-16 h-16 bg-(--background) border-2 border-(--border) rounded-xl flex items-center justify-center shrink-0">
+      <div className="w-16 h-16 bg-(--background) border border-(--border) rounded-xl flex items-center justify-center shrink-0">
         <PlatformLogo platform={platformSlug} className="w-10 h-10" />
       </div>
       <div className="flex flex-col justify-center">
@@ -52,7 +52,7 @@ const IntegrationCard = ({
       {connected ? (
         <button
           onClick={revokeIntegration}
-          className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border-2 border-(--primary-muted-border) hover:cursor-pointer hover:bg-red-500 hover:border-red-400"
+          className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border border-(--primary-muted-border) hover:cursor-pointer hover:bg-red-500 hover:border-red-400"
         >
           <div className="flex group-hover:hidden gap-1.5 items-center">
             Connected
@@ -67,7 +67,7 @@ const IntegrationCard = ({
         <button
           disabled={connected}
           onClick={fetchOAuthLink}
-          className="ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary) border-2 border-(--primary-border) flex gap-1.5 items-center cursor-pointer whitespace-nowrap"
+          className="ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary) border border-(--primary-border) flex gap-1.5 items-center cursor-pointer whitespace-nowrap"
         >
           Connect
           <Plug size={14} />
