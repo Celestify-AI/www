@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Navbar } from "../components/Navbar";
 
 export const metadata: Metadata = {
   title: "Celestify • AI Knowledge Library",
@@ -6,5 +7,10 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <div></div>;
+  return (
+    <>
+      <Navbar />
+      <div></div>
+    </>
+  );
 }
