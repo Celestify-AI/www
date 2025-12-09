@@ -57,9 +57,6 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:packages/eslint-config
-      '@repo/marketing':
-        specifier: workspace:*
-        version: link:packages/marketing
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
@@ -157,8 +154,6 @@ importers:
   apps/web: {}
 
   packages/eslint-config: {}
-
-  packages/marketing: {}
 
   packages/typescript-config: {}
 
