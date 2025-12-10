@@ -11,3 +11,4 @@ export { NotificationCard } from "./components/NotificationCard/NotificationCard
 export { OAuthModal } from "./components/OAuthModal/OAuthModal";
 export { PlatformLogo } from "./components/PlatformLogo/PlatformLogo";
 export { ProviderList } from "./components/ProviderList/ProviderList";
+export { SectionAccordion } from "./components/SectionAccordion/SectionAccordion";

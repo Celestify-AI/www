@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "motion/react";
+import { SectionAccordion } from "@repo/ui";
 
 export default function AppClient() {
   const params = useSearchParams();
@@ -102,12 +103,31 @@ export default function AppClient() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col gap-2"
               >
-                <NotificationCard
-                  redirect="/app/task"
-                  platform="google-drive"
-                  title="Team Sync Update"
-                  description="New agenda posted for tomorrow’s sync. Review action points before the meeting."
-                />
+                <SectionAccordion title="Suggested" defaultOpen={true} className="flex flex-col gap-4">
+                  <NotificationCard
+                    redirect="/app/task"
+                    platform="google-drive"
+                    title="Team Sync Update"
+                    description="New agenda posted for tomorrow’s sync. Review action points before the meeting."
+                    active={false}
+                  />
+                  <NotificationCard
+                    redirect="/app/task"
+                    platform="slack"
+                    title="Payment Processor"
+                    description="Need to choose between Stripe and Flowglad for SaaS payment processing."
+                    active={false}
+                  />
+                </SectionAccordion>
+                <SectionAccordion title="Active" defaultOpen={true}>
+                  <NotificationCard
+                    redirect="/app/task"
+                    platform="gmail"
+                    title="Incorporation Discussion"
+                    description="Debating whether to incorporate as a C Corp in Delaware or in Wyoming."
+                    active={true}
+                  />
+                </SectionAccordion>
               </motion.div>
             ) : (
               <motion.div

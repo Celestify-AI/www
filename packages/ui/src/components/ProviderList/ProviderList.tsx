@@ -31,7 +31,7 @@ const ProviderList = () => {
   }
 
   return (
-    <div className="mt-8 flex flex-col gap-4 items-center px-4">
+    <div className="w-full mt-8 flex flex-col gap-4 items-center px-4">
       {providers.map((p) => (
         <IntegrationCard
           key={p.platformSlug}

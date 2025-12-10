@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     if (!incomingState || !code) {
       return NextResponse.json(
         { error: "Missing state or code" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
     if (providerError || !providerRow) {
       return NextResponse.json(
         { error: "Provider not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
     console.log(tokenData);
 
     const expiresAt = new Date(
-      Date.now() + tokenData.expires_in * 1000,
+      Date.now() + tokenData.expires_in * 1000
     ).toISOString();
 
     const { data: integrationRow, error: integrationError } =
@@ -100,11 +100,29 @@ export async function GET(req: NextRequest) {
       console.error("Upsert failed: ", integrationError);
       return NextResponse.json(
         { error: "Failed to store tokens" },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
     console.log("DB response: ", integrationRow);
+
+    // Onboard on backend
+    try {
+      await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/onboard`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          integration_id: providerId,
+          platform: providerRow.slug,
+          generate_workflows: true,
+        }),
+      });
+    } catch (err) {
+      console.error("Onboarding trigger failed:", err);
+    }
 
     const redirectUrl = new URL("/app", req.url);
     redirectUrl.searchParams.set("oauth_modal_open", "true");
@@ -114,7 +132,7 @@ export async function GET(req: NextRequest) {
     console.error(err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
