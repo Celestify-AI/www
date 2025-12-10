@@ -38,10 +38,13 @@ const IntegrationCard = ({
     <article
       className={`bg-(--background) w-full border border-(--border) rounded-2xl flex items-center gap-4 p-2 shadow-md/75 max-w-lg`}
     >
+      {/* Logo */}
       <div className="w-16 h-16 bg-(--background) border border-(--border) rounded-xl flex items-center justify-center shrink-0">
         <PlatformLogo platform={platformSlug} className="w-10 h-10" />
       </div>
-      <div className="flex flex-col justify-center">
+
+      {/* Text Content */}
+      <div className="flex flex-col justify-center flex-1 min-w-0">
         <h3 className="font-bold text-lg line-clamp-1 capitalize text-left">
           {platformName}
         </h3>
@@ -49,17 +52,19 @@ const IntegrationCard = ({
           {description}
         </p>
       </div>
+
+      {/* Button */}
       {connected ? (
         <button
           onClick={revokeIntegration}
           className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border border-(--primary-muted-border) hover:cursor-pointer hover:bg-red-500 hover:border-red-400"
         >
           <div className="flex group-hover:hidden gap-1.5 items-center">
-            Connected
+            Added
             <Check size={14} />
           </div>
           <div className="group-hover:flex gap-1.5 items-center hidden">
-            Disconnect
+            Remove 
             <X size={14} />
           </div>
         </button>
