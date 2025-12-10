@@ -10,7 +10,9 @@ export async function GET() {
   try {
     const supabase = await createServerClient();
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     const userId = user?.id;
 
     const { data: userIntegrations } = await serviceSupabase

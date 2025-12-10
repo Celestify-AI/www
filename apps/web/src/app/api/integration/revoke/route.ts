@@ -71,14 +71,8 @@ export async function GET(req: NextRequest) {
     // Get UUID
     const supabase = await createServerClient();
 
-    const { data: authData } = await supabase.auth.getClaims();
-    const user = authData?.claims;
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthenticated" }, { status: 401 });
-    }
-
-    const userId = user?.sub;
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
 
     // Set revoked to true
     const { data: revokedData, error: revokedError } = await serviceSupabase
