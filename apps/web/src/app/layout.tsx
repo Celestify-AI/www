@@ -3,6 +3,7 @@ import {
   Geist_Mono,
   DM_Serif_Display,
   Roboto_Slab,
+  Instrument_Serif,
 } from "next/font/google";
 import "./globals.css";
 
@@ -22,6 +23,11 @@ const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
 });
 
+const instrumentSerif = Instrument_Serif({
+  weight: ["400"],
+  style: ["normal", "italic"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} antialiased`}
+        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} ${instrumentSerif} antialiased`}
       >
         {children}
       </body>

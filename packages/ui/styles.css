@@ -5,6 +5,7 @@
   --foreground: #fefefe;
   --card-background: #1e1e1e;
   --muted: #d1d1d1;
+  --subtitle: #9f9f9f;
   --border: #2f2f2f;
   --primary: #3c4bb9;
   --primary-border: #5d6cdc;
@@ -15,6 +16,7 @@
   --font-slab: "Roboto Slab", serif;
   --font-sans: "Inter", sans-serif;
   --font-mono: "Geist Mono", mono;
+  --font-instrument-serif: "Instrument Serif", serif;
 }
 
 body {
