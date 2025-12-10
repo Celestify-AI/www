@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
 
     // Onboard on backend
     try {
-      await fetch("https://b8ae3bff36d4.ngrok-free.app/integrations/onboard", {
+      await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/onboard`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
