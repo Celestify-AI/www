@@ -1,5 +1,8 @@
 import { v4 as uuid } from "uuid";
-import { createClient as createServerClient, createServiceClient } from "@repo/utils/server";
+import {
+  createClient as createServerClient,
+  createServiceClient,
+} from "@repo/utils/server";
 import { NextResponse, NextRequest } from "next/server";
 
 const serviceSupabase = createServiceClient();
@@ -13,16 +16,27 @@ export async function POST(req: NextRequest) {
 
     // Basic validation of input
     if (typeof userText !== "string") {
-      return NextResponse.json({ error: "User inputted text that was not a string"}, { status: 400 });
+      return NextResponse.json(
+        { error: "User inputted text that was not a string" },
+        { status: 400 },
+      );
     }
 
-    if (!Array.isArray(attachments) || !attachments.every(a => typeof a === "string")) {
-      return NextResponse.json({ error: "Attachments were invalid" }, { status: 400 });
+    if (
+      !Array.isArray(attachments) ||
+      !attachments.every((a) => typeof a === "string")
+    ) {
+      return NextResponse.json(
+        { error: "Attachments were invalid" },
+        { status: 400 },
+      );
     }
 
     // Acquire User UUID
     const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     const userId = user?.id;
 
     const conversationId = uuid();
@@ -31,12 +45,15 @@ export async function POST(req: NextRequest) {
       .from("agent_conversations")
       .insert({
         id: conversationId,
-        user_id: userId
+        user_id: userId,
       });
-    
+
     if (conversationError) {
       console.error(conversationError);
-      return NextResponse.json({ error: "Failed to create conversation" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to create conversation" },
+        { status: 500 },
+      );
     }
 
     // Insert initial message
@@ -52,11 +69,13 @@ export async function POST(req: NextRequest) {
 
     if (msgError) {
       console.error(msgError);
-      return NextResponse.json({ error: "Failed to write message" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to write message" },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json({ conversationId });
-    
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });

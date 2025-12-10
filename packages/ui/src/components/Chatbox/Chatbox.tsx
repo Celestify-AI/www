@@ -23,12 +23,12 @@ const Chatbox = () => {
       const res = await fetch("/api/chat/create", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userText: text,
-          attachments: []
-        })
+          attachments: [],
+        }),
       });
 
       if (!res.ok) {
@@ -43,14 +43,14 @@ const Chatbox = () => {
     } catch (err) {
       console.error("Submit error: ", err);
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
     }
-  }
+  };
 
   return (
     <div className="relative transition-all border border-(--border) px-4 py-3 rounded-xl shadow-md/75 bg-(--background) w-full">
@@ -67,9 +67,10 @@ const Chatbox = () => {
           <Plus size={18} />
         </button>
       </div>
-      <button 
-      onClick={handleSubmit}
-      className="absolute bottom-2 right-2 cursor-pointer text-(--muted) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md">
+      <button
+        onClick={handleSubmit}
+        className="absolute bottom-2 right-2 cursor-pointer text-(--muted) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md"
+      >
         <CornerDownLeft size={18} />
       </button>
     </div>

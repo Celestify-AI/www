@@ -64,7 +64,7 @@ const IntegrationCard = ({
             <Check size={14} />
           </div>
           <div className="group-hover:flex gap-1.5 items-center hidden">
-            Remove 
+            Remove
             <X size={14} />
           </div>
         </button>
