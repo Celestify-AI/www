@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} ${instrumentSerif} antialiased overflow-y-hidden`}
+        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} ${instrumentSerif} antialiased`}
       >
         {children}
       </body>

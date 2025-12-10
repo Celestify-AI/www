@@ -38,8 +38,7 @@ export async function GET(req: NextRequest) {
     // Get UUID
     const supabase = await createServerClient();
     const { data: authData } = await supabase.auth.getClaims();
-    const user = authData?.claims;
-    const userId = user?.sub;
+    const userId = authData?.claims?.user?.sub;
 
     // Token exchange
     const { data: providerRow, error: providerError } = await serviceSupabase

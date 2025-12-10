@@ -82,6 +82,7 @@ export default function AppClient() {
                           : "var(--muted)",
                     }}
                     transition={{ duration: 0.3 }}
+                    className="cursor-pointer"
                   >
                     {tab}
                   </motion.span>
