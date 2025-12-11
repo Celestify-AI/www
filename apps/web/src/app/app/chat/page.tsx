@@ -10,12 +10,13 @@ export const metadata: Metadata = {
 export default function AppHome() {
   return (
     <>
-      <Suspense 
+      <Suspense
         fallback={
           <div className="w-screen h-screen flex items-center justify-center font-mono">
             Loading...
           </div>
-        }>
+        }
+      >
         <ChatClient />
       </Suspense>
     </>

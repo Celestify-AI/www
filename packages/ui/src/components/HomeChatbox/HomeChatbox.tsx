@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { Plus, CornerDownLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const Chatbox = () => {
+const HomeChatbox = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
 
@@ -61,7 +61,7 @@ const Chatbox = () => {
         onInput={handleInput}
         onKeyDown={handleKeyDown}
         className="w-full bg-transparent outline-none resize-none max-h-32 overflow-y-auto mb-10"
-      ></textarea>
+      />
       <div className="absolute bottom-2 left-2 flex gap-2">
         <button className="cursor-pointer text-(--muted) bg-(--background) border border-(--border) p-1.5 rounded-md">
           <Plus size={18} />
@@ -77,4 +77,4 @@ const Chatbox = () => {
   );
 };
 
-export { Chatbox };
+export { HomeChatbox };

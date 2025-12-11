@@ -71,7 +71,9 @@ export async function GET(req: NextRequest) {
     // Get UUID
     const supabase = await createServerClient();
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     const userId = user?.id;
 
     // Set revoked to true
