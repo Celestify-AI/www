@@ -87,8 +87,8 @@ export default function Home() {
               </h1>
             </div>
             <h2 className="text-sm sm:text-base text-(--subtitle) text-center max-w-md">
-              An AI agent that knows everything it needs to execute. Your data
-              securely embedded into a vector archive.
+            An AI system that captures and understands everything flowing into your digital life.
+            Your data is unified into a secure, high-signal knowledge system built for agentic execution.
             </h2>
           </div>
           <div className="flex mt-8 gap-3">
@@ -799,13 +799,13 @@ export default function Home() {
                   id: "what-is-celestify",
                   question: "What is Celestify?",
                   answer:
-                    "Celestify is an AI knowledge library that helps you manage the chaos of the digital world. By positioning AI at the inflow of information sources, it builds a vector database and uses RAG to make agentic workflows more effective, giving your AI the necessary knowledge to execute tasks.",
+                    "Celestify is an AI knowledge system that helps you manage the chaos of the digital world. By positioning AI at the inflow of information sources, it builds a vector database and uses RAG to make our agentic workflows more effective, and provide the necessary context to execute tasks.",
                 },
                 {
                   id: "devices",
                   question: "Is Celestify available for all devices?",
                   answer:
-                    "Currently, Celestify is available as a web application. We're working on desktop and mobile apps to extend the experience across all your devices.",
+                    "Currently, Celestify is available as a web application. Desktop and mobile apps to extend the experience across all your devices are coming soon.",
                 },
                 {
                   id: "pricing",
@@ -817,7 +817,7 @@ export default function Home() {
                   id: "integrations",
                   question: "Does Celestify integrate with my favorite apps?",
                   answer:
-                    "Yes! Celestify integrates with Gmail, Slack, Google Drive, Microsoft, LinkedIn, and more. We're constantly adding new integrations based on user feedback.",
+                    "Yes! Celestify integrates with Gmail, Slack, Google Drive, Discord and more. We're constantly adding new integrations based on user feedback.",
                 },
                 {
                   id: "vector-db",
@@ -829,7 +829,7 @@ export default function Home() {
                   id: "better",
                   question: "How is Celestify better than other tools?",
                   answer:
-                    "Unlike tools that just aggregate information, Celestify builds a comprehensive knowledge base using vector embeddings and RAG. This means your AI agent doesn't just have access to data—it understands relationships, relevance, and meaning, making agentic workflows truly effective.",
+                    "Celestify is, uniquely, a two part tool. Unlike tools that just aggregate information, Celestify builds a comprehensive knowledge base using vector embeddings and RAG. This means your AI agent doesn't just have access to data—it understands relationships, relevance, and meaning. With this, our agentic workflows become truly effective.",
                 },
               ].map((faq, index) => (
                 <div
