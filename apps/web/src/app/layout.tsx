@@ -34,9 +34,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} ${instrumentSerif} antialiased overflow-y-hidden`}
+        className={`${inter} ${geistMono} ${dmSerifDisplay} ${robotoSlab} ${instrumentSerif} antialiased`}
       >
         {children}
       </body>
