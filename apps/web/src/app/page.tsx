@@ -121,55 +121,73 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-        {/* Video Demo Section */}
+        {/* Image Demo Section - Sleek Design */}
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl px-8 mt-24 mb-12 relative z-10"
+          className="w-full max-w-5xl px-8 mt-24 mb-12 relative z-10"
         >
           <div className="relative">
-            {/* Video Container with Border */}
+            {/* Outer glow ring */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              whileHover={{ scale: 1.01 }}
-              className="relative bg-(--card-background) border border-(--border) rounded-2xl p-2 overflow-hidden group hover:border-(--primary-border)/50 transition-all duration-300 shadow-lg shadow-(--primary)/5"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="absolute -inset-4 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-2xl opacity-50"
+            ></motion.div>
+            
+            {/* Main container with refined styling */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.3, type: "spring", stiffness: 100 }}
+              whileHover={{ scale: 1.005, y: -2 }}
+              className="relative bg-gradient-to-br from-(--card-background) to-(--card-background)/95 border border-(--border)/50 rounded-3xl p-1 overflow-hidden group hover:border-(--primary-border)/60 transition-all duration-500 shadow-2xl shadow-(--primary)/10"
             >
-              {/* Subtle glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-(--primary)/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              {/* Animated border glow */}
+              {/* Animated gradient border */}
               <motion.div
-                className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3))',
+                  backgroundSize: '200% 200%',
+                }}
                 animate={{
-                  backgroundPosition: ["0% 0%", "100% 100%"],
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
-                  repeatType: "reverse",
+                  ease: 'linear',
                 }}
               ></motion.div>
               
-              <div className="relative aspect-video bg-(--background) rounded-xl overflow-hidden pointer-events-none">
-                <video
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  disablePictureInPicture
-                  disableRemotePlayback
-                >
-                  <source src="/videos/suggested-active-demo.mov" type="video/quicktime" />
-                  <source src="/videos/suggested-active-demo.mov" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+              {/* Inner subtle glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-(--primary)/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+              
+              {/* Image container with refined padding */}
+              <div className="relative aspect-[16/10] bg-gradient-to-br from-(--background) via-(--background) to-(--card-background) rounded-[1.25rem] overflow-hidden p-1">
+                {/* Inner shadow for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10 rounded-[1.25rem]"></div>
+                
+                {/* Image with subtle border */}
+                <div className="relative w-full h-full bg-(--background) rounded-2xl overflow-hidden border border-(--border)/30">
+                  <Image
+                    src="/images/layout/thumbnail.png"
+                    alt="Celestify notification center demo showing personalized notifications and unified intelligence"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </div>
+              
+              {/* Corner accent lights */}
+              <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </motion.div>
           </div>
         </motion.div>
