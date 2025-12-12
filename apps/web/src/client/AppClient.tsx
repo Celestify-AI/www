@@ -103,7 +103,11 @@ export default function AppClient() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col gap-2"
               >
-                <SectionAccordion title="Suggested" defaultOpen={true} className="flex flex-col gap-4">
+                <SectionAccordion
+                  title="Suggested"
+                  defaultOpen={true}
+                  className="flex flex-col gap-4"
+                >
                   <NotificationCard
                     redirect="/app/task"
                     platform="google-drive"

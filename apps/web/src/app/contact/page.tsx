@@ -1,9 +1,21 @@
-"use client";
-
 import { Navbar } from "../../components/Navbar";
 import Link from "next/link";
-import { ArrowLeft, Mail, MessageSquare, Users, HelpCircle, Briefcase, Github, Twitter } from "lucide-react";
-import { motion } from "motion/react";
+import {
+  ArrowLeft,
+  Mail,
+  MessageSquare,
+  Users,
+  HelpCircle,
+  Briefcase,
+  Github,
+  Twitter,
+} from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Celestify • Contact",
+  description: "Contact Celestify's talented team.",
+};
 
 export default function Contact() {
   return (
@@ -18,31 +30,20 @@ export default function Contact() {
             <ArrowLeft size={18} />
             Back to home
           </Link>
-          
+
           <div className="flex flex-col gap-16">
             {/* Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col items-center gap-4 text-center"
-            >
-              <h1 className="text-4xl sm:text-5xl font-medium">
-                Get in touch
-              </h1>
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h1 className="text-4xl sm:text-5xl font-medium">Get in touch</h1>
               <p className="text-lg text-(--subtitle) max-w-2xl">
                 Have questions? Want to learn more? We'd love to hear from you.
               </p>
-            </motion.div>
+            </div>
 
             {/* Contact Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <motion.a
+              <a
                 href="mailto:ethan@celestify.ai"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                whileHover={{ y: -4, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col items-center gap-4 hover:border-(--primary-border)/50 transition-all group relative overflow-hidden"
               >
                 {/* Gradient overlay on hover */}
@@ -50,21 +51,19 @@ export default function Contact() {
                 <div className="relative z-10 w-16 h-16 bg-(--primary)/10 border border-(--primary-border)/30 rounded-xl flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
                   <Mail className="w-8 h-8 text-(--primary-border)" />
                 </div>
-                <h3 className="text-xl font-semibold relative z-10">General Inquiries</h3>
+                <h3 className="text-xl font-semibold relative z-10">
+                  General Inquiries
+                </h3>
                 <p className="text-sm text-(--muted) text-center relative z-10">
                   ethan@celestify.ai
                 </p>
                 <p className="text-xs text-(--muted) text-center mt-2 relative z-10">
                   Questions, feedback, or just want to say hello
                 </p>
-              </motion.a>
+              </a>
 
-              <motion.a
+              <a
                 href="mailto:ethan@celestify.ai"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                whileHover={{ y: -4, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col items-center gap-4 hover:border-(--primary-border)/50 transition-all group relative overflow-hidden"
               >
                 {/* Gradient overlay on hover */}
@@ -72,28 +71,24 @@ export default function Contact() {
                 <div className="relative z-10 w-16 h-16 bg-(--primary)/10 border border-(--primary-border)/30 rounded-xl flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
                   <MessageSquare className="w-8 h-8 text-(--primary-border)" />
                 </div>
-                <h3 className="text-xl font-semibold relative z-10">Sales & Partnerships</h3>
+                <h3 className="text-xl font-semibold relative z-10">
+                  Sales & Partnerships
+                </h3>
                 <p className="text-sm text-(--muted) text-center relative z-10">
                   ethan@celestify.ai
                 </p>
                 <p className="text-xs text-(--muted) text-center mt-2 relative z-10">
                   Enterprise solutions, partnerships, and custom integrations
                 </p>
-              </motion.a>
+              </a>
             </div>
 
             {/* Additional Contact Options */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6"
-            >
-              <motion.a
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a
                 href="https://discord.gg/Gjh5pVUFrQ"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ y: -2, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-xl p-6 flex flex-col gap-3 hover:border-(--primary-border)/50 transition-all group"
               >
                 <div className="w-12 h-12 bg-(--primary)/10 border border-(--primary-border)/30 rounded-lg flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
@@ -101,13 +96,13 @@ export default function Contact() {
                 </div>
                 <h3 className="font-semibold">Community</h3>
                 <p className="text-sm text-(--muted)">
-                  Join our Discord community for updates, discussions, and support
+                  Join our Discord community for updates, discussions, and
+                  support
                 </p>
-              </motion.a>
+              </a>
 
-              <motion.a
+              <a
                 href="mailto:ethan@celestify.ai"
-                whileHover={{ y: -2, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-xl p-6 flex flex-col gap-3 hover:border-(--primary-border)/50 transition-all group"
               >
                 <div className="w-12 h-12 bg-(--primary)/10 border border-(--primary-border)/30 rounded-lg flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
@@ -117,11 +112,10 @@ export default function Contact() {
                 <p className="text-sm text-(--muted)">
                   Technical support and troubleshooting assistance
                 </p>
-              </motion.a>
+              </a>
 
-              <motion.a
+              <a
                 href="mailto:ethan@celestify.ai"
-                whileHover={{ y: -2, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-xl p-6 flex flex-col gap-3 hover:border-(--primary-border)/50 transition-all group"
               >
                 <div className="w-12 h-12 bg-(--primary)/10 border border-(--primary-border)/30 rounded-lg flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
@@ -131,50 +125,42 @@ export default function Contact() {
                 <p className="text-sm text-(--muted)">
                   Interested in joining our team? We'd love to hear from you
                 </p>
-              </motion.a>
-            </motion.div>
+              </a>
+            </div>
 
             {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col items-center gap-6"
-            >
+            <div className="flex flex-col items-center gap-6">
               <div className="h-px w-full max-w-md bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
               <p className="text-sm text-(--muted) font-mono uppercase tracking-widest">
                 Connect with us
               </p>
               <div className="flex gap-4">
-                <motion.a
+                <a
                   href="https://github.com/celestify"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
                   className="w-12 h-12 bg-(--card-background) border border-(--border) rounded-xl flex items-center justify-center hover:border-(--primary-border)/50 transition-all group"
                 >
                   <Github className="w-6 h-6 text-(--muted) group-hover:text-(--primary-border) transition-colors" />
-                </motion.a>
-                <motion.a
+                </a>
+                <a
                   href="https://twitter.com/celestify"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
                   className="w-12 h-12 bg-(--card-background) border border-(--border) rounded-xl flex items-center justify-center hover:border-(--primary-border)/50 transition-all group"
                 >
                   <Twitter className="w-6 h-6 text-(--muted) group-hover:text-(--primary-border) transition-colors" />
-                </motion.a>
-                <motion.a
+                </a>
+                <a
                   href="https://discord.gg/Gjh5pVUFrQ"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
                   className="w-12 h-12 bg-(--card-background) border border-(--border) rounded-xl flex items-center justify-center hover:border-(--primary-border)/50 transition-all group"
                 >
                   <Users className="w-6 h-6 text-(--muted) group-hover:text-(--primary-border) transition-colors" />
-                </motion.a>
+                </a>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </main>

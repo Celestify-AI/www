@@ -15,15 +15,19 @@ const NotificationCard = ({
   title,
   description,
   redirect,
-  active
+  active,
 }: NotificationCardProps) => {
   return (
     <Link href={redirect}>
       <article className="relative group border border-(--border) rounded-2xl flex items-center gap-4 p-4 w-full bg-(--background) shadow-md/75">
         {!active && (
           <div className="flex gap-1 items-center hidden group-hover:flex absolute top-3 right-3">
-            <button className="cursor-pointer hover:bg-(--highlight-background) p-1 rounded-sm hover:text-red-500"><X size={16} /></button>
-            <button className="cursor-pointer hover:bg-(--highlight-background) p-1 rounded-sm hover:text-green-500"><Check size={16} /></button> 
+            <button className="cursor-pointer hover:bg-(--highlight-background) p-1 rounded-sm hover:text-red-500">
+              <X size={16} />
+            </button>
+            <button className="cursor-pointer hover:bg-(--highlight-background) p-1 rounded-sm hover:text-green-500">
+              <Check size={16} />
+            </button>
           </div>
         )}
         <div className="w-16 h-16 bg-(--background) border border-(--border) rounded-xl flex items-center justify-center shrink-0">

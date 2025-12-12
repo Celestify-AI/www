@@ -23,7 +23,8 @@ export default function Pricing() {
                 </span>
               </h1>
               <p className="text-(--subtitle) max-w-md">
-                Choose the plan that fits your needs. All plans include secure data embedding and AI-powered context.
+                Choose the plan that fits your needs. All plans include secure
+                data embedding and AI-powered context.
               </p>
             </div>
 
@@ -36,24 +37,46 @@ export default function Pricing() {
                     <span className="text-4xl font-bold">Free</span>
                     <span className="text-(--muted)">3-day trial</span>
                   </div>
-                  <p className="text-sm text-(--muted) mt-2">Perfect for trying Celestify</p>
+                  <p className="text-sm text-(--muted) mt-2">
+                    Perfect for trying Celestify
+                  </p>
                 </div>
                 <ul className="flex flex-col gap-3 mb-8 flex-grow">
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Limited RAG queries</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Limited RAG queries
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Limited integrations</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Limited integrations
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Basic AI context</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Basic AI context
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Community support</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Community support
+                    </span>
                   </li>
                 </ul>
                 <Link
@@ -75,28 +98,55 @@ export default function Pricing() {
                     <span className="text-4xl font-bold">$20</span>
                     <span className="text-(--muted)">/month</span>
                   </div>
-                  <p className="text-sm text-(--muted) mt-2">For individuals and small teams</p>
+                  <p className="text-sm text-(--muted) mt-2">
+                    For individuals and small teams
+                  </p>
                 </div>
                 <ul className="flex flex-col gap-3 mb-8 flex-grow">
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Standard RAG queries</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Standard RAG queries
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">All integrations</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      All integrations
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Advanced AI context</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Advanced AI context
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Priority support</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Priority support
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Unlimited workflows</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Unlimited workflows
+                    </span>
                   </li>
                 </ul>
                 <Link
@@ -115,28 +165,55 @@ export default function Pricing() {
                     <span className="text-4xl font-bold">$50</span>
                     <span className="text-(--muted)">/month</span>
                   </div>
-                  <p className="text-sm text-(--muted) mt-2">For power users and teams</p>
+                  <p className="text-sm text-(--muted) mt-2">
+                    For power users and teams
+                  </p>
                 </div>
                 <ul className="flex flex-col gap-3 mb-8 flex-grow">
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">3x RAG queries vs Pro</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      3x RAG queries vs Pro
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">3x usage capacity</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      3x usage capacity
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">All Pro features</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      All Pro features
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">24/7 priority support</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      24/7 priority support
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <Check size={18} className="text-(--primary-border) shrink-0 mt-0.5" />
-                    <span className="text-sm text-(--muted)">Advanced analytics</span>
+                    <Check
+                      size={18}
+                      className="text-(--primary-border) shrink-0 mt-0.5"
+                    />
+                    <span className="text-sm text-(--muted)">
+                      Advanced analytics
+                    </span>
                   </li>
                 </ul>
                 <Link
@@ -153,7 +230,8 @@ export default function Pricing() {
               <div className="bg-(--card-background) border border-(--border) rounded-2xl p-8 text-center">
                 <h3 className="text-2xl font-bold mb-2">Enterprise</h3>
                 <p className="text-(--muted) mb-6">
-                  Custom solutions for teams and organizations. Get dedicated support, custom integrations, and volume pricing.
+                  Custom solutions for teams and organizations. Get dedicated
+                  support, custom integrations, and volume pricing.
                 </p>
                 <Link
                   href="mailto:ethan@celestify.ai"
