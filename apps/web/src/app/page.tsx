@@ -4,15 +4,12 @@ import { Navbar } from "../components/Navbar";
 import { ArrowRight, Check, Sparkles, Zap, Target, MessageSquare, Bell, Database, Workflow, ChevronRight, Minus, Download } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import Image from "next/image";
 
 export default function Home() {
   const [openFAQ, setOpenFAQ] = useState<string | null>("what-is-celestify");
   const [mounted, setMounted] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
 
   useEffect(() => {
     setMounted(true);
@@ -55,17 +52,9 @@ export default function Home() {
         )}
 
         {/* Hero Section */}
-        <motion.div 
-          style={{ opacity, y }}
-          className="w-full max-w-5xl px-8 sm:px-0 flex flex-col items-center relative z-10"
-        >
+        <div className="w-full max-w-5xl px-8 sm:px-0 flex flex-col items-center relative z-10">
           <div className="mt-48 flex flex-col items-center gap-4">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col items-center gap-1"
-            >
+            <div className="flex flex-col items-center gap-1">
               <div className="flex items-center gap-3">
                 <motion.div 
                   className="w-3 h-3 rounded-full bg-amber-400"
@@ -83,25 +72,15 @@ export default function Home() {
                 </span>{" "}
                 engine
               </h1>
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-sm sm:text-base text-(--subtitle) text-center max-w-md"
-            >
+            </div>
+            <h2 className="text-sm sm:text-base text-(--subtitle) text-center max-w-md">
               An AI agent that knows everything it needs to execute. Your data
               securely embedded into a vector archive.
-            </motion.h2>
+            </h2>
           </div>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex mt-8 gap-3"
-          >
+          <div className="flex mt-8 gap-3">
             <Link
-              href="/signup"
+              href="/"
               className="group flex font-medium items-center gap-2 px-4 py-2 bg-(--primary) border border-(--primary-border) rounded-xl hover:scale-105 transition-transform"
             >
               Get Started{" "}
@@ -118,198 +97,40 @@ export default function Home() {
             >
               Community{" "}
             </a>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Image Demo Section - Sleek Design */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-5xl px-8 mt-24 mb-12 relative z-10"
-        >
+        <div className="w-full max-w-5xl px-8 mt-24 mb-12 relative z-10">
           <div className="relative">
             {/* Outer glow ring */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="absolute -inset-4 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-2xl opacity-50"
-            ></motion.div>
+            <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-2xl opacity-50"></div>
             
             {/* Main container with refined styling */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 20 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3, type: "spring", stiffness: 100 }}
               whileHover={{ scale: 1.005, y: -2 }}
-              className="relative bg-gradient-to-br from-(--card-background) to-(--card-background)/95 border border-(--border)/50 rounded-3xl p-1 overflow-hidden group hover:border-(--primary-border)/60 transition-all duration-500 shadow-2xl shadow-(--primary)/10"
-            >
-              {/* Animated gradient border */}
-              <motion.div
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3))',
-                  backgroundSize: '200% 200%',
-                }}
-                animate={{
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              ></motion.div>
-              
-              {/* Inner subtle glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-(--primary)/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
-              
-              {/* Image container with refined padding */}
-              <div className="relative aspect-[16/10] bg-gradient-to-br from-(--background) via-(--background) to-(--card-background) rounded-[1.25rem] overflow-hidden p-1">
-                {/* Inner shadow for depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10 rounded-[1.25rem]"></div>
-                
+              className="relative bg-gradient-to-br from-(--card-background) to-(--card-background)/95 border border-(--border)/50 rounded-[18px] p-1 overflow-hidden group hover:border-(--primary-border)/60 transition-all duration-500 shadow-2xl shadow-(--primary)/10"
+            >       
                 {/* Image with subtle border */}
                 <div className="relative w-full h-full bg-(--background) rounded-2xl overflow-hidden border border-(--border)/30">
                   <Image
-                    src="/images/layout/thumbnail.png"
+                    src="/images/hero/hero-banner.png"
                     alt="Celestify notification center demo showing personalized notifications and unified intelligence"
-                    fill
+                    width={2540}
+                    height={1440}
                     className="object-contain"
                     priority
                   />
                 </div>
-              </div>
-              
-              {/* Corner accent lights */}
-              <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-blue-500/20 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </motion.div>
           </div>
-        </motion.div>
-
-        {/* Value Proposition Section - Enhanced with Depth */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-5xl px-8 mt-12 mb-24 relative"
-        >
-          {/* Background depth effect */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 0.3 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.3 }}
-              className="w-96 h-96 bg-(--primary)/10 rounded-full blur-3xl"
-            ></motion.div>
-          </div>
-
-          <div className="flex flex-col items-center text-center relative z-10">
-            <motion.h2 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.8, 
-                delay: 0.3,
-                type: "spring",
-                stiffness: 100
-              }}
-              className="text-3xl sm:text-5xl font-medium leading-tight mb-6 max-w-3xl"
-            >
-              Transform scattered information into{" "}
-              <motion.span 
-                className="font-instrument-serif italic text-(--primary-border)"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-              >
-                unified intelligence
-              </motion.span>
-            </motion.h2>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.8, 
-                delay: 0.5,
-                type: "spring",
-                stiffness: 100
-              }}
-              className="text-lg sm:text-xl text-(--subtitle) mb-10 max-w-2xl leading-relaxed"
-            >
-              Celestify transforms scattered information into a unified knowledge base. Every document, email, and message becomes part of your AI's understanding.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.8, 
-                delay: 0.7,
-                type: "spring",
-                stiffness: 150
-              }}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Link
-                href="/signup"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-(--primary) border border-(--primary-border) rounded-xl font-medium transition-all shadow-lg shadow-(--primary)/30 hover:shadow-(--primary)/50 relative overflow-hidden group"
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
-                ></motion.div>
-                <Download size={18} className="relative z-10 group-hover:translate-y-[-2px] transition-transform" />
-                <span className="relative z-10">Download</span>
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-6xl px-8 mb-16 relative">
-          <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"
-          ></motion.div>
         </div>
 
         {/* Trusted By & Integrations Section - Minimal YC Style */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl px-8 mb-32 relative z-10"
-        >
+        <div className="w-full max-w-4xl px-8 mb-8 relative z-10">
           <div className="flex flex-col items-center gap-16">
             {/* Trusted By - Professional YC Style */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col items-center gap-4 w-full"
-            >
+            <div className="flex flex-col items-center gap-4 w-full">
               <p className="text-xs font-mono text-(--muted) uppercase tracking-[0.3em] mb-2">
                 Trusted by founders from
               </p>
@@ -319,51 +140,47 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   className="flex items-center gap-2.5 group cursor-pointer"
                 >
-                  <div className="w-6 h-6 rounded-md bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:shadow-orange-500/40 transition-shadow">
-                    <span className="text-white text-xs font-bold">Y</span>
-                  </div>
                   <span className="text-sm font-semibold text-(--foreground) group-hover:text-(--primary-border) transition-colors">
                     Y Combinator
                   </span>
                 </motion.div>
                 <div className="h-4 w-px bg-(--border)"></div>
-                {/* Techstars */}
+                {/* Colleges */}
                 <motion.div 
                   whileHover={{ scale: 1.05 }}
                   className="flex items-center gap-2.5 group cursor-pointer"
                 >
                   <span className="text-sm font-semibold text-(--foreground) group-hover:text-(--primary-border) transition-colors">
-                    Techstars
+                    MIT
+                  </span>
+                </motion.div>
+                <div className="h-4 w-px bg-(--border)"></div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2.5 group cursor-pointer"
+                >
+                  <span className="text-sm font-semibold text-(--foreground) group-hover:text-(--primary-border) transition-colors">
+                    UPenn
                   </span>
                 </motion.div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Integrations - Logo-based, minimal */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col items-center gap-4 w-full"
-            >
+            <div className="flex flex-col items-center gap-4 w-full">
               <p className="text-xs font-mono text-(--muted) uppercase tracking-widest mb-2">
                 Integrates with
               </p>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
                 {[
-                  { name: "Gmail", logo: "/images/logos/gmail.svg" },
-                  { name: "Slack", logo: "/images/logos/slack.svg" },
-                  { name: "Google Drive", logo: "/images/logos/google-drive.svg" },
-                  { name: "Microsoft", logo: "/images/logos/microsoft.svg" },
-                  { name: "LinkedIn", logo: "/images/logos/linkedin.svg" },
+                  { name: "Gmail", logo: "/images/hero/logos/gmail.svg" },
+                  { name: "Slack", logo: "/images/hero/logos/slack.svg" },
+                  { name: "Google Drive", logo: "/images/hero/logos/google-drive.svg" },
+                  { name: "Microsoft", logo: "/images/hero/logos/microsoft.svg" },
+                  { name: "LinkedIn", logo: "/images/hero/logos/linkedin.svg" },
                 ].map((integration, index) => (
                   <motion.div
                     key={integration.name}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
                     whileHover={{ scale: 1.1, opacity: 0.8 }}
                     className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-all"
                   >
@@ -377,55 +194,72 @@ export default function Home() {
                     <span className="text-xs text-(--muted) font-medium">{integration.name}</span>
                   </motion.div>
                 ))}
-                <span className="text-xs text-(--muted) ml-2">and more</span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Value Proposition Section - Enhanced with Depth */}
+        <div className="w-full max-w-5xl px-8 mt-12 mb-24 relative">
+          {/* Background depth effect */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-96 h-96 bg-(--primary)/10 rounded-full blur-3xl opacity-30"></div>
+          </div>
+
+          <div className="flex flex-col items-center text-center relative z-10">
+            <h2 className="text-3xl sm:text-5xl font-medium leading-tight mb-6 max-w-3xl">
+              Transform scattered information into{" "}
+              <span className="font-instrument-serif italic text-(--primary-border)">
+                unified intelligence
+              </span>
+            </h2>
+            
+            <p className="text-lg sm:text-xl text-(--subtitle) mb-10 max-w-2xl leading-relaxed">
+              Celestify transforms scattered information into a unified knowledge base. Every document, email, and message becomes part of your AI's understanding.
+            </p>
+            
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-(--primary) border border-(--primary-border) rounded-xl font-medium transition-all shadow-lg shadow-(--primary)/30 hover:shadow-(--primary)/50 relative overflow-hidden group"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 0.6 }}
+                ></motion.div>
+                <Download size={18} className="relative z-10 group-hover:translate-y-[-2px] transition-transform" />
+                <span className="relative z-10">Download</span>
+              </Link>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Decorative divider */}
         <div className="w-full max-w-6xl px-8 mb-16 relative">
           <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"
-          ></motion.div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
         </div>
 
         {/* Feature Cards Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-6xl px-8 mb-32 relative z-10"
-        >
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center gap-8 mb-16"
-          >
+        <div className="w-full max-w-6xl px-8 mb-32 relative z-10">
+          <div className="flex flex-col items-center gap-8 mb-16">
             <h2 className="text-4xl sm:text-5xl font-medium text-center">
-              Your AI agent,{" "}
+              Your AI platform,{" "}
               <span className="font-instrument-serif italic text-(--primary-border)">always informed</span>
             </h2>
             <p className="text-(--subtitle) text-center max-w-2xl">
               Celestify positions AI at the inflow of information sources, building a comprehensive vector database that makes agentic workflows more effective through intelligent knowledge retrieval.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Feature Card 1: Fewer notifications */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
               whileHover={{ y: -5 }}
               className="relative bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col gap-6 overflow-hidden group hover:border-(--primary-border)/50 transition-all duration-300"
             >
@@ -465,10 +299,6 @@ export default function Home() {
 
             {/* Feature Card 2: Always-on AI */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
               whileHover={{ y: -5, scale: 1.02 }}
               className="relative bg-(--card-background) border-2 border-(--primary-border)/30 rounded-2xl p-8 flex flex-col gap-6 overflow-hidden group hover:border-(--primary-border) transition-all duration-300 shadow-lg shadow-purple-500/10"
             >
@@ -509,10 +339,6 @@ export default function Home() {
 
             {/* Feature Card 3: Highest relevance */}
             <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
               whileHover={{ y: -5 }}
               className="relative bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col gap-6 overflow-hidden group hover:border-(--primary-border)/50 transition-all duration-300"
             >
@@ -550,28 +376,16 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Decorative divider */}
         <div className="w-full max-w-6xl px-8 mb-16 relative">
           <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"
-          ></motion.div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
         </div>
 
         {/* Pricing Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-6xl px-8 mb-32 relative z-10"
-        >
+        <div className="w-full max-w-6xl px-8 mb-32 relative z-10">
           <div className="flex flex-col items-center gap-12">
             <div className="flex flex-col items-center gap-4 text-center">
               <h2 className="text-4xl sm:text-5xl font-medium">
@@ -588,10 +402,6 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
               {/* Entry Plan */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
                 whileHover={{ y: -4, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
               >
@@ -620,7 +430,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link
-                  href="/signup"
+                  href="/"
                   className="w-full text-center px-4 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) hover:border-(--primary-border)/30 transition-all group/btn"
                 >
                   <span className="group-hover/btn:translate-x-1 inline-block transition-transform">
@@ -632,10 +442,6 @@ export default function Home() {
 
               {/* Pro Plan */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
                 whileHover={{ y: -4, scale: 1.02 }}
                 className="bg-(--card-background) border-2 border-(--primary-border) rounded-2xl p-8 flex flex-col relative group hover:shadow-lg hover:shadow-(--primary-border)/20 transition-all duration-300 overflow-hidden"
               >
@@ -652,7 +458,7 @@ export default function Home() {
                   }}
                 ></motion.div>
                 <motion.div 
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-(--primary) border border-(--primary-border) rounded-full text-sm font-medium z-10"
+                  className="absolute top-2 left-1/2 -translate-x-1/2 px-4 py-1 bg-(--primary) border border-(--primary-border) rounded-full text-sm font-medium z-10"
                   whileHover={{ scale: 1.05 }}
                 >
                   Most Popular
@@ -684,7 +490,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link
-                  href="/signup"
+                  href="/"
                   className="w-full text-center px-4 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:opacity-90 transition-all group/btn relative overflow-hidden"
                 >
                   <motion.div
@@ -702,10 +508,6 @@ export default function Home() {
 
               {/* Max Plan */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
                 whileHover={{ y: -4, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
               >
@@ -738,7 +540,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link
-                  href="/signup"
+                  href="/"
                   className="w-full text-center px-4 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) hover:border-(--primary-border)/30 transition-all group/btn"
                 >
                   <span className="group-hover/btn:translate-x-1 inline-block transition-transform">
@@ -750,13 +552,7 @@ export default function Home() {
             </div>
 
             {/* Enterprise */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="w-full max-w-2xl mt-8"
-            >
+            <div className="w-full max-w-2xl mt-8">
               <motion.div 
                 whileHover={{ scale: 1.02, y: -2 }}
                 className="bg-(--card-background) border border-(--border) rounded-2xl p-8 text-center group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
@@ -769,7 +565,7 @@ export default function Home() {
                   Custom solutions for teams and organizations. Get dedicated support, custom integrations, and volume pricing.
                 </p>
                 <Link
-                  href="mailto:sales@celestify.ai"
+                  href="mailto:ethan@celestify.ai"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:opacity-90 transition-all group/btn relative overflow-hidden"
                 >
                   <motion.div
@@ -783,42 +579,24 @@ export default function Home() {
                 </Link>
                 </div>
               </motion.div>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Decorative divider */}
         <div className="w-full max-w-6xl px-8 mb-16 relative">
           <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"
-          ></motion.div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
         </div>
 
         {/* How It Works Section - Enhanced Design */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-6xl px-8 mb-32 relative z-10"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-20"
-          >
+        <div className="w-full max-w-6xl px-8 mb-32 relative z-10">
+          <div className="text-center mb-20">
             <h2 className="text-3xl sm:text-4xl font-medium mb-4">How it works</h2>
             <p className="text-(--subtitle) max-w-xl mx-auto text-base">
               Three simple steps to transform your information into actionable intelligence
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -846,10 +624,6 @@ export default function Home() {
             ].map((item, index) => (
               <motion.div
                 key={item.step}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
                 whileHover={{ y: -8, scale: 1.02 }}
                 className="relative bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-5 hover:border-(--primary-border)/50 transition-all duration-300 group overflow-hidden"
               >
@@ -863,7 +637,7 @@ export default function Home() {
                 <div className="relative z-10">
                   {/* Icon and Step Number */}
                   <div className="flex items-center gap-3 mb-5">
-                    <div className={`w-10 h-10 bg-(--primary)/10 border border-(--primary-border)/30 rounded-lg flex items-center justify-center group-hover:bg-(--primary)/20 group-hover:border-(--primary-border)/50 transition-all`}>
+                    <div className="w-10 h-10 bg-(--primary)/10 border border-(--primary-border)/30 rounded-lg flex items-center justify-center group-hover:bg-(--primary)/20 group-hover:border-(--primary-border)/50 transition-all">
                       <item.icon className="w-5 h-5 text-(--primary-border)" />
                     </div>
                     <span className="text-xl font-mono text-(--muted) font-medium">{item.step}</span>
@@ -880,43 +654,25 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Decorative divider */}
         <div className="w-full max-w-6xl px-8 mb-16 relative">
           <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"
-          ></motion.div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
         </div>
 
         {/* FAQ Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl px-8 mb-32 relative z-10"
-        >
+        <div className="w-full max-w-4xl px-8 mb-32 relative z-10">
           <div className="flex flex-col items-center gap-12">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col items-center gap-4 text-center"
-            >
+            <div className="flex flex-col items-center gap-4 text-center">
               <h2 className="text-3xl sm:text-4xl font-medium">
                 Frequently asked questions
               </h2>
               <p className="text-(--subtitle) max-w-md">
                 Everything you need to know about Celestify
               </p>
-            </motion.div>
+            </div>
 
             <div className="w-full flex flex-col gap-2">
               {[
@@ -951,98 +707,55 @@ export default function Home() {
                   answer: "Unlike tools that just aggregate information, Celestify builds a comprehensive knowledge base using vector embeddings and RAG. This means your AI agent doesn't just have access to data—it understands relationships, relevance, and meaning, making agentic workflows truly effective.",
                 },
               ].map((faq, index) => (
-                <motion.div
+                <div
                   key={faq.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  whileHover={{ y: -2 }}
-                  className="bg-(--card-background) border border-(--border) rounded-xl overflow-hidden group hover:border-(--primary-border)/50 transition-all duration-300 relative"
+                  className="bg-(--card-background) border border-(--border) rounded-xl overflow-hidden group hover:border-(--primary-border)/50 transition-colors duration-300 relative"
                 >
-                  {/* Subtle gradient on hover */}
+                  {/* Subtle gradient on hover - kept as CSS transition only */}
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <button
                     onClick={() => setOpenFAQ(openFAQ === faq.id ? null : faq.id)}
-                    className="w-full flex items-center justify-between p-6 hover:bg-(--highlight-background) transition-all duration-200 text-left relative z-10"
+                    className="w-full flex items-center justify-between p-6 hover:bg-(--highlight-background) transition-colors duration-200 text-left relative z-10"
                   >
                     <span className="font-semibold text-lg">{faq.question}</span>
-                    <motion.div
-                      animate={{ rotate: openFAQ === faq.id ? 0 : -90 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <div>
                       {openFAQ === faq.id ? (
                         <Minus size={20} className="text-(--muted) shrink-0" />
                       ) : (
                         <ChevronRight size={20} className="text-(--muted) shrink-0" />
                       )}
-                    </motion.div>
+                    </div>
                   </button>
                   {openFAQ === faq.id && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="px-6 pb-6 pt-2 text-(--muted) leading-relaxed"
-                    >
+                    <div className="px-6 pb-6 pt-2 text-(--muted) leading-relaxed">
                       {faq.answer}
-                    </motion.div>
+                    </div>
                   )}
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Bottom CTA Section - Compact */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-3xl px-8 mt-24 mb-16 flex flex-col items-center text-center"
-        >
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-sm font-mono text-(--muted) uppercase tracking-[0.3em] mb-8"
-          >
+        <div className="w-full max-w-3xl px-8 mt-24 mb-16 flex flex-col items-center text-center">
+          <p className="text-sm font-mono text-(--muted) uppercase tracking-[0.3em] mb-8">
             We believe
-          </motion.p>
+          </p>
           
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-2xl sm:text-3xl font-medium leading-tight mb-4 max-w-2xl"
-          >
+          <h2 className="text-2xl sm:text-3xl font-medium leading-tight mb-4 max-w-2xl">
             Knowledge is the modern{" "}
             <span className="font-instrument-serif italic text-(--primary-border)">interface</span>{" "}
             for intelligence
-          </motion.h2>
+          </h2>
           
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base text-(--subtitle) mb-8 max-w-xl leading-relaxed"
-          >
+          <p className="text-base text-(--subtitle) mb-8 max-w-xl leading-relaxed">
             Build your AI knowledge base that helps your agent understand everything it needs to execute.
-          </motion.p>
+          </p>
           
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
+          <div>
             <Link
-              href="/signup"
+              href="/"
               className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:scale-105 transition-all shadow-lg shadow-(--primary)/20 group/btn relative overflow-hidden"
             >
               <motion.div
@@ -1054,39 +767,21 @@ export default function Home() {
               <Download size={18} className="relative z-10 group-hover/btn:translate-y-[-2px] transition-transform" />
               <span className="relative z-10">Download</span>
             </Link>
-          </motion.div>
+          </div>
           
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-xs text-(--muted) mt-8 font-mono"
-          >
+          <p className="text-xs text-(--muted) mt-8 font-mono">
             Available for Web, with Desktop and Mobile coming soon
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Decorative divider */}
         <div className="w-full max-w-6xl px-8 mb-16 relative">
           <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"
-          ></motion.div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
         </div>
 
         {/* Contact Us Section */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl px-8 mb-32 mt-16 relative z-10"
-        >
+        <div className="w-full max-w-4xl px-8 mb-32 mt-16 relative z-10">
           <motion.div 
             whileHover={{ scale: 1.01, y: -2 }}
             className="bg-(--card-background) border border-(--border) rounded-2xl p-12 text-center group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
@@ -1094,33 +789,15 @@ export default function Home() {
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl sm:text-4xl font-medium mb-4"
-            >
+            <h2 className="text-3xl sm:text-4xl font-medium mb-4">
               Get in touch
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-(--subtitle) mb-8 max-w-md mx-auto"
-            >
+            </h2>
+            <p className="text-(--subtitle) mb-8 max-w-md mx-auto">
               Have questions? Want to learn more? We'd love to hear from you.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
-                href="mailto:hello@celestify.ai"
+                href="mailto:ethan@celestify.ai"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:scale-105 transition-all shadow-lg shadow-(--primary)/20 group/btn relative overflow-hidden"
               >
                 <motion.div
@@ -1133,17 +810,17 @@ export default function Home() {
                 <span className="relative z-10">Contact Us</span>
               </Link>
               <a
-                href="mailto:sales@celestify.ai"
+                href="mailto:ethan@celestify.ai"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) hover:border-(--primary-border)/30 transition-all group/btn"
               >
                 <span className="group-hover/btn:translate-x-1 inline-block transition-transform">
                   Sales Inquiry
                 </span>
               </a>
-            </motion.div>
+            </div>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </>
   );

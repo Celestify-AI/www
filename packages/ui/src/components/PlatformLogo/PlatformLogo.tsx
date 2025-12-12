@@ -13,7 +13,7 @@ const PlatformLogo = ({
   width = 64,
   height = 64,
 }: PlatformLogoProps) => {
-  const src = `/images/logos/${platform}.svg`;
+  const src = `/app/logos/${platform}.svg`;
 
   return (
     <Image

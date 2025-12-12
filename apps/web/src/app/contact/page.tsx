@@ -38,7 +38,7 @@ export default function Contact() {
             {/* Contact Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.a
-                href="mailto:hello@celestify.ai"
+                href="mailto:ethan@celestify.ai"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -52,7 +52,7 @@ export default function Contact() {
                 </div>
                 <h3 className="text-xl font-semibold relative z-10">General Inquiries</h3>
                 <p className="text-sm text-(--muted) text-center relative z-10">
-                  hello@celestify.ai
+                  ethan@celestify.ai
                 </p>
                 <p className="text-xs text-(--muted) text-center mt-2 relative z-10">
                   Questions, feedback, or just want to say hello
@@ -60,7 +60,7 @@ export default function Contact() {
               </motion.a>
 
               <motion.a
-                href="mailto:sales@celestify.ai"
+                href="mailto:ethan@celestify.ai"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -74,7 +74,7 @@ export default function Contact() {
                 </div>
                 <h3 className="text-xl font-semibold relative z-10">Sales & Partnerships</h3>
                 <p className="text-sm text-(--muted) text-center relative z-10">
-                  sales@celestify.ai
+                  ethan@celestify.ai
                 </p>
                 <p className="text-xs text-(--muted) text-center mt-2 relative z-10">
                   Enterprise solutions, partnerships, and custom integrations
@@ -106,7 +106,7 @@ export default function Contact() {
               </motion.a>
 
               <motion.a
-                href="mailto:support@celestify.ai"
+                href="mailto:ethan@celestify.ai"
                 whileHover={{ y: -2, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-xl p-6 flex flex-col gap-3 hover:border-(--primary-border)/50 transition-all group"
               >
@@ -120,7 +120,7 @@ export default function Contact() {
               </motion.a>
 
               <motion.a
-                href="mailto:careers@celestify.ai"
+                href="mailto:ethan@celestify.ai"
                 whileHover={{ y: -2, scale: 1.02 }}
                 className="bg-(--card-background) border border-(--border) rounded-xl p-6 flex flex-col gap-3 hover:border-(--primary-border)/50 transition-all group"
               >

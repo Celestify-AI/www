@@ -57,7 +57,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <Link
-                  href="/signup"
+                  href="/"
                   className="w-full text-center px-4 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) transition-colors"
                 >
                   Start Free Trial
@@ -100,7 +100,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <Link
-                  href="/signup"
+                  href="/"
                   className="w-full text-center px-4 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:opacity-90 transition-opacity"
                 >
                   Get Started
@@ -140,7 +140,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <Link
-                  href="/signup"
+                  href="/"
                   className="w-full text-center px-4 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) transition-colors"
                 >
                   Get Started
@@ -156,7 +156,7 @@ export default function Pricing() {
                   Custom solutions for teams and organizations. Get dedicated support, custom integrations, and volume pricing.
                 </p>
                 <Link
-                  href="mailto:sales@celestify.ai"
+                  href="mailto:ethan@celestify.ai"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:opacity-90 transition-opacity"
                 >
                   Contact Sales
