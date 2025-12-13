@@ -1,6 +1,6 @@
 export { Auth } from "./components/Auth/Auth";
 export { Button } from "./components/Button/Button";
-export { Chatbox } from "./components/Chatbox/Chatbox";
+export { HomeChatbox } from "./components/HomeChatbox/HomeChatbox";
 export { ClockClient } from "./components/ClockClient/ClockClient";
 export { DecisionEngineNode } from "./components/DecisionEngineNode/DecisionEngineNode";
 export { FloatingAction } from "./components/FloatingAction/FloatingAction";

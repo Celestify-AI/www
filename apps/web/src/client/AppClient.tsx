@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeHeader, NotificationCard, OAuthModal, Chatbox } from "@repo/ui";
+import { HomeHeader, NotificationCard, OAuthModal, HomeChatbox } from "@repo/ui";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -9,8 +9,23 @@ import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "motion/react";
 import { SectionAccordion } from "@repo/ui";
 
+interface Workflow {
+  id: string;
+  user_id: string;
+  provider_slug: string;
+
+  title: string;
+  description?: string;
+
+  status: string;
+}
+
 export default function AppClient() {
   const params = useSearchParams();
+  const [workflows, setWorkflows] = useState<Workflow[] | null>(null);
+  const suggestedWorkflows =
+    workflows?.filter((w) => w.status === "suggested") ?? [];
+  const activeWorkflows = workflows?.filter((w) => w.status === "active") ?? [];
   const [oauthModalOpen, setOAuthModalOpen] = useState(false);
   const [givenName, setGivenName] = useState<string | null>(null);
 
@@ -18,6 +33,15 @@ export default function AppClient() {
   const tabs = ["Workflows", "Chat"];
   const tabWidths = [91.75, 49.5];
 
+  // List workflows from API
+  (useEffect(() => {
+    fetch("/api/workflows/list")
+      .then((res) => res.json())
+      .then((data) => setWorkflows(data));
+  }),
+    []);
+
+  // Take OAuth Modal Open URL Param
   useEffect(() => {
     const raw = params.get("oauth_modal_open");
     if (raw === null) {
@@ -27,6 +51,7 @@ export default function AppClient() {
     setOAuthModalOpen(raw === "true");
   }, [params]);
 
+  // Get user name from cookies
   useEffect(() => {
     const name = Cookies.get("given_name") ?? null;
     setGivenName(name);
@@ -82,6 +107,7 @@ export default function AppClient() {
                           : "var(--muted)",
                     }}
                     transition={{ duration: 0.3 }}
+                    className="cursor-pointer"
                   >
                     {tab}
                   </motion.span>
@@ -108,29 +134,40 @@ export default function AppClient() {
                   defaultOpen={true}
                   className="flex flex-col gap-4"
                 >
-                  <NotificationCard
-                    redirect="/app/task"
-                    platform="google-drive"
-                    title="Team Sync Update"
-                    description="New agenda posted for tomorrow’s sync. Review action points before the meeting."
-                    active={false}
-                  />
-                  <NotificationCard
-                    redirect="/app/task"
-                    platform="slack"
-                    title="Payment Processor"
-                    description="Need to choose between Stripe and Flowglad for SaaS payment processing."
-                    active={false}
-                  />
+                  {suggestedWorkflows.length === 0 ? (
+                    <p className="text-sm text-(--muted) font-mono">
+                      No suggested workflows
+                    </p>
+                  ) : (
+                    suggestedWorkflows.map((w) => (
+                      <NotificationCard
+                        key={w.id}
+                        redirect="/app/task"
+                        platform={w.provider_slug}
+                        title={w.title}
+                        description={w.description ?? ""}
+                        active={false}
+                      />
+                    ))
+                  )}
                 </SectionAccordion>
                 <SectionAccordion title="Active" defaultOpen={true}>
-                  <NotificationCard
-                    redirect="/app/task"
-                    platform="gmail"
-                    title="Incorporation Discussion"
-                    description="Debating whether to incorporate as a C Corp in Delaware or in Wyoming."
-                    active={true}
-                  />
+                  {activeWorkflows.length === 0 ? (
+                    <p className="text-sm text-(--muted) font-mono">
+                      No active workflows
+                    </p>
+                  ) : (
+                    activeWorkflows.map((w) => (
+                      <NotificationCard
+                        key={w.id}
+                        redirect="/app/task"
+                        platform={w.provider_slug}
+                        title={w.title}
+                        description={w.description ?? ""}
+                        active={false}
+                      />
+                    ))
+                  )}
                 </SectionAccordion>
               </motion.div>
             ) : (
@@ -141,7 +178,7 @@ export default function AppClient() {
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.3 }}
               >
-                <Chatbox />
+                <HomeChatbox />
               </motion.div>
             )}
           </AnimatePresence>

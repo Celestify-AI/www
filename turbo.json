@@ -12,6 +12,7 @@
         "SUPABASE_SECRET_KEY",
         "NEXT_PUBLIC_BASE_URL",
         "BACKEND_API_BASE_URL",
+        "AI_GATEWAY_API_KEY",
         "NODE_ENV"
       ]
     },
