@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { Plus, CornerDownLeft } from 'lucide-react';
+import { useState, useRef } from "react";
+import { Plus, CornerDownLeft } from "lucide-react";
 
 interface Message {
   id: string;
@@ -17,29 +17,30 @@ export default function Chat() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: '1',
-      conversation_id: 'conv-123',
-      author_role: 'user',
-      content: 'Hello! Can you help me with my project?',
+      id: "1",
+      conversation_id: "conv-123",
+      author_role: "user",
+      content: "Hello! Can you help me with my project?",
     },
     {
-      id: '2',
-      conversation_id: 'conv-123',
-      author_role: 'agent',
-      content: 'Of course! I\'d be happy to help. What are you working on?'
+      id: "2",
+      conversation_id: "conv-123",
+      author_role: "agent",
+      content: "Of course! I'd be happy to help. What are you working on?",
     },
     {
-      id: '3',
-      conversation_id: 'conv-123',
-      author_role: 'user',
-      content: 'My team is struggling with integrating the payment processor.'
+      id: "3",
+      conversation_id: "conv-123",
+      author_role: "user",
+      content: "My team is struggling with integrating the payment processor.",
     },
     {
-      id: '4',
-      conversation_id: 'conv-123',
-      author_role: 'agent',
-      content: 'Totally get that! It\'s not always easy to integrate payment processing into SaaS apps. Looking through past data, it looks like your team is going with Flowglad. Additionally documents show that three pricing tiers have been decided on—Celestify Entry, Celestify Pro, and Celestify Max. Do you want me to look through your codebase for you?',
-    }
+      id: "4",
+      conversation_id: "conv-123",
+      author_role: "agent",
+      content:
+        "Totally get that! It's not always easy to integrate payment processing into SaaS apps. Looking through past data, it looks like your team is going with Flowglad. Additionally documents show that three pricing tiers have been decided on—Celestify Entry, Celestify Pro, and Celestify Max. Do you want me to look through your codebase for you?",
+    },
   ]);
 
   const handleInput = () => {
@@ -76,7 +77,9 @@ export default function Chat() {
             <div key={pairIndex} className="flex flex-col gap-0">
               {pair.map((message) => (
                 <div key={message.id}>
-                  <div className={`p-3 ${message.author_role === "user" ? "w-fit bg-(--card-background) rounded-md border border-(--border)" : ""}`}>
+                  <div
+                    className={`p-3 ${message.author_role === "user" ? "w-fit bg-(--card-background) rounded-md border border-(--border)" : ""}`}
+                  >
                     {message.content}
                   </div>
                 </div>
@@ -100,9 +103,7 @@ export default function Chat() {
                 <Plus size={18} />
               </button>
             </div>
-            <button
-              className="absolute bottom-2 right-2 cursor-pointer text-(--muted) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md"
-            >
+            <button className="absolute bottom-2 right-2 cursor-pointer text-(--muted) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md">
               <CornerDownLeft size={18} />
             </button>
           </div>

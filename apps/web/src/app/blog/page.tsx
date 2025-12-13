@@ -17,7 +17,9 @@ export default function Blog() {
           <div className="flex flex-col gap-16">
             {/* Header */}
             <div className="flex flex-col items-center gap-6 text-center">
-              <h1 className="text-4xl sm:text-5xl font-medium font-headline">Blog</h1>
+              <h1 className="text-4xl sm:text-5xl font-medium font-headline">
+                Blog
+              </h1>
               <p className="text-lg text-(--subtitle) max-w-2xl">
                 Coming soon. Stay tuned for updates, insights, and
                 announcements.
@@ -39,9 +41,7 @@ export default function Blog() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div
-                  className="bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-4 group hover:border-(--primary-border)/50 transition-all"
-                >
+                <div className="bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-4 group hover:border-(--primary-border)/50 transition-all">
                   <div className="w-12 h-12 bg-(--primary)/10 border border-(--primary-border)/30 rounded-xl flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
                     <Sparkles className="w-6 h-6 text-(--primary-border)" />
                   </div>
@@ -54,9 +54,7 @@ export default function Blog() {
                   </p>
                 </div>
 
-                <div
-                  className="bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-4 group hover:border-(--primary-border)/50 transition-all"
-                >
+                <div className="bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-4 group hover:border-(--primary-border)/50 transition-all">
                   <div className="w-12 h-12 bg-(--primary)/10 border border-(--primary-border)/30 rounded-xl flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
                     <Zap className="w-6 h-6 text-(--primary-border)" />
                   </div>
@@ -68,9 +66,7 @@ export default function Blog() {
                   </p>
                 </div>
 
-                <div
-                  className="bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-4 group hover:border-(--primary-border)/50 transition-all"
-                >
+                <div className="bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-4 group hover:border-(--primary-border)/50 transition-all">
                   <div className="w-12 h-12 bg-(--primary)/10 border border-(--primary-border)/30 rounded-xl flex items-center justify-center group-hover:bg-(--primary)/20 transition-colors">
                     <Target className="w-6 h-6 text-(--primary-border)" />
                   </div>
