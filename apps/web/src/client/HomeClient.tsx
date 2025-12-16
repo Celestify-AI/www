@@ -31,8 +31,18 @@ export default function Home() {
           </div>
           {/* CTA Buttons */}
           <div className="mt-6 flex gap-3">
-            <Link href="/" className="flex items-center font-medium gap-2.5 bg-(--primary) text-(--light-background-text) px-4 py-2 rounded-xl">Get Started <ArrowRight size={18} /></Link>
-            <Link href="/" className="flex items-center font-medium gap-2.5 bg-(--dark-button) border-2 border-(--dark-button-border) text-(--muted) px-4 py-2 rounded-xl">Careers</Link>
+            <Link
+              href="/"
+              className="flex items-center font-medium gap-2.5 bg-(--primary) text-(--light-background-text) px-4 py-2 rounded-xl"
+            >
+              Get Started <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center font-medium gap-2.5 bg-(--card-background) text-(--muted) px-4 py-2 rounded-xl"
+            >
+              Careers
+            </Link>
           </div>
         </div>
       </div>
