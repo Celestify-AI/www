@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Equal } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <div className="fixed top-0 left-0 w-full h-16 pointer-events-none bg-(--background)/75 backdrop-blur-lg flex items-center justify-center px-8 z-50">
+    <div className="fixed top-0 left-0 w-full h-16 pointer-events-none bg-(--background)/75 backdrop-blur-lg flex items-center justify-center px-4 z-50">
       <nav className="flex items-center justify-between h-full w-full max-w-5xl pointer-events-auto">
         <Link href="/" className="px-3">
           <Image
@@ -28,19 +28,24 @@ const Navbar = () => {
             Contact
           </Link>
         </div>
-        <div className="hidden md:flex gap-4 items-center">
-          <Link href="/" className="text-(--muted) font-semibold text-sm px-3 py-2.5">
-            Login
-          </Link>
-          <Link
-            href="/"
-            className="bg-(--card-background) border border-(--card-border) rounded-xl px-3.5 py-2 font-semibold text-sm text-(--primary)"
-          >
-            Get Started
-          </Link>
-        </div>
-        <div className="flex items-center justify-center p-1 mr-1 rounded-md md:hidden">
-          <Menu />
+        <div className="flex gap-3 items-center">
+          <div className="hidden xs:flex gap-1">
+            <Link
+              href="/"
+              className="text-(--muted) font-semibold text-sm xs:px-3 xs:py-1.5 sm:px-3 sm:py-2.5"
+            >
+              Login
+            </Link>
+            <Link
+              href="/"
+              className="bg-(--card-background) border border-(--card-border) rounded-xl xs:px-3 xs:py-1.5 sm:px-3.5 sm:py-2 font-semibold text-sm text-(--primary)"
+            >
+              Sign up
+            </Link>
+          </div>
+          <div className="flex items-center justify-center p-1 mr-1 rounded-md md:hidden">
+            <Equal strokeWidth={1} />
+          </div>
         </div>
       </nav>
     </div>
