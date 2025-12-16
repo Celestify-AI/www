@@ -116,21 +116,21 @@ export async function GET(req: NextRequest) {
         },
         body: JSON.stringify({
           user_id: userId,
-          integration_id: providerId
+          integration_id: providerId,
         }),
       });
       await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/onboard`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        }, 
+        },
         body: JSON.stringify({
           user_id: userId,
           integration_id: providerId,
           platform: providerRow.slug,
-          generate_workflows: true
-        })
-      })
+          generate_workflows: true,
+        }),
+      });
     } catch (err) {
       console.error("Onboarding trigger failed:", err);
     }
