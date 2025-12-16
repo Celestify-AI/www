@@ -9,6 +9,8 @@ export async function GET() {
     const userId = sessionData?.session?.user?.id;
     const userJWT = sessionData?.session?.access_token;
 
+    console.log(userId, userJWT);
+
     // Send request to backend
     try {
       const res = await fetch(
@@ -28,7 +30,6 @@ export async function GET() {
       }
 
       const suggestedWorkflows = await res.json();
-      console.log(suggestedWorkflows);
       return NextResponse.json(suggestedWorkflows.workflows, { status: 200 });
     } catch (err) {
       console.error(err);

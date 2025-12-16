@@ -40,9 +40,9 @@ export default function AppClient() {
 
   // List workflows from API
   useEffect(() => {
-    fetch("/api/workflow/list")
+    fetch("/api/workflows/list")
       .then((res) => res.json())
-      .then((data) => setWorkflows(data.workflows ?? []));
+      .then((data) => setWorkflows(data));
   }, []);
 
   // Take OAuth Modal Open URL Param
