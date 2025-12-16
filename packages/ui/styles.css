@@ -1,14 +1,16 @@
+@import "tailwindcss";
 @source "./";
 
 @theme {
   --background: #181818;
-  --foreground: #fefefe;
-  --card-background: #1e1e1e;
+  --foreground: #ededed;
+  --card-background: #2b2b2b;
+  --card-border: #3d3d3d;
   --highlight-background: #2a2a2a;
   --muted: #d1d1d1;
   --subtitle: #9f9f9f;
   --border: #2f2f2f;
-  --primary: #3c4bb9;
+  --primary: #f2e6cf;
   --primary-border: #5d6cdc;
   --primary-muted: #6672cc;
   --primary-muted-border: #7987f2;
