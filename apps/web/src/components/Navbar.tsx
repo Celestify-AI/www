@@ -40,7 +40,7 @@ const Navbar = () => {
               href="/"
               className="bg-(--card-background) border border-(--card-border) rounded-xl xs:px-3 xs:py-1.5 sm:px-3.5 sm:py-2 font-semibold text-sm text-(--primary)"
             >
-              Sign up
+              Get Started
             </Link>
           </div>
           <div className="flex items-center justify-center p-1 mr-1 rounded-md md:hidden">

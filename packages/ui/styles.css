@@ -6,8 +6,11 @@
   --foreground: #ededed;
   --card-background: #2b2b2b;
   --card-border: #3d3d3d;
+  --light-background-text: #2b2b2b;
   --highlight-background: #2a2a2a;
   --horizontal-divider: #d1d1d1;
+  --dark-button: #1e1e1e;
+  --dark-button-border: #2f2f2f;
   --muted: #d1d1d1;
   --subtitle: #9f9f9f;
   --border: #2f2f2f;
