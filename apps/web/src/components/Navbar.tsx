@@ -21,8 +21,8 @@ const Navbar = () => {
           <Link href="/pricing" className="px-3 py-2 rounded-lg">
             Pricing
           </Link>
-          <Link href="/blog" className="px-3 py-2 rounded-lg">
-            Blog
+          <Link href="/careers" className="px-3 py-2 rounded-lg">
+            Careers 
           </Link>
           <Link href="/contact" className="px-3 py-2 rounded-lg">
             Contact
