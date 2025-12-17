@@ -13,11 +13,11 @@ const Navbar = () => {
   const mobileMenuStates = {
     closed: {
       clipPath: "inset(0% 0% 100% 0%)",
-      transition: { duration: 0.2 },
+      transition: { duration: 0.25 },
     },
     open: {
       clipPath: "inset(0% 0% 0% 0%)",
-      transition: { duration: 0.2 },
+      transition: { duration: 0.25 },
     },
   };
 
@@ -78,9 +78,9 @@ const Navbar = () => {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setOpen(!isOpen)}
-              className="flex items-center justify-center p-1 rounded-md md:hidden"
+              className="flex items-center justify-center rounded-md md:hidden"
             >
-              <Hamburger toggled={isOpen} size={18} direction="right" />
+              <Hamburger toggled={isOpen} size={18} direction="right" duration={0.15}/>
             </button>
           </div>
         </nav>
@@ -89,13 +89,13 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            className="md:hidden flex flex-col gap-6 px-7 py-4 overflow-hidden h-[calc(100vh-64px)] items-center bg-(--background)/75 text-lg backdrop-blur-lg font-semibold"
+            className="md:hidden flex flex-col gap-6 px-7 py-4 overflow-hidden h-[calc(100vh-64px)] items-center bg-(--background)/75 text-base backdrop-blur-lg font-semibold"
             initial="closed"
             animate="open"
             exit="closed"
             variants={mobileMenuStates}
           >
-            <div className="flex md:hidden flex-col w-full gap-4 text-base">
+            <div className="flex md:hidden flex-col w-full gap-4">
               <Link
                 href="/"
                 className="bg-(--card-background) text-(--muted) border border-(--card-border) flex justify-center py-2 rounded-lg"
