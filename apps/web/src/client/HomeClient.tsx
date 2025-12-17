@@ -4,13 +4,11 @@ import { Navbar } from "../components/Navbar";
 import { HorizontalDivider } from "@repo/ui";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import Marquee from "react-fast-marquee";
 
 export default function Home() {
-  const [openFAQ, setOpenFAQ] = useState<string | null>("what-is-celestify");
-
   return (
     <>
       <Navbar />
@@ -29,6 +27,7 @@ export default function Home() {
               securely embedded into a vector archive.
             </h2>
           </div>
+
           {/* CTA Buttons */}
           <div className="mt-10 xs:mt-6 flex flex-col xs:flex-row gap-3 w-full xs:w-auto max-w-64">
             <Link
@@ -43,6 +42,20 @@ export default function Home() {
             >
               Careers
             </Link>
+          </div>
+
+          {/* Trusted by marquee */}
+          <div className="mt-10 flex flex-col w-full gap-8 items-center">
+            <span className="font-mono text-sm text-(--muted)">Trusted by founders at</span>
+            <div className="w-full px-8">
+              <Marquee pauseOnHover gradient gradientColor="#181818" gradientWidth={150}>
+                <Image alt="Berkley logo" src="/images/hero/trusted-by/berkley.svg" width={831} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
+                <Image alt="MiT logo" src="/images/hero/trusted-by/mit.svg" width={468} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
+                <Image alt="Stanford logo" src="/images/hero/trusted-by/stanford.svg" width={783} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
+                <Image alt="UPenn logo" src="/images/hero/trusted-by/upenn.svg" width={803} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
+                <Image alt="Y Combinator logo" src="/images/hero/trusted-by/y-combinator.svg" width={1276} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
+              </Marquee>
+            </div>
           </div>
         </div>
       </div>

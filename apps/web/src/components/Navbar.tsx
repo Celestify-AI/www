@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { Cross as Hamburger } from "hamburger-react";
 import { AnimatePresence, motion } from "motion/react";
-import { HorizontalDivider } from "@repo/ui";
 
 const Navbar = () => {
   const [isOpen, setOpen] = useState(false);
