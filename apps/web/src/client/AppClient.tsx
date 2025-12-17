@@ -88,7 +88,7 @@ export default function AppClient() {
               className="relative w-fit flex gap-2 bg-(--background) border border-(--border) p-1 rounded-lg font-mono text-sm"
             >
               <motion.div
-                className="absolute top-1 left-1 h-[calc(100%-0.5rem)] rounded-md bg-(--primary) border border-(--primary-border)"
+                className="absolute top-1 left-1 h-[calc(100%-0.5rem)] rounded-md bg-(--primary)"
                 layout
                 initial={false}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -108,7 +108,7 @@ export default function AppClient() {
                     animate={{
                       color:
                         activeTab === tab
-                          ? "var(--foreground)"
+                          ? "var(--light-background-text)"
                           : "var(--muted)",
                     }}
                     transition={{ duration: 0.3 }}

@@ -69,7 +69,7 @@ const HomeChatbox = () => {
       </div>
       <button
         onClick={handleSubmit}
-        className="absolute bottom-2 right-2 cursor-pointer text-(--muted) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md"
+        className="absolute bottom-2 right-2 cursor-pointer text-(--light-background-text) bg-(--primary) p-1.5 rounded-md"
       >
         <CornerDownLeft size={18} />
       </button>
