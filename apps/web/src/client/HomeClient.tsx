@@ -19,7 +19,7 @@ export default function Home() {
         <div className="w-full max-w-5xl flex flex-col items-center relative z-10">
           {/* Headline and subtitle */}
           <div className="mt-32 xs:mt-36 flex flex-col items-center gap-7">
-            <h1 className="text-center font-slab leading-tight text-4xl xs:text-5xl sm:text-6xl bg-[linear-gradient(135deg,#9E9E9E_0%,#FDFCFF_50%,#9E9E9E_100%)] text-transparent bg-clip-text py-2">
+            <h1 className="text-center font-slab leading-none text-4xl xs:text-5xl sm:text-6xl bg-[linear-gradient(135deg,#9E9E9E_0%,#FDFCFF_50%,#9E9E9E_100%)] text-transparent bg-clip-text py-2">
               The personal <br />
               context engine
             </h1>

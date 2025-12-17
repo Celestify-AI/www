@@ -80,7 +80,13 @@ const Navbar = () => {
               onClick={() => setOpen(!isOpen)}
               className="flex items-center justify-center rounded-md md:hidden"
             >
-              <Hamburger toggled={isOpen} size={18} direction="right" duration={0.15}/>
+              <Hamburger
+                toggled={isOpen}
+                size={18}
+                direction="right"
+                duration={0.15}
+                color="#f2e6cf"
+              />
             </button>
           </div>
         </nav>
