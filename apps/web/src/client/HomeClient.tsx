@@ -46,14 +46,86 @@ export default function Home() {
 
           {/* Trusted by marquee */}
           <div className="mt-10 flex flex-col w-full gap-8 items-center">
-            <span className="font-mono text-sm text-(--muted)">Trusted by founders at</span>
+            <span className="font-mono text-sm text-(--muted)">
+              Trusted by founders at
+            </span>
             <div className="w-full px-8">
-              <Marquee pauseOnHover gradient gradientColor="#181818" gradientWidth={150}>
-                <Image alt="Berkley logo" src="/images/hero/trusted-by/berkley.svg" width={831} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
-                <Image alt="MiT logo" src="/images/hero/trusted-by/mit.svg" width={468} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
-                <Image alt="Stanford logo" src="/images/hero/trusted-by/stanford.svg" width={783} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
-                <Image alt="UPenn logo" src="/images/hero/trusted-by/upenn.svg" width={803} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
-                <Image alt="Y Combinator logo" src="/images/hero/trusted-by/y-combinator.svg" width={1276} height={256} className="h-10 sm:h-14 w-auto mr-12"/>
+              <Marquee
+                pauseOnHover
+                gradient
+                gradientColor="#181818"
+                gradientWidth={150}
+              >
+                <Image
+                  alt="Berkley logo"
+                  src="/images/hero/trusted-by/berkley.svg"
+                  width={831}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="MiT logo"
+                  src="/images/hero/trusted-by/mit.svg"
+                  width={468}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="Stanford logo"
+                  src="/images/hero/trusted-by/stanford.svg"
+                  width={783}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="UPenn logo"
+                  src="/images/hero/trusted-by/upenn.svg"
+                  width={803}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="Y Combinator logo"
+                  src="/images/hero/trusted-by/y-combinator.svg"
+                  width={1276}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="Berkley logo"
+                  src="/images/hero/trusted-by/berkley.svg"
+                  width={831}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="MiT logo"
+                  src="/images/hero/trusted-by/mit.svg"
+                  width={468}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="Stanford logo"
+                  src="/images/hero/trusted-by/stanford.svg"
+                  width={783}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="UPenn logo"
+                  src="/images/hero/trusted-by/upenn.svg"
+                  width={803}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
+                <Image
+                  alt="Y Combinator logo"
+                  src="/images/hero/trusted-by/y-combinator.svg"
+                  width={1276}
+                  height={256}
+                  className="h-6 sm:h-8 w-auto mr-12"
+                />
               </Marquee>
             </div>
           </div>
