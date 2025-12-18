@@ -15,7 +15,7 @@ interface Message {
 
 export default function Chat() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages] = useState<Message[]>([
     {
       id: "1",
       conversation_id: "conv-123",

@@ -4,9 +4,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Cross as Hamburger } from "hamburger-react";
-import { AnimatePresence, motion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useMotionValueEvent,
+} from "motion/react";
 
 const Navbar = () => {
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  const scrollThreshold = 10;
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > scrollThreshold && !scrolled) {
+      setScrolled(true);
+    } else if (latest <= scrollThreshold && scrolled) {
+      setScrolled(false);
+    }
+  });
+
   const [isOpen, setOpen] = useState(false);
 
   const mobileMenuStates = {
@@ -21,10 +38,12 @@ const Navbar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full flex flex-col z-50 pointer-events-auto">
+    <div
+      className={`fixed top-0 left-0 w-full flex flex-col z-50 pointer-events-auto transition-all ${scrolled ? "bg-(--background)/50 backdrop-blur-xl border-b border-(--border)" : "border-(--border)"}`}
+    >
       {/* Desktop Navbar */}
-      <div className="h-16 pointer-events-none bg-(--background)/75 backdrop-blur-lg flex items-center justify-center px-4">
-        <nav className="flex items-center justify-between h-full w-full max-w-5xl pointer-events-auto">
+      <div className="h-16 pointer-events-none flex items-center justify-center px-4">
+        <nav className="flex items-center justify-center h-full w-full max-w-5xl pointer-events-auto">
           <Link href="/" className="px-3">
             <Image
               src="/images/layout/logo.svg"
@@ -33,7 +52,7 @@ const Navbar = () => {
               alt="Celestify logo"
             />
           </Link>
-          <div className="hidden md:flex text-(--muted) font-semibold text-sm">
+          <div className="hidden text-(--muted) font-semibold text-sm">
             <Link
               href="/"
               className="px-3 py-2 rounded-lg transition-all hover:bg-(--highlight-background)"
@@ -60,7 +79,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex gap-3 items-center">
-            <div className="hidden md:flex gap-2">
+            <div className="hidden gap-2">
               <Link
                 href="/"
                 className="text-(--muted) font-semibold text-sm px-3 py-2 transition-all hover:bg-(--highlight-background) rounded-lg"
@@ -77,7 +96,7 @@ const Navbar = () => {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setOpen(!isOpen)}
-              className="flex items-center justify-center rounded-md md:hidden"
+              className="items-center justify-center rounded-md hidden"
             >
               <Hamburger
                 toggled={isOpen}
@@ -94,7 +113,7 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.nav
-            className="md:hidden flex flex-col gap-6 px-7 py-4 overflow-hidden h-[calc(100vh-64px)] items-center bg-(--background)/75 text-base backdrop-blur-lg font-semibold"
+            className="md:hidden flex flex-col gap-6 px-7 py-4 overflow-hidden h-[calc(100vh-64px)] items-center bg-(--background)/50 text-base backdrop-blur-xl font-semibold"
             initial="closed"
             animate="open"
             exit="closed"

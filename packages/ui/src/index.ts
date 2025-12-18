@@ -7,6 +7,7 @@ export { FloatingAction } from "./components/FloatingAction/FloatingAction";
 export { HomeHeader } from "./components/HomeHeader/HomeHeader";
 export { HorizontalDivider } from "./components/HorizontalDivider/HorizontalDivider";
 export { IntegrationCard } from "./components/IntegrationCard/IntegrationCard";
+export { LightRays } from "./components/LightRays/LightRays";
 export { Modal } from "./components/Modal/Modal";
 export { NotificationCard } from "./components/NotificationCard/NotificationCard";
 export { OAuthModal } from "./components/OAuthModal/OAuthModal";
