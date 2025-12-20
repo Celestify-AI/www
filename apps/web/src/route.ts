@@ -9,10 +9,12 @@ export async function GET() {
     const userId = sessionData?.session?.user?.id;
     const userJWT = sessionData?.session?.access_token;
 
+    console.log(userId, userJWT);
+
     // Send request to backend
     try {
       const res = await fetch(
-        `${process.env.BACKEND_API_BASE_URL}/workflows/${userId}`,
+        `${process.env.BACKEND_API_BASE_URL}/api/v1/workflows/list?user_id=${userId}`,
         {
           method: "GET",
           headers: {
@@ -28,7 +30,7 @@ export async function GET() {
       }
 
       const suggestedWorkflows = await res.json();
-      return NextResponse.json(suggestedWorkflows, { status: 200 });
+      return NextResponse.json(suggestedWorkflows.workflows, { status: 200 });
     } catch (err) {
       console.error(err);
       return NextResponse.json(

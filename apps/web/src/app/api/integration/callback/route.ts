@@ -37,9 +37,10 @@ export async function GET(req: NextRequest) {
 
     // Get UUID
     const supabase = await createServerClient();
-    const { data: authData } = await supabase.auth.getClaims();
-    const user = authData?.claims;
-    const userId = user?.sub;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const userId = user?.id;
 
     // Token exchange
     const { data: providerRow, error: providerError } = await serviceSupabase
@@ -108,6 +109,16 @@ export async function GET(req: NextRequest) {
 
     // Onboard on backend
     try {
+      await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          integration_id: providerId,
+        }),
+      });
       await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/onboard`, {
         method: "POST",
         headers: {

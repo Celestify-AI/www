@@ -1,48 +1,167 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { useState } from "react";
+import { Cross as Hamburger } from "hamburger-react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useMotionValueEvent,
+} from "motion/react";
 
 const Navbar = () => {
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  const scrollThreshold = 10;
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > scrollThreshold && !scrolled) {
+      setScrolled(true);
+    } else if (latest <= scrollThreshold && scrolled) {
+      setScrolled(false);
+    }
+  });
+
+  const [isOpen, setOpen] = useState(false);
+
+  const mobileMenuStates = {
+    closed: {
+      clipPath: "inset(0% 0% 100% 0%)",
+      transition: { duration: 0.25 },
+    },
+    open: {
+      clipPath: "inset(0% 0% 0% 0%)",
+      transition: { duration: 0.25 },
+    },
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-full h-22 bg-transparent pointer-events-none flex items-center justify-center px-8 z-50">
-      <nav className="px-2.5 flex items-center justify-between h-14 w-full max-w-5xl bg-(--background)/75 backdrop-blur-md border border-(--border) rounded-2xl pointer-events-auto">
-        <Link href="/" className="px-3">
-          <Image
-            src="/images/layout/logo.svg"
-            width={103}
-            height={22}
-            alt="Celestify logo"
-          />
-        </Link>
-        <div className="hidden md:flex text-(--muted) font-semibold text-sm">
-          <Link href="/" className="px-3 py-2 rounded-lg">
-            Download
+    <div
+      className={`fixed top-0 left-0 w-full flex flex-col z-50 pointer-events-auto transition-all ${scrolled ? "bg-(--background)/50 backdrop-blur-xl border-b border-(--border)" : "border-(--border)"}`}
+    >
+      {/* Desktop Navbar */}
+      <div className="h-16 pointer-events-none flex items-center justify-center px-4">
+        <nav className="flex items-center justify-center h-full w-full max-w-5xl pointer-events-auto">
+          <Link href="/" className="px-3">
+            <Image
+              src="/images/layout/logo.svg"
+              width={103}
+              height={22}
+              alt="Celestify logo"
+            />
           </Link>
-          <Link href="/pricing" className="px-3 py-2 rounded-lg">
-            Pricing
-          </Link>
-          <Link href="/blog" className="px-3 py-2 rounded-lg">
-            Blog
-          </Link>
-          <Link href="/contact" className="px-3 py-2 rounded-lg">
-            Contact
-          </Link>
-        </div>
-        <div className="hidden md:flex gap-4 items-center">
-          <Link href="/" className="text-(--muted) font-semibold text-sm">
-            Login
-          </Link>
-          <Link
-            href="/"
-            className="bg-(--primary) border border-(--primary-border) rounded-lg px-2.5 py-1.5 font-semibold text-sm"
+          <div className="hidden text-(--muted) font-semibold text-sm">
+            <Link
+              href="/"
+              className="px-3 py-2 rounded-lg transition-all hover:bg-(--highlight-background)"
+            >
+              Download
+            </Link>
+            <Link
+              href="/pricing"
+              className="px-3 py-2 rounded-lg transition-all hover:bg-(--highlight-background)"
+            >
+              Pricing
+            </Link>
+            <Link
+              href="/careers"
+              className="px-3 py-2 rounded-lg transition-all hover:bg-(--highlight-background)"
+            >
+              Careers
+            </Link>
+            <Link
+              href="/contact"
+              className="px-3 py-2 rounded-lg transition-all hover:bg-(--highlight-background)"
+            >
+              Contact
+            </Link>
+          </div>
+          <div className="flex gap-3 items-center">
+            <div className="hidden gap-2">
+              <Link
+                href="/"
+                className="text-(--muted) font-semibold text-sm px-3 py-2 transition-all hover:bg-(--highlight-background) rounded-lg"
+              >
+                Login
+              </Link>
+              <Link
+                href="/"
+                className="bg-(--card-background) border border-(--card-border) rounded-xl px-3 py-2 font-semibold text-sm text-(--primary)"
+              >
+                Get Started
+              </Link>
+            </div>
+            {/* Mobile menu toggle */}
+            <button
+              onClick={() => setOpen(!isOpen)}
+              className="items-center justify-center rounded-md hidden"
+            >
+              <Hamburger
+                toggled={isOpen}
+                size={18}
+                direction="right"
+                duration={0.15}
+                color="#f2e6cf"
+              />
+            </button>
+          </div>
+        </nav>
+      </div>
+      {/* Mobile expanded menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.nav
+            className="md:hidden flex flex-col gap-6 px-7 py-4 overflow-hidden h-[calc(100vh-64px)] items-center bg-(--background)/50 text-base backdrop-blur-xl font-semibold"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={mobileMenuStates}
           >
-            Get Started
-          </Link>
-        </div>
-        <div className="flex items-center justify-center p-1 mr-1 rounded-md md:hidden">
-          <Menu />
-        </div>
-      </nav>
+            <div className="flex md:hidden flex-col w-full gap-4">
+              <Link
+                href="/"
+                className="bg-(--card-background) text-(--muted) border border-(--card-border) flex justify-center py-2 rounded-lg"
+              >
+                Login
+              </Link>
+              <Link
+                href="/"
+                className="bg-(--primary) text-(--light-background-text) flex justify-center py-2 rounded-lg"
+              >
+                Get Started
+              </Link>
+            </div>
+            <div className="flex flex-col gap-2 w-full">
+              <Link
+                href="/download"
+                className="w-full py-3 border-b border-(--light-border) text-(--muted) hover:text-(--foreground)"
+              >
+                Download
+              </Link>
+              <Link
+                href="/pricing"
+                className="w-full py-3 border-b border-(--light-border) text-(--muted) hover:text-(--foreground)"
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/careers"
+                className="w-full py-3 border-b border-(--light-border) text-(--muted) hover:text-(--foreground)"
+              >
+                Careers
+              </Link>
+              <Link
+                href="/pricing"
+                className="w-full py-3 text-(--muted) hover:text-(--foreground)"
+              >
+                Pricing
+              </Link>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

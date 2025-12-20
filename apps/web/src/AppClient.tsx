@@ -40,9 +40,9 @@ export default function AppClient() {
 
   // List workflows from API
   useEffect(() => {
-    fetch("/api/workflow/list")
+    fetch("/api/workflows/list")
       .then((res) => res.json())
-      .then((data) => setWorkflows(data.workflows ?? []));
+      .then((data) => setWorkflows(data));
   }, []);
 
   // Take OAuth Modal Open URL Param
@@ -88,7 +88,7 @@ export default function AppClient() {
               className="relative w-fit flex gap-2 bg-(--background) border border-(--border) p-1 rounded-lg font-mono text-sm"
             >
               <motion.div
-                className="absolute top-1 left-1 h-[calc(100%-0.5rem)] rounded-md bg-(--primary)"
+                className="absolute top-1 left-1 h-[calc(100%-0.5rem)] rounded-md bg-(--primary) border border-(--primary-border)"
                 layout
                 initial={false}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -108,7 +108,7 @@ export default function AppClient() {
                     animate={{
                       color:
                         activeTab === tab
-                          ? "var(--light-background-text)"
+                          ? "var(--foreground)"
                           : "var(--muted)",
                     }}
                     transition={{ duration: 0.3 }}

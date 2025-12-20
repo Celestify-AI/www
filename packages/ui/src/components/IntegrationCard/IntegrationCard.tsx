@@ -72,7 +72,7 @@ const IntegrationCard = ({
         <button
           disabled={connected}
           onClick={fetchOAuthLink}
-          className="ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary) border border-(--primary-border) flex gap-1.5 items-center cursor-pointer whitespace-nowrap"
+          className="ml-auto mr-2 font-medium text-sm text-(--light-background-text) px-3 py-1.5 rounded-lg bg-(--primary) flex gap-1.5 items-center cursor-pointer whitespace-nowrap"
         >
           Connect
           <Plug size={14} />
