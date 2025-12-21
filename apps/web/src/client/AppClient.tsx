@@ -16,13 +16,11 @@ import { SectionAccordion } from "@repo/ui";
 
 interface Workflow {
   id: string;
-  user_id: string;
-  provider_slug: string;
-
   title: string;
-  description?: string;
-
-  status: string;
+  description: string;
+  priority: number;
+  status: "suggested" | "active" | string;
+  ephemeral: boolean;
 }
 
 export default function AppClient() {
@@ -36,13 +34,13 @@ export default function AppClient() {
 
   const [activeTab, setActiveTab] = useState("Workflows");
   const tabs = ["Workflows", "Chat"];
-  const tabWidths = [91.75, 49.5];
+
 
   // List workflows from API
   useEffect(() => {
     fetch("/api/workflow/list")
       .then((res) => res.json())
-      .then((data) => setWorkflows(data.workflows ?? []));
+      .then((data) => setWorkflows(Array.isArray(data) ? data : []));
   }, []);
 
   // Take OAuth Modal Open URL Param
@@ -67,7 +65,6 @@ export default function AppClient() {
     <main className="min-h-screen w-full flex justify-center px-8">
       <div className="flex flex-col gap-24 items-center h-full w-full max-w-lg pt-32 pb-16">
         <HomeHeader userName={givenName} />
-        <pre>{JSON.stringify(workflows, null, 2)}</pre>
         <div className="flex flex-col gap-4 w-full">
           <div className="flex sm:flex-row flex-col gap-2 justify-between">
             <button
@@ -87,23 +84,20 @@ export default function AppClient() {
               aria-label="Select view"
               className="relative w-fit flex gap-2 bg-(--background) border border-(--border) p-1 rounded-lg font-mono text-sm"
             >
-              <motion.div
-                className="absolute top-1 left-1 h-[calc(100%-0.5rem)] rounded-md bg-(--primary)"
-                layout
-                initial={false}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                animate={{
-                  width: tabWidths[tabs.indexOf(activeTab)],
-                  x: tabs.indexOf(activeTab) * 99.5,
-                }}
-              />
               {tabs.map((tab) => (
                 <button
                   key={tab}
                   role="tab"
-                  className="relative z-10 px-2 py-1 rounded-md font-mono"
+                  className="relative px-2 py-1 rounded-md font-mono"
                   onClick={() => setActiveTab(tab)}
                 >
+                  {activeTab === tab && (
+                    <motion.div
+                      layoutId="active-tab-indicator"
+                      className="absolute inset-0 rounded-md bg-(--primary)"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
                   <motion.span
                     animate={{
                       color:
@@ -112,7 +106,7 @@ export default function AppClient() {
                           : "var(--muted)",
                     }}
                     transition={{ duration: 0.3 }}
-                    className="cursor-pointer"
+                    className="relative cursor-pointer"
                   >
                     {tab}
                   </motion.span>
@@ -148,9 +142,9 @@ export default function AppClient() {
                       <NotificationCard
                         key={w.id}
                         redirect="/app/task"
-                        platform={w.provider_slug}
+                        platform="gmail"
                         title={w.title}
-                        description={w.description ?? ""}
+                        description={w.description}
                         active={false}
                       />
                     ))
@@ -166,10 +160,10 @@ export default function AppClient() {
                       <NotificationCard
                         key={w.id}
                         redirect="/app/task"
-                        platform={w.provider_slug}
+                        platform="gmail"
                         title={w.title}
-                        description={w.description ?? ""}
-                        active={false}
+                        description={w.description}
+                        active={true}
                       />
                     ))
                   )}

@@ -2,7 +2,7 @@
 @source "./";
 
 @theme {
-  --background: #181818;
+  --background: #0c0c0c;
   --foreground: #ededed;
   --card-background: #2b2b2b;
   --card-border: #3d3d3d;
@@ -14,9 +14,7 @@
   --border: #2f2f2f;
   --light-border: #4f4f4f;
   --primary: #f2e6cf;
-  --primary-border: #5d6cdc;
-  --primary-muted: #6672cc;
-  --primary-muted-border: #7987f2;
+  --primary-muted: #ccc6bc;
 
   --breakpoint-xs: 26rem;
 

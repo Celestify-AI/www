@@ -98,7 +98,7 @@ const FRAGMENT_SHADER = /* glsl */ `
     float r1 = rayStrength(rayPos, finalRayDir, coord, 36.2214, 21.11349, 1.5 * raysSpeed);
     float r2 = rayStrength(rayPos, finalRayDir, coord, 22.3991, 18.0234, 1.1 * raysSpeed);
 
-    vec3 envBg = vec3(0.094, 0.094, 0.094); // #181818
+    vec3 envBg = vec3(0.047, 0.047, 0.047); // #0c0c0c
 
     float combinedStrength = r1 * 0.5 + r2 * 0.4;
     float rayMask = smoothstep(0.02, 0.25, combinedStrength);
@@ -119,18 +119,15 @@ const FRAGMENT_SHADER = /* glsl */ `
       rayColorOutput = mix(vec3(gray), rayColorOutput, saturation);
     }
 
-    // --- Vertical taper to envBg at the bottom ---
-    float taper = smoothstep(0.0, 0.2 * iResolution.y, iResolution.y - coord.y); // bottom 15% fades
+    // --- Vertical taper to envBg at the bottom 15% ---
+    float taper = smoothstep(0.0, 0.15 * iResolution.y, iResolution.y - coord.y);
     rayColorOutput *= taper;
     rayMask *= taper;
 
-    // Final blending
-    vec3 finalColor = rayMask > 0.0 ? mix(envBg, rayColorOutput * raysColor, rayMask) : envBg;
+    // Final blending - blend ray color with background, always opaque
+    vec3 finalColor = mix(envBg, rayColorOutput * raysColor, rayMask);
 
-    // Slight translucency
-    float alpha = rayMask * 0.55;
-
-    gl_FragColor = vec4(finalColor, alpha);
+    gl_FragColor = vec4(finalColor, 1.0);
   }
 `;
 
@@ -197,7 +194,7 @@ const LightRays: React.FC<LightRaysProps> = ({
     if (!containerRef.current) return;
 
     const renderer = new Renderer({
-      alpha: true,
+      alpha: false,
       dpr: Math.min(window.devicePixelRatio, 2),
     });
     const gl = renderer.gl;
@@ -205,7 +202,8 @@ const LightRays: React.FC<LightRaysProps> = ({
     gl.canvas.style.display = "block";
     gl.canvas.style.width = "100%";
     gl.canvas.style.height = "100%";
-
+    gl.canvas.style.isolation = "isolate";
+    gl.canvas.style.mixBlendMode = "normal";
     rendererRef.current = renderer;
 
     const geometry = new Triangle(gl);

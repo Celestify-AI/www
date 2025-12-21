@@ -57,9 +57,9 @@ const IntegrationCard = ({
       {connected ? (
         <button
           onClick={revokeIntegration}
-          className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) border border-(--primary-muted-border) hover:cursor-pointer hover:bg-red-500 hover:border-red-400"
+          className="group ml-auto mr-2 font-medium text-sm px-3 py-1.5 rounded-lg bg-(--primary-muted) hover:cursor-pointer hover:bg-red-500 hover:border-red-400"
         >
-          <div className="flex group-hover:hidden gap-1.5 items-center">
+          <div className="text-(--light-background-text) flex group-hover:hidden gap-1.5 items-center">
             Added
             <Check size={14} />
           </div>

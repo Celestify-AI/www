@@ -20,27 +20,14 @@ export default function Chat() {
       id: "1",
       conversation_id: "conv-123",
       author_role: "user",
-      content: "Hello! Can you help me with my project?",
+      content: "I need help integrating Flowglad, a payment processor.",
     },
     {
       id: "2",
       conversation_id: "conv-123",
       author_role: "agent",
-      content: "Of course! I'd be happy to help. What are you working on?",
-    },
-    {
-      id: "3",
-      conversation_id: "conv-123",
-      author_role: "user",
-      content: "My team is struggling with integrating the payment processor.",
-    },
-    {
-      id: "4",
-      conversation_id: "conv-123",
-      author_role: "agent",
-      content:
-        "Totally get that! It's not always easy to integrate payment processing into SaaS apps. Looking through past data, it looks like your team is going with Flowglad. Additionally documents show that three pricing tiers have been decided on—Celestify Entry, Celestify Pro, and Celestify Max. Do you want me to look through your codebase for you?",
-    },
+      content: "I'd be happy to help you integrate Flowglad! To provide the most useful guidance, I need to search for their current documentation and integration methods since this is a specific payment processor.",
+    }
   ]);
 
   const handleInput = () => {
@@ -70,15 +57,18 @@ export default function Chat() {
 
   return (
     <div className="min-h-screen w-full flex justify-center px-8">
-      <div className="w-full max-w-lg py-16">
+      <div className="w-full max-w-3xl py-16 px-10">
         {/* Messages */}
         <div className="w-full flex flex-col gap-12 font-slab">
           {messagePairs.map((pair, pairIndex) => (
-            <div key={pairIndex} className="flex flex-col gap-0">
+            <div key={pairIndex} className="flex flex-col gap-6">
               {pair.map((message) => (
-                <div key={message.id}>
+                <div 
+                  key={message.id}
+                  className={`flex ${message.author_role === "user" ? "justify-end" : "justify-start"}`}
+                >
                   <div
-                    className={`p-3 ${message.author_role === "user" ? "w-fit bg-(--card-background) rounded-md border border-(--border)" : ""}`}
+                    className={`p-3 ${message.author_role === "user" ? "bg-(--card-background) rounded-md border border-(--border)" : ""}`}
                   >
                     {message.content}
                   </div>
@@ -89,13 +79,13 @@ export default function Chat() {
         </div>
 
         {/* Bottom Chatbox */}
-        <div className="fixed bottom-0 left-0 flex py-4 justify-center w-screen pointer-events-none">
-          <div className="relative border border-(--border) bg-(--background) rounded-xl w-full px-4 py-3 max-w-lg pointer-events-auto shadow-md/75">
+        <div className="fixed bottom-0 left-0 flex py-16 justify-center bg-transparent w-screen pointer-events-none px-4">
+          <div className="relative border border-(--border) bg-(--background) rounded-xl w-full px-4 py-3 max-w-3xl pointer-events-auto shadow-md/75">
             <textarea
               ref={textareaRef}
               rows={2}
               onInput={handleInput}
-              placeholder="Ask Celestia about..."
+              placeholder="Prompt Celestia..."
               className="w-full bg-transparent outline-none resize-none max-h-32 overflow-y-auto mb-10"
             />
             <div className="absolute bottom-2 left-2 flex gap-2">
@@ -103,7 +93,7 @@ export default function Chat() {
                 <Plus size={18} />
               </button>
             </div>
-            <button className="absolute bottom-2 right-2 cursor-pointer text-(--muted) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md">
+            <button className="absolute bottom-2 right-2 cursor-pointer text-(--light-background-text) bg-(--primary) border border-(--primary-border) p-1.5 rounded-md">
               <CornerDownLeft size={18} />
             </button>
           </div>
