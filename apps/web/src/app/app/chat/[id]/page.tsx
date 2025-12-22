@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ChatClient from "../../../client/ChatClient";
+import ChatClient from "../../../../client/ChatClient";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -7,7 +7,13 @@ export const metadata: Metadata = {
   description: "Directly chat with Celestify's AI Agent, Celestia.",
 };
 
-export default function AppHome() {
+interface ChatPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ChatPage({ params }: ChatPageProps) {
+  const { id } = await params;
+
   return (
     <>
       <Suspense
@@ -17,7 +23,7 @@ export default function AppHome() {
           </div>
         }
       >
-        <ChatClient />
+        <ChatClient conversationId={id} />
       </Suspense>
     </>
   );

@@ -26,8 +26,8 @@ const HomeChatbox = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userText: text,
-          attachments: [],
+          initial_message: text,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }),
       });
 

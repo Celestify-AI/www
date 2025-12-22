@@ -1,81 +1,52 @@
-import { v4 as uuid } from "uuid";
-import {
-  createClient as createServerClient,
-  createServiceClient,
-} from "@repo/utils/server";
+import { createClient as createServerClient } from "@repo/utils/server";
 import { NextResponse, NextRequest } from "next/server";
 
-const serviceSupabase = createServiceClient();
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const userText = body.userText;
-    const attachments = body.attachments;
+    const { timezone, initial_message } = body;
 
-    // Basic validation of input
-    if (typeof userText !== "string") {
-      return NextResponse.json(
-        { error: "User inputted text that was not a string" },
-        { status: 400 },
-      );
-    }
-
-    if (
-      !Array.isArray(attachments) ||
-      !attachments.every((a) => typeof a === "string")
-    ) {
-      return NextResponse.json(
-        { error: "Attachments were invalid" },
-        { status: 400 },
-      );
-    }
-
-    // Acquire User UUID
+    // Acquire User UUID and access token
     const supabase = await createServerClient();
     const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    const userId = user?.id;
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    const conversationId = uuid();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    const { error: conversationError } = await serviceSupabase
-      .from("agent_conversations")
-      .insert({
-        id: conversationId,
+    const userId = session.user.id;
+    const token = session.access_token;
+
+    // Create conversation via external API
+    const response = await fetch(`${process.env.BACKEND_API_BASE_URL}/agent/conversations`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         user_id: userId,
-      });
+        timezone,
+        initial_message,
+      }),
+    });
 
-    if (conversationError) {
-      console.error(conversationError);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Failed to create conversation:", errorText);
       return NextResponse.json(
         { error: "Failed to create conversation" },
-        { status: 500 },
+        { status: response.status },
       );
     }
 
-    // Insert initial message
-    const { error: msgError } = await serviceSupabase
-      .from("agent_messages")
-      .insert({
-        id: uuid(),
-        conversation_id: conversationId,
-        author_role: "user",
-        content: userText,
-        attachments,
-      });
+    const data = await response.json();
 
-    if (msgError) {
-      console.error(msgError);
-      return NextResponse.json(
-        { error: "Failed to write message" },
-        { status: 500 },
-      );
-    }
-
-    return NextResponse.json({ conversationId });
+    return NextResponse.json({ conversationId: data.id });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
