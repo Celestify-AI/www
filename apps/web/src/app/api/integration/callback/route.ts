@@ -87,16 +87,18 @@ export async function GET(req: NextRequest) {
     ).toISOString();
 
     const { data: integrationRow, error: integrationError } =
-      await serviceSupabase.from("user_integrations").upsert({
-        user_id: userId,
-        provider_id: providerId,
-        access_token: tokenData.access_token,
-        refresh_token: tokenData.refresh_token,
-        expires_at: expiresAt,
-        revoked: false,
-      })
-      .select()
-      .single();
+      await serviceSupabase
+        .from("user_integrations")
+        .upsert({
+          user_id: userId,
+          provider_id: providerId,
+          access_token: tokenData.access_token,
+          refresh_token: tokenData.refresh_token,
+          expires_at: expiresAt,
+          revoked: false,
+        })
+        .select()
+        .single();
 
     if (integrationError) {
       console.error("Upsert failed: ", integrationError);
@@ -113,7 +115,7 @@ export async function GET(req: NextRequest) {
       await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/onboard`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${userJWT}`, 
+          Authorization: `Bearer ${userJWT}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

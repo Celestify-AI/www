@@ -22,9 +22,7 @@ export async function GET() {
       );
 
       if (!res.ok) {
-        throw new Error(
-          `Failed to fetch workflows: ${res.statusText}`,
-        );
+        throw new Error(`Failed to fetch workflows: ${res.statusText}`);
       }
 
       const workflows = await res.json();

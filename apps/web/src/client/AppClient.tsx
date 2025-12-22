@@ -35,7 +35,6 @@ export default function AppClient() {
   const [activeTab, setActiveTab] = useState("Workflows");
   const tabs = ["Workflows", "Chat"];
 
-
   // List workflows from API
   useEffect(() => {
     fetch("/api/workflow/list")
@@ -95,7 +94,11 @@ export default function AppClient() {
                     <motion.div
                       layoutId="active-tab-indicator"
                       className="absolute inset-0 rounded-md bg-(--primary)"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
                     />
                   )}
                   <motion.span

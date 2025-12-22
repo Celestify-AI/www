@@ -25,16 +25,11 @@ const SectionAccordion = ({
         className="group font-mono text-sm text-(--muted) flex items-center gap-2 cursor-pointer"
       >
         <div className="bg-transparent p-1 rounded-sm group-hover:bg-(--highlight-background)">
-          <ChevronRight
-            size={16}
-            className={isOpen ? "rotate-90" : ""}
-          />
+          <ChevronRight size={16} className={isOpen ? "rotate-90" : ""} />
         </div>
         {title}
       </button>
-      {isOpen && (
-        <div className={`py-4 ${className}`}>{children}</div>
-      )}
+      {isOpen && <div className={`py-4 ${className}`}>{children}</div>}
     </div>
   );
 };

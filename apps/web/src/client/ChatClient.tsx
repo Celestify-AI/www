@@ -26,8 +26,9 @@ export default function Chat() {
       id: "2",
       conversation_id: "conv-123",
       author_role: "agent",
-      content: "I'd be happy to help you integrate Flowglad! To provide the most useful guidance, I need to search for their current documentation and integration methods since this is a specific payment processor.",
-    }
+      content:
+        "I'd be happy to help you integrate Flowglad! To provide the most useful guidance, I need to search for their current documentation and integration methods since this is a specific payment processor.",
+    },
   ]);
 
   const handleInput = () => {
@@ -63,7 +64,7 @@ export default function Chat() {
           {messagePairs.map((pair, pairIndex) => (
             <div key={pairIndex} className="flex flex-col gap-6">
               {pair.map((message) => (
-                <div 
+                <div
                   key={message.id}
                   className={`flex ${message.author_role === "user" ? "justify-end" : "justify-start"}`}
                 >
