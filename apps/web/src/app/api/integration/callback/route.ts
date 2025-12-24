@@ -37,9 +37,9 @@ export async function GET(req: NextRequest) {
 
     // Get UUID
     const supabase = await createServerClient();
-    const { data: authData } = await supabase.auth.getClaims();
-    const user = authData?.claims;
-    const userId = user?.sub;
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData?.session?.user?.id;
+    const userJWT = sessionData?.session?.access_token;
 
     // Token exchange
     const { data: providerRow, error: providerError } = await serviceSupabase
@@ -87,14 +87,18 @@ export async function GET(req: NextRequest) {
     ).toISOString();
 
     const { data: integrationRow, error: integrationError } =
-      await serviceSupabase.from("user_integrations").upsert({
-        user_id: userId,
-        provider_id: providerId,
-        access_token: tokenData.access_token,
-        refresh_token: tokenData.refresh_token,
-        expires_at: expiresAt,
-        revoked: false,
-      });
+      await serviceSupabase
+        .from("user_integrations")
+        .upsert({
+          user_id: userId,
+          provider_id: providerId,
+          access_token: tokenData.access_token,
+          refresh_token: tokenData.refresh_token,
+          expires_at: expiresAt,
+          revoked: false,
+        })
+        .select()
+        .single();
 
     if (integrationError) {
       console.error("Upsert failed: ", integrationError);
@@ -111,13 +115,12 @@ export async function GET(req: NextRequest) {
       await fetch(`${process.env.BACKEND_API_BASE_URL}/integrations/onboard`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${userJWT}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           user_id: userId,
-          integration_id: providerId,
-          platform: providerRow.slug,
-          generate_workflows: true,
+          id: integrationRow?.id,
         }),
       });
     } catch (err) {

@@ -1,11 +1,13 @@
 export { Auth } from "./components/Auth/Auth";
 export { Button } from "./components/Button/Button";
-export { Chatbox } from "./components/Chatbox/Chatbox";
+export { HomeChatbox } from "./components/HomeChatbox/HomeChatbox";
 export { ClockClient } from "./components/ClockClient/ClockClient";
 export { DecisionEngineNode } from "./components/DecisionEngineNode/DecisionEngineNode";
 export { FloatingAction } from "./components/FloatingAction/FloatingAction";
 export { HomeHeader } from "./components/HomeHeader/HomeHeader";
+export { HorizontalDivider } from "./components/HorizontalDivider/HorizontalDivider";
 export { IntegrationCard } from "./components/IntegrationCard/IntegrationCard";
+export { LightRays } from "./components/LightRays/LightRays";
 export { Modal } from "./components/Modal/Modal";
 export { NotificationCard } from "./components/NotificationCard/NotificationCard";
 export { OAuthModal } from "./components/OAuthModal/OAuthModal";
