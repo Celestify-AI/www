@@ -167,8 +167,12 @@ export default function HomeClient() {
         
         // Spawn packets
         if(Math.random() < 0.03) {
-            const s = sources[Math.floor(Math.random()*4)]
-            packets.push({x:s.x, y:s.y, tx:center.x, ty:center.y, p:0})
+            const randomIndex = Math.floor(Math.random() * sources.length)
+            const s = sources[randomIndex]
+            // THE FIX: We added "if (s)" here to satisfy TypeScript
+            if (s) {
+                packets.push({x:s.x, y:s.y, tx:center.x, ty:center.y, p:0})
+            }
         }
         
         // Update packets
@@ -319,6 +323,13 @@ export default function HomeClient() {
         .agent-win { position: absolute; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; animation: subtleFloat 6s ease-in-out infinite; }
         @keyframes subtleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
+        /* Mobile Menu Styles */
+        .mobile-nav-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(15px); z-index: 99; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+        .mobile-nav-links { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+        .mobile-nav-links button { background: none; border: none; color: #f5e9d6; font-size: 20px; cursor: pointer; font-family: inherit; transition: opacity 0.2s; }
+        .mobile-nav-links button:active { opacity: 0.6; }
+
         /* Toggle Switch */
         .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 40px; }
         .toggle-label { font-size: 14px; color: #888; transition: color 0.3s; cursor: pointer; }
@@ -456,7 +467,7 @@ export default function HomeClient() {
             <div className="visual-box">
                 <canvas ref={fiberCanvasRef}></canvas>
                 {/* Updated Icons matching reference: Mail, File, Chat, Search, Center DB */}
-                <div className="icon-node tl active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <div className="icon-node tl active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9 2-2 2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
                 <div className="icon-node tr active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
                 <div className="icon-node bl active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                 <div className="icon-node br active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
