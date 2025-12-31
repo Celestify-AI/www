@@ -1,973 +1,614 @@
-"use client";
+"use client"
 
-import { Navbar } from "../components/Navbar";
-import {
-  ArrowRight,
-  Check,
-  Sparkles,
-  Zap,
-  Target,
-  MessageSquare,
-  Bell,
-  Database,
-  Workflow,
-  ChevronRight,
-  Minus,
-  Download,
-} from "lucide-react";
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react"
+import anime from "animejs"
 
-export default function Home() {
-  const [openFAQ, setOpenFAQ] = useState<string | null>("what-is-celestify");
-  const [mounted, setMounted] = useState(false);
+export default function HomeClient() {
+  // state for toggles and menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [activeFaq, setActiveFaq] = useState<number | null>(null)
+  
+  // billing state
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
 
+  // pointers for the canvas and interactive layers
+  const starCanvasRef = useRef<HTMLCanvasElement>(null)
+  const landscapeCanvasRef = useRef<HTMLCanvasElement>(null)
+  const fiberCanvasRef = useRef<HTMLCanvasElement>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+
+  // helper to scroll and kill menu
+  const scrollToPage = (pageId: string) => {
+    setIsMobileMenuOpen(false)
+    const target = document.getElementById(`view-${pageId}`)
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
+  // trigger checkouts
+  const handlePurchase = (plan: string) => {
+    console.log(`buying ${plan} (${billingCycle})`)
+    alert(`checkout for ${plan} (${billingCycle}) coming soon`)
+  }
+
+  // trigger oauth
+  const handleOAuth = (provider: string) => {
+    console.log("auth with " + provider)
+    alert("continuing with " + provider)
+  }
+
+  const toggleFaq = (index: number) => {
+    setActiveFaq(activeFaq === index ? null : index)
+  }
+
+  // background engine for stars and hills
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const starCanvas = starCanvasRef.current
+    const landscapeCanvas = landscapeCanvasRef.current
+    if (!starCanvas || !landscapeCanvas) return
+
+    const starCtx = starCanvas.getContext("2d", { alpha: true })
+    const landscapeCtx = landscapeCanvas.getContext("2d", { alpha: true })
+    if (!starCtx || !landscapeCtx) return
+
+    let width = window.innerWidth
+    let height = window.innerHeight
+    let animationFrameId: number
+
+    const seed = Math.random() * 50000
+    const stars = new Array(200).fill(0).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      size: Math.random() * 1.5,
+      twinkle: Math.random() * Math.PI,
+    }))
+
+    const shootingStarPool = new Array(5).fill(0).map(() => ({
+      active: false, x: 0, y: 0, len: 0, speed: 0, opacity: 0
+    }))
+
+    const noise = (x: number) => {
+      const i = Math.floor(x)
+      const f = x - i
+      const s = (n: number) => Math.sin(n * 12.9898 + n * 78.233) * 43758.5453 - Math.floor(Math.sin(n * 12.9898 + n * 78.233) * 43758.5453)
+      return s(i) * (1 - (f * f * (3 - 2 * f))) + s(i + 1) * (f * f * (3 - 2 * f))
+    }
+
+    const renderStaticLandscape = () => {
+      landscapeCtx.clearRect(0, 0, width, height)
+      const drawLayer = (ctx: CanvasRenderingContext2D, baseColor: string, octaves: number, scale: number, offset: number) => {
+        ctx.fillStyle = baseColor
+        ctx.beginPath()
+        ctx.moveTo(0, height)
+        for (let x = 0; x <= width; x += 4) {
+          let total = 0, freq = scale, amp = 1, max = 0
+          for (let i = 0; i < octaves; i++) {
+            total += noise((x + seed) * freq) * amp
+            max += amp; amp *= 0.5; freq *= 2
+          }
+          const h = Math.pow(total / max, 1.8)
+          const y = height - (h * (height * 0.45)) - offset
+          ctx.lineTo(x, y)
+        }
+        ctx.lineTo(width, height)
+        ctx.fill()
+      }
+      drawLayer(landscapeCtx, "rgba(40, 38, 35, 1)", 4, 0.001, 180)
+      drawLayer(landscapeCtx, "rgba(25, 24, 22, 1)", 6, 0.003, 90)
+      drawLayer(landscapeCtx, "#050505", 8, 0.006, 0)
+    }
+
+    const updateStars = () => {
+        starCtx.clearRect(0, 0, width, height)
+        stars.forEach(s => {
+          s.twinkle += 0.02
+          const alpha = (Math.sin(s.twinkle) + 1) / 2
+          starCtx.fillStyle = `rgba(245, 233, 214, ${alpha * 0.6})`
+          starCtx.fillRect(s.x, s.y, s.size, s.size)
+        })
+        if (Math.random() > 0.997) {
+            const inactive = shootingStarPool.find(s => !s.active)
+            if (inactive) {
+                inactive.active = true
+                inactive.x = Math.random() * width
+                inactive.y = Math.random() * (height * 0.5)
+                inactive.len = 50 + Math.random() * 100
+                inactive.speed = 10 + Math.random() * 15
+                inactive.opacity = 1
+            }
+        }
+        shootingStarPool.forEach(s => {
+            if (!s.active) return
+            starCtx.strokeStyle = `rgba(245, 233, 214, ${s.opacity})`
+            starCtx.lineWidth = 2
+            starCtx.beginPath(); starCtx.moveTo(s.x, s.y); starCtx.lineTo(s.x - s.len, s.y + s.len * 0.5); starCtx.stroke()
+            s.x += s.speed; s.y -= s.speed * 0.5; s.opacity -= 0.02
+            if (s.opacity <= 0) s.active = false
+        })
+        animationFrameId = requestAnimationFrame(updateStars)
+    }
+
+    const handleResize = () => {
+      width = window.innerWidth; height = window.innerHeight
+      const dpr = window.devicePixelRatio || 1
+      const containers = [starCanvas, landscapeCanvas]
+      containers.forEach(c => {
+        if (!c) return
+        c.width = width * dpr; c.height = height * dpr
+        c.style.width = `${width}px`; c.style.height = `${height}px`
+        c.getContext('2d')?.scale(dpr, dpr)
+      })
+      renderStaticLandscape()
+    }
+
+    window.addEventListener("resize", handleResize)
+    handleResize(); updateStars()
+    return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animationFrameId) }
+  }, [])
+
+  // fiber ingestion engine
+  useEffect(() => {
+    const canvas = fiberCanvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')!
+    const w = 540, h = 400
+    canvas.width = w; canvas.height = h
+    const center = { x: w/2, y: h/2 }
+    const sources = [{x:72,y:72},{x:w-72,y:72},{x:72,y:h-72},{x:w-72,y:h-72}]
+    let packets: any[] = []
+    
+    function loop() {
+        ctx.clearRect(0, 0, w, h)
+        // Draw static connecting lines to center
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1
+        sources.forEach(s => { ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(center.x, center.y); ctx.stroke() })
+        
+        // Spawn packets
+        if(Math.random() < 0.03) {
+            const s = sources[Math.floor(Math.random()*4)]
+            packets.push({x:s.x, y:s.y, tx:center.x, ty:center.y, p:0})
+        }
+        
+        // Update packets
+        for(let i=packets.length-1; i>=0; i--) {
+            let p = packets[i]; p.p += 0.015
+            if(p.p >= 1) { packets.splice(i, 1); continue }
+            const cx = p.x + (p.tx-p.x)*p.p, cy = p.y + (p.ty-p.y)*p.p
+            ctx.strokeStyle = '#f5e9d6'; ctx.lineWidth = 2
+            ctx.beginPath(); ctx.moveTo(cx - (p.tx-p.x)*0.08, cy - (p.ty-p.y)*0.08); ctx.lineTo(cx, cy); ctx.stroke()
+        }
+        requestAnimationFrame(loop)
+    }
+    loop()
+  }, [])
+
+  // carousel prioritization engine
+  useEffect(() => {
+    const stage = carouselRef.current
+    if (!stage) return
+    stage.innerHTML = "" // clean up
+    const data = ["Enterprise Pricing Adjustments", "Teammate updated pricing doc", "Next steps before call"]
+    const cards = data.map((t) => {
+        const el = document.createElement('div'); el.className = 'carousel-card'
+        el.innerHTML = `<div class="cc-header"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/></svg>UPDATE</div><div class="cc-body"><p style="font-size:11px; color:#fff">${t}</p><div class="cc-line"></div><div class="cc-highlight"></div></div>`
+        stage.appendChild(el); return el
+    })
+    let angle = 0
+    function update() {
+        angle += 0.25
+        cards.forEach((c, i) => {
+            const theta = (angle * Math.PI / 180) + (i * 2 * Math.PI / 3)
+            const x = Math.sin(theta) * 160, z = Math.cos(theta) * 160 - 100
+            const modZ = Math.cos(theta)
+            const active = modZ > 0.8
+            c.className = active ? 'carousel-card active' : 'carousel-card'
+            c.style.transform = `translate3d(${x}px, 0, ${z}px) scale(${active ? 1.05 : 0.9})`
+            c.style.zIndex = Math.round(modZ * 100).toString()
+            c.style.opacity = active ? "1" : "0.2"
+        })
+        requestAnimationFrame(update)
+    }
+    update()
+  }, [])
+
+  // hero intro bypass for mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 1024
+    const timer = setTimeout(() => {
+      if (isMobile) {
+        anime.set("#moon-group", { opacity: 0, scale: 0 })
+        anime.set("#logo-group", { opacity: 1, scale: 1, rotate: 0 })
+        anime.set("#fisherman-group", { opacity: 1, rotate: 0 })
+        anime.set("#space-jelly", { translateX: 110, translateY: 355, scale: 1 })
+        anime.set(".hero-content", { opacity: 1, translateY: 0 })
+        anime.set("#fish-line", { y2: 360 })
+      } else {
+        anime.set("#moon-group", { opacity: 1, scale: 1, rotate: 0 })
+        anime.set("#logo-group", { opacity: 0, scale: 0.2, rotate: "-0.5turn" })
+        anime.set("#fisherman-group", { opacity: 0 })
+        anime.set("#space-jelly", { translateX: 110, translateY: 445, scale: 0 })
+        anime.set(".hero-content", { opacity: 0, translateY: 30 })
+        anime.set("#fish-line", { y2: 294 })
+      }
+
+      const startIdleLoops = () => {
+        anime({ targets: "#space-jelly", translateY: [355, 360], rotate: [-5, 5], duration: 2000, direction: "alternate", loop: true, easing: "easeInOutSine" })
+        anime({ targets: "#tentacles", d: ["M4,12 Q2,20 5,28 M10,12 Q10,22 10,31 M16,12 Q18,20 15,28", "M4,12 Q6,20 3,28 M10,12 Q12,22 10,31 M16,12 Q14,20 17,28"], duration: 1500, direction: "alternate", loop: true, easing: "easeInOutQuad" })
+      }
+
+      if (!isMobile) {
+        const tl = anime.timeline({ easing: "easeInOutCubic" })
+        tl.add({ targets: "#moon-group", rotate: [{ value: "0.25turn", duration: 1200, easing: "linear" }, { value: "2.5turn", duration: 1000, easing: "easeInExpo" }], scale: [{ value: 1, duration: 1800 }, { value: 0.1, duration: 400, easing: "easeInExpo" }], opacity: [{ value: 1, duration: 2100 }, { value: 0, duration: 100 }] })
+          .add({ targets: "#logo-group", rotate: ["-0.5turn", 0], scale: [0.2, 1], opacity: [0, 1], duration: 1200, easing: "easeOutElastic(1, .5)" }, "-=300")
+          .add({ targets: ".hero-content", opacity: [0, 1], translateY: [30, 0], duration: 800, easing: "easeOutQuad" }, "-=900")
+          .add({ targets: "#fisherman-group", opacity: [0, 1], duration: 1000 }, "-=400")
+          .add({ targets: "#fish-line", y2: 450, duration: 1200, easing: "easeOutQuad" })
+          .add({ targets: "#space-jelly", scale: [0, 1], duration: 400, easing: "easeOutBack" })
+          .add({ targets: "#fisherman-group", rotate: 15, duration: 600, easing: "easeOutSine" }, "+=100")
+          .add({ targets: "#fish-line", y2: 360, duration: 1500, easing: "easeInOutSine" }, "-=600")
+          .add({ targets: "#space-jelly", translateY: 355, duration: 1500, easing: "easeInOutSine" }, "-=1500")
+          .add({ targets: "#fisherman-group", rotate: 0, duration: 800, easing: "easeOutQuad" })
+        tl.finished.then(startIdleLoops)
+      } else {
+        startIdleLoops()
+      }
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // reveals logo unit
+  useEffect(() => {
+    anime.timeline({ easing: 'easeOutExpo' })
+      .add({ targets: '.logo-unit', opacity: [0, 1], scale: [0.8, 0.92], duration: 1500, delay: 500 })
+  }, [])
+
+  // magnetic mouse fluff for buttons
+  useEffect(() => {
+    const magElements = document.querySelectorAll(".mag-element")
+    magElements.forEach((el) => {
+      const htmlEl = el as HTMLElement
+      let isHovered = false, rect: DOMRect | null = null, ticking = false
+      const onEnter = () => { isHovered = true; rect = htmlEl.getBoundingClientRect(); htmlEl.style.transition = "transform 0.1s ease-out" }
+      const onMove = (e: any) => {
+        if (!isHovered || !rect) return
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            if (rect) {
+              const x = (e.clientX - rect.left - rect.width / 2) * 0.35
+              const y = (e.clientY - rect.top - rect.height / 2) * 0.35
+              htmlEl.style.transform = `translate(${x}px, ${y}px)`
+            }
+            ticking = false
+          })
+          ticking = true
+        }
+      }
+      const onLeave = () => { isHovered = false; rect = null; htmlEl.style.transform = `translate(0, 0)`; htmlEl.style.transition = "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)" }
+      htmlEl.addEventListener("mouseenter", onEnter); htmlEl.addEventListener("mousemove", onMove); htmlEl.addEventListener("mouseleave", onLeave)
+    })
+  }, [])
 
   return (
-    <>
-      <Navbar />
-      <div className="w-full min-h-screen flex flex-col items-center relative overflow-hidden">
-        {/* Subtle animated background particles - Client only to avoid hydration errors */}
-        {mounted && (
-          <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-            {[...Array(20)].map((_, i) => {
-              const randomX = Math.random() * 100;
-              const randomY = Math.random() * 100;
-              const randomDuration = Math.random() * 10 + 10;
-              const randomDelay = Math.random() * 5;
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 bg-(--primary-border)/20 rounded-full"
-                  initial={{
-                    x: `${randomX}vw`,
-                    y: `${randomY}vh`,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    y: [`${randomY}vh`, `${(randomY + 30) % 100}vh`],
-                    opacity: [0, 0.5, 0],
-                  }}
-                  transition={{
-                    duration: randomDuration,
-                    repeat: Infinity,
-                    delay: randomDelay,
-                  }}
-                />
-              );
-            })}
-          </div>
-        )}
+    <main className="landing-page-wrapper">
+      <style jsx global>{`
+        /* synchronized layout block */
+        html { scroll-padding-top: 90px; }
+        ::-webkit-scrollbar-thumb { background: #f5e9d6 !important; border-radius: 5px; }
+        ::-webkit-scrollbar { width: 6px; }
+        #moon-group, #logo-group, #fisherman-group, #space-jelly { transform-box: fill-box; }
+        .logo-unit { opacity: 0; }
+        
+        @media (max-width: 1024px) {
+            header nav, header .nav-actions { display: none !important; }
+            .mobile-toggle { display: flex !important; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); width: 44px; height: 44px; border-radius: 12px; cursor: pointer; }
+            header { padding: 0 20px; }
+            .logo-unit { transform: scale(0.75); transform-origin: left center; opacity: 1 !important; }
+        }
 
-        {/* Hero Section */}
-        <div className="w-full max-w-5xl px-8 sm:px-0 flex flex-col items-center relative z-10">
-          <div className="mt-48 flex flex-col items-center gap-4">
-            <div className="flex flex-col items-center gap-1">
-              <div className="flex items-center gap-3">
-                <motion.div
-                  className="w-3 h-3 rounded-full bg-amber-400"
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                ></motion.div>
-                <span className="font-mono text-(--muted)">
-                  Alpha in Testing
-                </span>
-              </div>
-              <h1 className="text-center font-medium text-5xl sm:text-7xl">
-                The personal <br />
-                <span className="text-(--primary-border) font-instrument-serif italic">
-                  knowledge
-                </span>{" "}
-                engine
-              </h1>
-            </div>
-            <h2 className="text-sm sm:text-base text-(--subtitle) text-center max-w-md">
-            An AI System that captures and understands everything flowing into your digital life.
-            Your data is unified into a secure, high-signal knowledge system built for agentic execution.
-            </h2>
-          </div>
-          <div className="flex mt-8 gap-3">
-            <Link
-              href="/"
-              className="group flex font-medium items-center gap-2 px-4 py-2 bg-(--primary) border border-(--primary-border) rounded-xl hover:scale-105 transition-transform"
-            >
-              Get Started{" "}
-              <ArrowRight
-                size={18}
-                className="group-hover:translate-x-1 transition-transform"
-              />
-            </Link>
-            <a
-              href="https://discord.gg/Gjh5pVUFrQ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex font-medium items-center gap-2 px-4 py-2 bg-(--card-background) border border-(--border) rounded-xl hover:scale-105 transition-transform"
-            >
-              Community{" "}
-            </a>
-          </div>
-        </div>
+        /* animation container styles */
+        .visual-box { height: 400px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; perspective: 1200px; }
+        .icon-node { position: absolute; width: 40px; height: 40px; background: #050505; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #444; z-index: 2; }
+        .icon-node.active { color: #f5e9d6; border-color: #f5e9d6; box-shadow: 0 0 15px rgba(245, 233, 214, 0.2); }
+        .tl { top: 40px; left: 40px; } .tr { top: 40px; right: 40px; } .bl { bottom: 40px; left: 40px; } .br { bottom: 40px; right: 40px; }
+        .center-node { position: absolute; width: 48px; height: 48px; background: #050505; border: 1px solid #f5e9d6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #f5e9d6; z-index: 3; box-shadow: 0 0 20px rgba(245, 233, 214, 0.15); }
 
-        {/* Image Demo Section - Sleek Design */}
-        <div className="w-full max-w-5xl px-8 mt-24 mb-12 relative z-10">
-          <div className="relative">
-            {/* Outer glow ring */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-2xl opacity-50"></div>
+        .carousel-stage { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; display: flex; align-items: center; justify-content: center; }
+        .carousel-card { width: 180px; height: 240px; position: absolute; background: rgba(12, 12, 12, 0.9); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; backface-visibility: hidden; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); backdrop-filter: blur(12px); }
+        .agent-win { position: absolute; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; animation: subtleFloat 6s ease-in-out infinite; }
+        @keyframes subtleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        
+        /* Toggle Switch */
+        .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 40px; }
+        .toggle-label { font-size: 14px; color: #888; transition: color 0.3s; cursor: pointer; }
+        .toggle-label.active { color: #f5e9d6; font-weight: 500; }
+        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); border-radius: 34px; transition: .4s; border: 1px solid rgba(255,255,255,0.1); }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 3px; background-color: #f5e9d6; border-radius: 50%; transition: .4s; }
+        input:checked + .slider:before { transform: translateX(20px); }
+      `}</style>
 
-            {/* Main container with refined styling */}
-            <motion.div
-              whileHover={{ scale: 1.005, y: -2 }}
-              className="relative bg-gradient-to-br from-(--card-background) to-(--card-background)/95 border border-(--border)/50 rounded-[18px] p-1 overflow-hidden group hover:border-(--primary-border)/60 transition-all duration-500 shadow-2xl shadow-(--primary)/10"
-            >
-              {/* Image with subtle border */}
-              <div className="relative w-full h-full bg-(--background) rounded-2xl overflow-hidden border border-(--border)/30">
-                <Image
-                  src="/images/hero/hero-banner.png"
-                  alt="Celestify notification center demo showing personalized notifications and unified intelligence"
-                  width={2540}
-                  height={1440}
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </div>
-        </div>
+      <canvas ref={starCanvasRef} id="horizon-stars" style={{ position:'fixed', inset:0, zIndex:-2 }}></canvas>
+      <canvas ref={landscapeCanvasRef} id="horizon-landscape" style={{ position:'fixed', inset:0, zIndex:-1 }}></canvas>
 
-        {/* Trusted By & Integrations Section - Minimal YC Style */}
-        <div className="w-full max-w-4xl px-8 mb-8 relative z-10">
-          <div className="flex flex-col items-center gap-16">
-            {/* Trusted By - Professional YC Style */}
-            <div className="flex flex-col items-center gap-4 w-full">
-              <p className="text-xs font-mono text-(--muted) uppercase tracking-[0.3em] mb-2">
-                Trusted by founders from
-              </p>
-              <div className="flex items-center justify-center gap-8">
-                {/* Y Combinator */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2.5 group cursor-pointer"
-                >
-                  <svg width="14px" height="14px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
-                    <g>
-                      <rect fill="#FB651E" x="0" y="0" width="256" height="256"/>
-                      <path d="M119.373653,144.745813 L75.43296,62.4315733 L95.5144533,62.4315733 L121.36192,114.52416 C121.759575,115.452022 122.2235,116.413008 122.753707,117.407147 C123.283914,118.401285 123.747838,119.428546 124.145493,120.48896 C124.410597,120.886615 124.609422,121.251127 124.741973,121.582507 C124.874525,121.913886 125.007075,122.212123 125.139627,122.477227 C125.802386,123.802744 126.39886,125.095105 126.929067,126.354347 C127.459274,127.613589 127.923198,128.773399 128.320853,129.833813 C129.381268,127.580433 130.541078,125.1614 131.80032,122.57664 C133.059562,119.99188 134.351922,117.307747 135.67744,114.52416 L161.92256,62.4315733 L180.612267,62.4315733 L136.27392,145.739947 L136.27392,198.826667 L119.373653,198.826667 L119.373653,144.745813 Z" fill="#FFFFFF"/>
+      <header>
+        <div id="logo-container" onClick={() => scrollToPage("home")} tabIndex={0} role="button">
+          <div style={{ transformOrigin: 'left center', display: 'flex', alignItems: 'center', position: 'relative', zIndex: 10 }} className="logo-unit">
+            <svg width="220" height="60" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="text-cream-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#fbf4e8" /><stop offset="100%" stopColor="#e0cfb6" /></linearGradient>
+                    <mask id="text-mask"><rect x="0" y="0" width="100%" height="100%" fill="black" /><text x="50" y="42" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="28" letterSpacing="-1" fill="white">elestify</text></mask>
+                </defs>
+                <g transform="translate(10, 8) scale(0.096)">
+                    <path fill="url(#text-cream-gradient)" d="M323.131 314.641C335.684 302.12 354.834 298.964 370.922 306.456L371.022 306.503H371.027L407.361 323.432C384.893 378.563 330.636 409.165 274.446 413.071C218.279 416.976 160.297 394.2 130.333 342.714L174.43 322.172C187.854 315.918 203.611 316.853 215.971 324.927L216.557 325.316C248.503 346.954 296.02 341.69 323.131 314.641ZM111.9 303.217C59.7998 128.232 296.515 18.5527 396.657 170.552L352.246 191.242C338.574 197.61 322.479 196.442 310.097 187.851C260.657 153.538 187.494 187.133 180.962 246.656L180.82 248.063C179.447 263.074 169.985 276.158 156.303 282.531L111.9 303.217Z" />
+                    <g fill="rgba(0,0,0,0.12)">
+                       <circle cx="150" cy="300" r="15" /><circle cx="200" cy="350" r="25" /><circle cx="350" cy="180" r="20" /><circle cx="320" cy="100" r="10" /><circle cx="380" cy="150" r="8" /><circle cx="350" cy="350" r="12" />
                     </g>
-                  </svg>
-                  <span className="text-sm font-semibold text-(--foreground) group-hover:text-(--primary-border) transition-colors">
-                    Y Combinator
-                  </span>
-                </motion.div>
-                <div className="h-4 w-px bg-(--border)"></div>
-                {/* Colleges */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2.5 group cursor-pointer"
-                >
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg" className="h-3.5" />
-                  <span className="text-sm font-semibold text-(--foreground) group-hover:text-(--primary-border) transition-colors">
-                    MIT
-                  </span>
-                </motion.div>
-                <div className="h-4 w-px bg-(--border)"></div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2.5 group cursor-pointer"
-                >
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/9/92/UPenn_shield_with_banner.svg" className="h-3.5"/>
-                  <span className="text-sm font-semibold text-(--foreground) group-hover:text-(--primary-border) transition-colors">
-                    UPenn
-                  </span>
-                </motion.div>
-              </div>
+                </g>
+                <g>
+                    <text x="50" y="42" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="28" letterSpacing="-1" fill="url(#text-cream-gradient)">elestify</text>
+                    <g fill="rgba(0,0,0,0.15)" mask="url(#text-mask)">
+                        <circle cx="55" cy="32" r="1.5" /><circle cx="58" cy="38" r="1" /><circle cx="78" cy="34" r="1.5" /><circle cx="118" cy="26" r="1.5" /><circle cx="130" cy="32" r="1.5" />
+                    </g>
+                </g>
+            </svg>
+          </div>
+        </div>
+
+        <nav>
+          <button className="nav-link mag-element" onClick={() => scrollToPage("download")}>Product</button>
+          <button className="nav-link mag-element" onClick={() => scrollToPage("blog")}>Vision</button>
+          <button className="nav-link mag-element" onClick={() => scrollToPage("pricing")}>Pricing</button>
+          <button className="nav-link mag-element" onClick={() => scrollToPage("contact")}>Contact</button>
+          <button className="nav-link mag-element" onClick={() => scrollToPage("team")}>Team</button>
+        </nav>
+
+        <div className="header-right-group">
+            <div className="nav-actions">
+                <button className="btn-glass btn-glass-secondary" style={{ height: "38px", padding: "0 16px", fontSize: "13px" }} onClick={() => setIsLoginOpen(true)}>Login</button>
+                <button className="btn-glass" style={{ height: "38px" }} onClick={() => handlePurchase("started")}>Get started →</button>
             </div>
-
-            {/* Integrations - Logo-based, minimal */}
-            <div className="flex flex-col items-center gap-4 w-full">
-              <p className="text-xs font-mono text-(--muted) uppercase tracking-widest mb-2">
-                Integrates with
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-                {[
-                  { name: "Gmail", logo: "/images/hero/logos/gmail.svg" },
-                  { name: "Slack", logo: "/images/hero/logos/slack.svg" },
-                  {
-                    name: "Google Drive",
-                    logo: "/images/hero/logos/google-drive.svg",
-                  },
-                  {
-                    name: "Microsoft",
-                    logo: "/images/hero/logos/microsoft.svg",
-                  },
-                  { name: "LinkedIn", logo: "/images/hero/logos/linkedin.svg" },
-                ].map((integration, index) => (
-                  <motion.div
-                    key={integration.name}
-                    whileHover={{ scale: 1.1, opacity: 0.8 }}
-                    className="flex items-center gap-2 opacity-60 hover:opacity-100 transition-all"
-                  >
-                    <Image
-                      src={integration.logo}
-                      alt={integration.name}
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                    <span className="text-xs text-(--muted) font-medium">
-                      {integration.name}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
+            <button className="mobile-toggle mag-element" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
         </div>
+      </header>
 
-        {/* Value Proposition Section - Enhanced with Depth */}
-        <div className="w-full max-w-5xl px-8 mt-12 mb-24 relative">
-          {/* Background depth effect */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-96 h-96 bg-(--primary)/10 rounded-full blur-3xl opacity-30"></div>
-          </div>
-
-          <div className="flex flex-col items-center text-center relative z-10">
-            <h2 className="text-3xl sm:text-5xl font-medium leading-tight mb-6 max-w-3xl">
-              Transform scattered information into{" "}
-              <span className="font-instrument-serif italic text-(--primary-border)">
-                unified intelligence
-              </span>
-            </h2>
-
-            <p className="text-lg sm:text-xl text-(--subtitle) mb-10 max-w-2xl leading-relaxed">
-              Celestify transforms scattered information into a unified
-              knowledge base. Every document, email, and message becomes part of
-              your AI's understanding.
-            </p>
-
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-(--primary) border border-(--primary-border) rounded-xl font-medium transition-all shadow-lg shadow-(--primary)/30 hover:shadow-(--primary)/50 relative overflow-hidden group"
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
-                ></motion.div>
-                <Download
-                  size={18}
-                  className="relative z-10 group-hover:translate-y-[-2px] transition-transform"
-                />
-                <span className="relative z-10">Download</span>
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-6xl px-8 mb-16 relative">
-          <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
-        </div>
-
-        {/* Feature Cards Section */}
-        <div className="w-full max-w-6xl px-8 mb-32 relative z-10">
-          <div className="flex flex-col items-center gap-8 mb-16">
-            <h2 className="text-4xl sm:text-5xl font-medium text-center">
-              Your AI platform,{" "}
-              <span className="font-instrument-serif italic text-(--primary-border)">
-                always informed
-              </span>
-            </h2>
-            <p className="text-(--subtitle) text-center max-w-2xl">
-              Celestify positions AI at the inflow of information sources,
-              building a comprehensive vector database that makes agentic
-              workflows more effective through intelligent knowledge retrieval.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Feature Card 1: Fewer notifications */}
-            <motion.div
-              whileHover={{ y: -5 }}
-              className="relative bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col gap-6 overflow-hidden group hover:border-(--primary-border)/50 transition-all duration-300"
-            >
-              {/* Number Badge */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-(--background) border border-(--border) rounded-full flex items-center justify-center">
-                <span className="text-sm font-mono text-(--muted)">1</span>
-              </div>
-
-              {/* Gradient Background */}
-              <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-purple-900/30 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-              <div className="relative z-10 flex flex-col gap-4">
-                {/* Visual: Notification badges */}
-                <div className="flex flex-col gap-3 mb-2">
-                  <div className="flex items-center gap-2 text-(--muted) text-sm font-mono opacity-60">
-                    <span>this channel</span>
-                    <div className="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[2.5rem] text-center">
-                      99+
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-(--muted) text-sm font-mono opacity-60">
-                    <span>that channel</span>
-                    <div className="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[2.5rem] text-center">
-                      99+
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-auto">
-                  <h3 className="text-xl font-bold mb-3">
-                    Intelligent filtering
-                  </h3>
-                  <p className="text-sm text-(--muted) leading-relaxed">
-                    Instead of drowning in notifications, Celestify surfaces
-                    only the information that matters. Your vector database
-                    learns what's important to you.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Feature Card 2: Always-on AI */}
-            <motion.div
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="relative bg-(--card-background) border-2 border-(--primary-border)/30 rounded-2xl p-8 flex flex-col gap-6 overflow-hidden group hover:border-(--primary-border) transition-all duration-300 shadow-lg shadow-purple-500/10"
-            >
-              {/* Number Badge */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-(--background) border border-(--primary-border) rounded-full flex items-center justify-center">
-                <span className="text-sm font-mono text-(--primary-border)">
-                  2
-                </span>
-              </div>
-
-              {/* Purple Glow Effect */}
-              <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-purple-600/40 via-purple-600/20 to-transparent"></div>
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 blur-xl transition-opacity"></div>
-
-              <div className="relative z-10 flex flex-col gap-4">
-                {/* Visual: AI Chat Interface */}
-                <div className="bg-(--background)/50 border border-(--border)/50 rounded-lg p-3 mb-2">
-                  <div className="text-xs font-mono text-(--muted) mb-2 opacity-70">
-                    celestia assistant
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div className="bg-(--highlight-background) border border-(--border)/30 rounded-md px-3 py-2 text-xs text-(--muted) leading-relaxed">
-                      i've indexed 247 new documents from your integrations this
-                      week
-                    </div>
-                    <div className="bg-(--highlight-background) border border-(--border)/30 rounded-md px-3 py-2 text-xs text-(--muted) leading-relaxed">
-                      your vector db now has context on the q4 project. ready
-                      for agentic workflows
-                    </div>
-                    <div className="bg-(--highlight-background) border border-(--border)/30 rounded-md px-3 py-2 text-xs text-(--muted) leading-relaxed">
-                      found 3 high-priority items that need your attention based
-                      on your patterns
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-auto">
-                  <h3 className="text-xl font-bold mb-3">
-                    Continuous knowledge building
-                  </h3>
-                  <p className="text-sm text-(--muted) leading-relaxed">
-                    Celestify continuously builds your knowledge base from all
-                    connected sources, making your AI agent smarter with every
-                    interaction.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Feature Card 3: Highest relevance */}
-            <motion.div
-              whileHover={{ y: -5 }}
-              className="relative bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col gap-6 overflow-hidden group hover:border-(--primary-border)/50 transition-all duration-300"
-            >
-              {/* Number Badge */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-(--background) border border-(--border) rounded-full flex items-center justify-center">
-                <span className="text-sm font-mono text-(--muted)">3</span>
-              </div>
-
-              {/* Gradient Background */}
-              <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-blue-900/30 via-blue-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-              <div className="relative z-10 flex flex-col gap-4">
-                {/* Visual: Priority List */}
-                <div className="flex flex-col gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-(--primary-border)"></div>
-                    <div className="h-2 bg-(--primary-border)/30 rounded flex-1"></div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-(--primary-border)"></div>
-                    <div className="h-2 bg-(--primary-border)/20 rounded flex-1 max-w-[80%]"></div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-(--primary-border)"></div>
-                    <div className="h-2 bg-(--primary-border)/15 rounded flex-1 max-w-[60%]"></div>
-                  </div>
-                </div>
-
-                <div className="mt-auto">
-                  <h3 className="text-xl font-bold mb-3">
-                    RAG-powered relevance
-                  </h3>
-                  <p className="text-sm text-(--muted) leading-relaxed">
-                    Traditional tools show you the most recent information.
-                    Celestify uses RAG to surface the most relevant insights
-                    from your entire knowledge base.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-6xl px-8 mb-16 relative">
-          <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
-        </div>
-
-        {/* Pricing Section */}
-        <div className="w-full max-w-6xl px-8 mb-32 relative z-10">
-          <div className="flex flex-col items-center gap-12">
-            <div className="flex flex-col items-center gap-4 text-center">
-              <h2 className="text-4xl sm:text-5xl font-medium">
-                Simple, transparent <br />
-                <span className="text-(--primary-border) font-instrument-serif italic">
-                  pricing
-                </span>
-              </h2>
-              <p className="text-(--subtitle) max-w-md">
-                Choose the plan that fits your needs. All plans include secure
-                data embedding and AI-powered context.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-              {/* Entry Plan */}
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Subtle glow on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold mb-2">Entry</h3>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold">Free</span>
-                      <span className="text-(--muted)">3-day trial</span>
-                    </div>
-                  </div>
-                  <ul className="flex flex-col gap-3 mb-8 flex-grow">
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        Limited RAG queries
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        Limited integrations
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        Basic AI context
-                      </span>
-                    </li>
-                  </ul>
-                  <Link
-                    href="/"
-                    className="w-full text-center px-4 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) hover:border-(--primary-border)/30 transition-all group/btn"
-                  >
-                    <span className="group-hover/btn:translate-x-1 inline-block transition-transform">
-                      Start Free Trial
-                    </span>
-                  </Link>
-                </div>
-              </motion.div>
-
-              {/* Pro Plan */}
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-(--card-background) border-2 border-(--primary-border) rounded-2xl p-8 flex flex-col relative group hover:shadow-lg hover:shadow-(--primary-border)/20 transition-all duration-300 overflow-hidden"
-              >
-                {/* Animated gradient background */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  animate={{
-                    backgroundPosition: ["0% 0%", "100% 100%"],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }}
-                ></motion.div>
-                <motion.div
-                  className="absolute top-2 left-1/2 -translate-x-1/2 px-4 py-1 bg-(--primary) border border-(--primary-border) rounded-full text-sm font-medium z-10"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  Most Popular
-                </motion.div>
-                <div className="relative z-10">
-                  <div className="mb-6 mt-2">
-                    <h3 className="text-2xl font-bold mb-2">Pro</h3>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold">$20</span>
-                      <span className="text-(--muted)">/month</span>
-                    </div>
-                  </div>
-                  <ul className="flex flex-col gap-3 mb-8 flex-grow">
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        Standard RAG queries
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        All integrations
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        Advanced AI context
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        Priority support
-                      </span>
-                    </li>
-                  </ul>
-                  <Link
-                    href="/"
-                    className="w-full text-center px-4 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:opacity-90 transition-all group/btn relative overflow-hidden"
-                  >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    ></motion.div>
-                    <span className="relative z-10 group-hover/btn:translate-x-1 inline-block transition-transform">
-                      Get Started
-                    </span>
-                  </Link>
-                </div>
-              </motion.div>
-
-              {/* Max Plan */}
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-(--card-background) border border-(--border) rounded-2xl p-8 flex flex-col group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Subtle glow on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold mb-2">Max</h3>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-bold">$50</span>
-                      <span className="text-(--muted)">/month</span>
-                    </div>
-                  </div>
-                  <ul className="flex flex-col gap-3 mb-8 flex-grow">
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        3x RAG queries vs Pro
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        3x usage capacity
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        All Pro features
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check
-                        size={18}
-                        className="text-(--primary-border) shrink-0 mt-0.5"
-                      />
-                      <span className="text-sm text-(--muted)">
-                        24/7 priority support
-                      </span>
-                    </li>
-                  </ul>
-                  <Link
-                    href="/"
-                    className="w-full text-center px-4 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) hover:border-(--primary-border)/30 transition-all group/btn"
-                  >
-                    <span className="group-hover/btn:translate-x-1 inline-block transition-transform">
-                      Get Started
-                    </span>
-                  </Link>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Enterprise */}
-            <div className="w-full max-w-2xl mt-8">
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                className="bg-(--card-background) border border-(--border) rounded-2xl p-8 text-center group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Subtle gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-bold mb-2">Enterprise</h3>
-                  <p className="text-(--muted) mb-6">
-                    Custom solutions for teams and organizations. Get dedicated
-                    support, custom integrations, and volume pricing.
-                  </p>
-                  <Link
-                    href="mailto:ethan@celestify.ai"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:opacity-90 transition-all group/btn relative overflow-hidden"
-                  >
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    ></motion.div>
-                    <span className="relative z-10">Contact Sales</span>
-                    <ArrowRight
-                      size={18}
-                      className="relative z-10 group-hover/btn:translate-x-1 transition-transform"
-                    />
-                  </Link>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-6xl px-8 mb-16 relative">
-          <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
-        </div>
-
-        {/* How It Works Section - Enhanced Design */}
-        <div className="w-full max-w-6xl px-8 mb-32 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl sm:text-4xl font-medium mb-4">
-              How it works
-            </h2>
-            <p className="text-(--subtitle) max-w-xl mx-auto text-base">
-              Three simple steps to transform your information into actionable
-              intelligence
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                step: "01",
-                title: "Build",
-                description:
-                  "Create your personal AI knowledge base in minutes. Connect your favorite tools and watch as Celestify begins indexing your information.",
-                icon: Database,
-                color: "purple",
-              },
-              {
-                step: "02",
-                title: "Connect",
-                description:
-                  "Seamlessly integrate with Gmail, Slack, Google Drive, and more. Your data flows securely into a unified vector archive.",
-                icon: Workflow,
-                color: "blue",
-              },
-              {
-                step: "03",
-                title: "Scale",
-                description:
-                  "As your knowledge base grows, Celestify's RAG system ensures your AI agent has the insights needed for complex workflows.",
-                icon: Zap,
-                color: "purple",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={item.step}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="relative bg-(--card-background) border border-(--border) rounded-2xl p-6 flex flex-col gap-5 hover:border-(--primary-border)/50 transition-all duration-300 group overflow-hidden"
-              >
-                {/* Subtle gradient overlay on hover */}
-                {item.color === "purple" ? (
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                )}
-
-                <div className="relative z-10">
-                  {/* Icon and Step Number */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-(--primary)/10 border border-(--primary-border)/30 rounded-lg flex items-center justify-center group-hover:bg-(--primary)/20 group-hover:border-(--primary-border)/50 transition-all">
-                      <item.icon className="w-5 h-5 text-(--primary-border)" />
-                    </div>
-                    <span className="text-xl font-mono text-(--muted) font-medium">
-                      {item.step}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-(--foreground) transition-colors">
-                    {item.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-(--subtitle) leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-6xl px-8 mb-16 relative">
-          <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="w-full max-w-4xl px-8 mb-32 relative z-10">
-          <div className="flex flex-col items-center gap-12">
-            <div className="flex flex-col items-center gap-4 text-center">
-              <h2 className="text-3xl sm:text-4xl font-medium">
-                Frequently asked questions
-              </h2>
-              <p className="text-(--subtitle) max-w-md">
-                Everything you need to know about Celestify
-              </p>
-            </div>
-
-            <div className="w-full flex flex-col gap-2">
-              {[
-                {
-                  id: "what-is-celestify",
-                  question: "What is Celestify?",
-                  answer:
-                    "Celestify is an AI knowledge system that helps you manage the chaos of the digital world. By positioning AI at the inflow of information sources, it builds a vector database and uses RAG to make our agentic workflows more effective, and provide the necessary context to execute tasks.",
-                },
-                {
-                  id: "devices",
-                  question: "Is Celestify available for all devices?",
-                  answer:
-                    "Currently, Celestify is available as a web application. Desktop and mobile apps to extend the experience across all your devices are coming soon.",
-                },
-                {
-                  id: "pricing",
-                  question: "Is Celestify free to use?",
-                  answer:
-                    "Celestify offers a free 3-day trial with limited RAG queries and integrations. We have Pro ($20/month) and Max ($50/month) plans for more advanced features. Enterprise customers can contact us for custom solutions.",
-                },
-                {
-                  id: "integrations",
-                  question: "Does Celestify integrate with my favorite apps?",
-                  answer:
-                    "Yes! Celestify integrates with Gmail, Slack, Google Drive, Discord and more. We're constantly adding new integrations based on user feedback.",
-                },
-                {
-                  id: "vector-db",
-                  question: "How does Celestify's vector database work?",
-                  answer:
-                    "Celestify securely embeds your data from all connected sources into a vector database. This allows for semantic search and retrieval-augmented generation (RAG), making your AI agent knowledge-aware and more effective at executing workflows.",
-                },
-                {
-                  id: "better",
-                  question: "How is Celestify better than other tools?",
-                  answer:
-                    "Celestify is, uniquely, a two part tool. Unlike tools that just aggregate information, Celestify builds a comprehensive knowledge base using vector embeddings and RAG. This means your AI agent doesn't just have access to data—it understands relationships, relevance, and meaning. With this, our agentic workflows become truly effective.",
-                },
-              ].map((faq, index) => (
-                <div
-                  key={faq.id}
-                  className="bg-(--card-background) border border-(--border) rounded-xl overflow-hidden group hover:border-(--primary-border)/50 transition-colors duration-300 relative"
-                >
-                  {/* Subtle gradient on hover - kept as CSS transition only */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <button
-                    onClick={() =>
-                      setOpenFAQ(openFAQ === faq.id ? null : faq.id)
-                    }
-                    className="w-full flex items-center justify-between p-6 hover:bg-(--highlight-background) transition-colors duration-200 text-left relative z-10"
-                  >
-                    <span className="font-semibold text-lg">
-                      {faq.question}
-                    </span>
-                    <div>
-                      {openFAQ === faq.id ? (
-                        <Minus size={20} className="text-(--muted) shrink-0" />
-                      ) : (
-                        <ChevronRight
-                          size={20}
-                          className="text-(--muted) shrink-0"
-                        />
-                      )}
-                    </div>
-                  </button>
-                  {openFAQ === faq.id && (
-                    <div className="px-6 pb-6 pt-2 text-(--muted) leading-relaxed">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom CTA Section - Compact */}
-        <div className="w-full max-w-3xl px-8 mt-24 mb-16 flex flex-col items-center text-center">
-          <p className="text-sm font-mono text-(--muted) uppercase tracking-[0.3em] mb-8">
-            We believe
-          </p>
-
-          <h2 className="text-2xl sm:text-3xl font-medium leading-tight mb-4 max-w-2xl">
-            Knowledge is the modern{" "}
-            <span className="font-instrument-serif italic text-(--primary-border)">
-              interface
-            </span>{" "}
-            for intelligence
-          </h2>
-
-          <p className="text-base text-(--subtitle) mb-8 max-w-xl leading-relaxed">
-            Build your AI knowledge base that helps your agent understand
-            everything it needs to execute.
-          </p>
-
-          <div>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:scale-105 transition-all shadow-lg shadow-(--primary)/20 group/btn relative overflow-hidden"
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.6 }}
-              ></motion.div>
-              <Download
-                size={18}
-                className="relative z-10 group-hover/btn:translate-y-[-2px] transition-transform"
-              />
-              <span className="relative z-10">Download</span>
-            </Link>
-          </div>
-
-          <p className="text-xs text-(--muted) mt-8 font-mono">
-            Available for Web, with Desktop and Mobile coming soon
-          </p>
-        </div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-6xl px-8 mb-16 relative">
-          <div className="h-px bg-gradient-to-r from-transparent via-(--border) to-transparent"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-(--primary-border) to-transparent"></div>
-        </div>
-
-        {/* Contact Us Section */}
-        <div className="w-full max-w-4xl px-8 mb-32 mt-16 relative z-10">
-          <motion.div
-            whileHover={{ scale: 1.01, y: -2 }}
-            className="bg-(--card-background) border border-(--border) rounded-2xl p-12 text-center group hover:border-(--primary-border)/50 transition-all duration-300 relative overflow-hidden"
-          >
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-medium mb-4">
-                Get in touch
-              </h2>
-              <p className="text-(--subtitle) mb-8 max-w-md mx-auto">
-                Have questions? Want to learn more? We'd love to hear from you.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link
-                  href="mailto:ethan@celestify.ai"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) border border-(--primary-border) rounded-xl font-medium hover:scale-105 transition-all shadow-lg shadow-(--primary)/20 group/btn relative overflow-hidden"
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.6 }}
-                  ></motion.div>
-                  <MessageSquare size={18} className="relative z-10" />
-                  <span className="relative z-10">Contact Us</span>
-                </Link>
-                <a
-                  href="mailto:ethan@celestify.ai"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-(--card-background) border border-(--border) rounded-xl font-medium hover:bg-(--highlight-background) hover:border-(--primary-border)/30 transition-all group/btn"
-                >
-                  <span className="group-hover/btn:translate-x-1 inline-block transition-transform">
-                    Sales Inquiry
-                  </span>
-                </a>
-              </div>
-            </div>
-          </motion.div>
+      {/* menu portal for mobile */}
+      <div id="mobile-menu" className={`mobile-nav-overlay ${isMobileMenuOpen ? "active" : ""}`}>
+        <div className="mobile-nav-links">
+          <button onClick={() => scrollToPage("download")}>Product</button>
+          <button onClick={() => scrollToPage("blog")}>Vision</button>
+          <button onClick={() => scrollToPage("pricing")}>Pricing</button>
+          <button onClick={() => scrollToPage("contact")}>Contact</button>
+          <button onClick={() => scrollToPage("team")}>Team</button>
+          <button className="btn-glass" style={{ fontSize: "24px", marginTop:'20px' }} onClick={() => { setIsMobileMenuOpen(false); setIsLoginOpen(true); }}>Login</button>
         </div>
       </div>
-    </>
-  );
+
+      <div id="view-home" className="view-section active-view">
+        <div className="home-container">
+          <div className="hero-content">
+            <h1>Stop searching.<br /><span className="text-gradient">Start working.</span></h1>
+            <p className="subtitle">Celestify turns the noise of your digital life into a unified intelligence that actually understands you.</p>
+            <div className="hero-btn-group">
+              <button className="btn-glass" onClick={() => handlePurchase("started")}>Get Started →</button>
+              <button className="btn-glass btn-glass-secondary" onClick={() => scrollToPage("pricing")}>View Pricing →</button>
+            </div>
+          </div>
+          <div className="visual-container">
+            {/* UPDATED SVG with Craters/Details */}
+            <svg id="celestify-anim" aria-hidden="true" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="horizon-glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="30%" stopColor="rgba(245, 233, 214, 0.25)" /><stop offset="100%" stopColor="rgba(245, 233, 214, 0)" /></radialGradient>
+                <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#fbf4e8" /><stop offset="100%" stopColor="#e0cfb6" /></linearGradient>
+                <radialGradient id="jelly-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#00f3ff" /><stop offset="100%" stopColor="#006066" /></radialGradient>
+                <clipPath id="logo-clip"><path d="M323.131 314.641C335.684 302.12 354.834 298.964 370.922 306.456L371.022 306.503H371.027L407.361 323.432C384.893 378.563 330.636 409.165 274.446 413.071C218.279 416.976 160.297 394.2 130.333 342.714L174.43 322.172C187.854 315.918 203.611 316.853 215.971 324.927L216.557 325.316C248.503 346.954 296.02 341.69 323.131 314.641ZM111.9 303.217C59.7998 128.232 296.515 18.5527 396.657 170.552L352.246 191.242C338.574 197.61 322.479 196.442 310.097 187.851C260.657 153.538 187.494 187.133 180.962 246.656L180.82 248.063C179.447 263.074 169.985 276.158 156.303 282.531L111.9 303.217Z" /></clipPath>
+              </defs>
+              <g id="moon-group"><circle cx="256" cy="256" r="240" fill="url(#horizon-glow)" /><circle cx="256" cy="256" r="100" fill="#f5e9d6" /><g fill="rgba(0,0,0,0.08)"><circle cx="230" cy="230" r="18" /><circle cx="300" cy="210" r="12" /><circle cx="280" cy="290" r="22" /><circle cx="200" cy="280" r="8" /><circle cx="310" cy="270" r="14" /></g></g>
+              <g id="logo-group" opacity="0" transform="scale(0.5)"><g clipPath="url(#logo-clip)"><rect x="0" y="0" width="512" height="512" fill="url(#logo-gradient)" /><g fill="rgba(0,0,0,0.08)"><circle cx="150" cy="300" r="15" /><circle cx="200" cy="350" r="25" /><circle cx="350" cy="180" r="20" /><circle cx="320" cy="100" r="10" /><circle cx="380" cy="150" r="8" /><circle cx="350" cy="350" r="12" /><circle cx="250" cy="400" r="18" /><circle cx="180" cy="200" r="6" /><circle cx="300" cy="300" r="5" /></g></g></g>
+              <g id="fisherman-group" style={{ opacity: 0, transformOrigin: "165px 325px" }} transform="translate(-25, 14)"><path fill="url(#logo-gradient)" d="M165,325 C160,315 170,308 175,312 C178,315 178,322 165,325 Z" /><circle cx="176" cy="307" r="3.5" fill="url(#logo-gradient)" /><circle cx="169" cy="317" r="2.5" fill="url(#logo-gradient)" /><line x1="169" y1="317" x2="169" y2="321" stroke="#f5e9d6" strokeWidth="1" strokeLinecap="round" /><line x1="172" y1="315" x2="120" y2="294" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" /><line id="fish-line" x1="120" y1="294" x2="120" y2="294" stroke="rgba(255,255,255,0.8)" strokeWidth="1" /><g id="space-jelly" transform="translate(110, 445) scale(0)"><path fill="url(#jelly-glow)" fillOpacity="0.9" d="M0,10 Q10,-5 20,10 L20,12 Q10,5 0,12 Z" /><path id="tentacles" stroke="#00f3ff" strokeOpacity="0.8" fill="none" d="M4,12 Q2,20 5,28 M10,12 Q10,22 10,31 M16,12 Q18,20 15,28" strokeWidth="1" /></g></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-download" className="view-section">
+        <div className="dl-hero"><h1>Connect once.<br /><span className="text-gradient">Know forever.</span></h1><p>Link your tools in seconds. We index the past so you can query the future.</p><div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "30px" }}><button className="btn-glass" onClick={() => handlePurchase("started")}>Get Started →</button></div></div>
+        <div className="social-proof-belt">
+            <span className="belt-label">Trusted by founders from</span>
+            <div className="logo-row-enterprise">
+                <div className="logo-item"><img src="/assets/ycombinator.png" alt="Y Combinator" /><span>Y Combinator</span></div>
+                <div className="logo-item"><svg><use href="/icons.svg#logo-mit"></use></svg><span>MIT</span></div>
+                <div className="logo-item"><img src="/upenn.svg" alt="UPenn" /><span>UPenn</span></div>
+                <div className="logo-item"><img src="/assets/stanford.png" alt="Stanford" /><span>Stanford</span></div>
+            </div>
+        </div>
+        <section className="product-viewport" style={{ marginBottom: "100px" }}><div className="section-header"><h2>Intelligence where you live.</h2><p style={{ marginBottom: "40px" }}>We connect to your favorite productivity tools to provide a seamless intelligence layer over your existing workflow.</p><div className="logo-row-enterprise" style={{ marginBottom: "60px" }}><div className="logo-item"><svg><use href="/icons.svg#logo-gmail"></use></svg><span>Gmail</span></div><div className="logo-item"><svg><use href="/icons.svg#logo-slack"></use></svg><span>Slack</span></div><div className="logo-item"><svg><use href="/icons.svg#logo-drive"></use></svg><span>Drive</span></div><div className="logo-item"><img src="/assets/notion.png" alt="Notion" /><span>Notion</span></div><div className="logo-item"><img src="/assets/linear.png" alt="Linear" /><span>Linear</span></div></div></div><div className="viewport-frame"><img src="/assets/hey_ken_3.webp" alt="App Preview" /></div></section>
+        
+        <div className="section-header" style={{ marginTop: "150px" }}><h2>What happens when you use Celestify?</h2></div>
+        <div className="steps-grid">
+            <div className="step-card"><h4>Context</h4><p>You stop manually reconstructing context: no more digging through Slack, email, docs, or meetings to figure out what’s going on before making critical decisions.</p></div>
+            <div className="step-card"><h4>Sync</h4><p>You don’t need to constantly re-sync context with your team.</p></div>
+            <div className="step-card"><h4>Risk</h4><p>You reduce operational risk caused by fragmented systems, information and teams.</p></div>
+            <div className="step-card"><h4>Scale</h4><p>You ensure that nothing important falls through the cracks, even as your organization and team scale.</p></div>
+        </div>
+
+        <div className="beliefs-section">
+            <h3 style={{ marginBottom: "30px", fontFamily: "Georgia, serif", fontSize: "28px" }}>At Celestify, we embody two strong beliefs:</h3>
+            <div className="belief-item"><p><strong>1.</strong> We believe that proper knowledge management is the standard for actionable intelligence.</p></div>
+            <div className="belief-item"><p><strong>2.</strong> We believe that humans remain at the 20% of work that drives results.</p></div>
+            <p style={{ marginTop: "30px", fontStyle: "italic", color: "var(--accent)" }}>Therefore, it is obvious to remove everything that does not require human intervention and present everything that does.</p>
+        </div>
+
+        {/* INTEGRATED ANIMATIONS SECTION */}
+        <div className="section-header" style={{ marginTop: "150px" }}><h2>Celestify does 3 things</h2></div>
+        
+        {/* THING 1: Ingestion */}
+        <div className="feature-block">
+            <div className="feature-content">
+                <h3>1. Unified context ingestion and maintenance</h3>
+                <p>99% of your notifications are noise. We find that 1% that demands your attention.</p>
+                <p style={{ marginTop: "16px" }}>We constantly pull and clean your data content and relationships from Gmail, Docs, Slack, CRM, Notes, etc., into a shared memory system (RAG) for anyone on your team to access.</p>
+            </div>
+            <div className="visual-box">
+                <canvas ref={fiberCanvasRef}></canvas>
+                {/* Updated Icons matching reference: Mail, File, Chat, Search, Center DB */}
+                <div className="icon-node tl active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <div className="icon-node tr active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+                <div className="icon-node bl active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div className="icon-node br active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <div className="center-node"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+            </div>
+        </div>
+
+        {/* THING 2: Prioritization */}
+        <div className="feature-block">
+            <div className="feature-content">
+                <h3>2. Prioritization and Knowledge Updates</h3>
+                <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>Enterprise Pricing Adjustments</p>
+                <p>A teammate updated the pricing doc and removed Enterprise discounts this morning. This likely affects the deal you planned to deprioritize: you need to revisit the next steps before the customer call.</p>
+            </div>
+            <div className="visual-box">
+                <div className="carousel-stage" ref={carouselRef}></div>
+            </div>
+        </div>
+
+        {/* THING 3: Action Assist */}
+        <div className="feature-block">
+            <div className="feature-content">
+                <h3>3. Action Assist</h3>
+                <p>From your decision, our platform uses an action plan to assist in work completion. Repetitive/non-essential parts of the workflow will be resolved by a specialized agent so you focus on what is important.</p>
+                <p style={{ marginTop:'20px', fontWeight:'500', color:'var(--accent)' }}>WORKFLOWS 3 examples</p>
+                <ul style={{ listStyle:'none', padding:0, marginTop:'8px', fontSize:'15px', color:'#ccc' }}>
+                    <li style={{ marginBottom:'4px' }}>• Review updated pricing doc</li>
+                    <li style={{ marginBottom:'4px' }}>• Reassess deal priority</li>
+                    <li>• Adjust customer call agenda</li>
+                </ul>
+            </div>
+            <div className="visual-box">
+                <div className="agent-win" style={{ top:'15%', left:'10%', width:'190px' }}>
+                    <div style={{ padding:'10px', fontSize:'9px', color:'#f5e9d6', background:'rgba(255,255,255,0.05)' }}>Reviewing...</div>
+                    <div style={{ padding:'14px', fontSize:'10px', color:'#888' }}>Review updated pricing doc</div>
+                </div>
+                <div className="agent-win" style={{ top:'30%', right:'10%', width:'170px', animationDelay:'2s' }}>
+                    <div style={{ padding:'10px', fontSize:'9px', color:'#f5e9d6', background:'rgba(255,255,255,0.05)' }}>Reassessing...</div>
+                    <div style={{ padding:'14px', fontSize:'10px', color:'#888' }}>Reassess deal priority</div>
+                </div>
+                <div className="agent-win" style={{ bottom:'15%', left:'50%', transform:'translateX(-50%)', width:'210px', animationDelay:'1s' }}>
+                    <div style={{ padding:'10px', fontSize:'9px', color:'#f5e9d6', background:'rgba(255,255,255,0.05)' }}>Adjusting...</div>
+                    <div style={{ padding:'14px', fontSize:'10px', color:'#888' }}>Adjust customer call agenda</div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div id="view-blog" className="view-section">
+        <div className="section-header" style={{ marginTop: "40px" }}><h2>The Vision</h2><p>Updates, thoughts, and roadmap from the Celestify team.</p></div>
+        <div className="vision-grid">
+            <div className="vision-card"><h3>Intelligent Knowledge</h3><p>We're creating systems that understand not just what information exists, but why it matters and how it connects.</p></div>
+            <div className="vision-card"><h3>Agentic Workflows</h3><p>Our RAG-powered approach enables AI agents to execute complex workflows with the knowledge they need.</p></div>
+            <div className="vision-card"><h3>Unified Intelligence</h3><p>Transforming scattered information into a unified knowledge base that grows smarter with every interaction.</p></div>
+        </div>
+      </div>
+
+      {/* FULL FAQ */}
+      <div className="view-section">
+        <div className="section-header" style={{ marginTop: "150px" }}><h2>Frequently asked questions</h2></div>
+        <div className="faq-container">
+            {[
+                { q: "What is Celestify?", a: "Celestify tells you exactly what to work on next, updates it in real time, and takes care of the busywork that would otherwise break your focus." },
+                { q: "Who is Celestify for?", a: "Founders and operators are where context breaks first. Once we solve it there, the same problem reoccurs in ops, engineering, and leadership teams." },
+                { q: "Is Celestify free to use?", a: "We offer a free 3-day trial to see if this tool can help you. Celestify offers premium service to increase efficiency, productivity and streamline focus." },
+                { q: "Is Celestify available for all devices?", a: "Currently available as a Web, Mac or Windows Application. Mobile is on the roadmap." },
+                { q: "Why do other tools not work?", a: "Currently, tools like Notion, Asuna, Clickup, RAG systems and Anthropic's Agentic tools provide: organization without intelligence, intelligence without persistent execution context or infrastructure without productized workflows." },
+                { q: "How does context ingestion work?", a: "Celestify pulls your content from your typical tools into a RAG system. This way, it not only collects information, but also collects context, meaning and relationships." },
+                { q: "What does the Celestify Agent understand?", a: "Celestify performs actions based on your goals, team context, current state, cross-team awareness, and permission-aware information." },
+                { q: "What does Celestify Integrate with?", a: "As of Dec 31st 2025, Celestify can intake and generate from the Google Suite/Drive, Calendar, Cal.com, and Notion." }
+            ].map((item, index) => (
+                <div className={`faq-item ${activeFaq === index ? "active" : ""}`} key={index}>
+                    <button className="faq-trigger" onClick={() => toggleFaq(index)}>
+                        <span className="faq-question-text">{item.q}</span>
+                        <span className="faq-icon">+</span>
+                    </button>
+                    <div className="faq-content"><p>{item.a}</p></div>
+                </div>
+            ))}
+        </div>
+      </div>
+
+      <div id="view-pricing" className="view-section">
+        <div className="section-header"><h2>Simple, transparent pricing</h2><p>Choose the plan that fits your needs.</p></div>
+        
+        {/* Toggle Switch */}
+        <div className="pricing-toggle">
+            <span className={`toggle-label ${billingCycle === 'monthly' ? 'active' : ''}`} onClick={() => setBillingCycle('monthly')}>Monthly</span>
+            <label className="switch">
+                <input type="checkbox" checked={billingCycle === 'yearly'} onChange={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')} />
+                <span className="slider"></span>
+            </label>
+            <span className={`toggle-label ${billingCycle === 'yearly' ? 'active' : ''}`} onClick={() => setBillingCycle('yearly')}>Yearly</span>
+        </div>
+
+        <div className="pricing-grid">
+            <div className="card-base">
+                <div className="plan-name">Starter</div><div className="price">$0<span>/mo</span></div><span className="trial-info">3-day trial</span>
+                <ul className="features-list"><li>Limited RAG queries</li><li>Limited integrations</li><li>Basic search queries</li></ul>
+                <button className="btn btn-card btn-secondary" onClick={() => handlePurchase("starter")}>Start Trial</button>
+            </div>
+            <div className="card-base popular">
+                <div className="badge">Most Popular</div>
+                <div className="plan-name">Pro</div>
+                <div className="price">${billingCycle === 'monthly' ? '20' : '16'}<span>/mo</span></div>
+                <span className="trial-info">{billingCycle === 'yearly' ? 'billed yearly' : 'billed monthly'}</span>
+                <ul className="features-list"><li>Standard RAG queries</li><li>All integrations</li><li>Advanced AI context</li></ul>
+                <button className="btn btn-card btn-primary" onClick={() => handlePurchase("pro")}>Get Started</button>
+            </div>
+            <div className="card-base">
+                <div className="plan-name">Max</div>
+                <div className="price">${billingCycle === 'monthly' ? '50' : '42'}<span>/mo</span></div>
+                <span className="trial-info">{billingCycle === 'yearly' ? 'billed yearly' : 'billed monthly'}</span>
+                <ul className="features-list"><li>3x RAG queries vs Pro</li><li>3x usage capacity</li><li>All Pro features</li></ul>
+                <button className="btn btn-card btn-secondary" onClick={() => handlePurchase("max")}>Get Started</button>
+            </div>
+        </div>
+      </div>
+
+      <div id="view-contact" className="view-section">
+        <div className="section-header"><h2>Get in touch</h2><p>Comments, questions, feedback or advice.</p></div>
+        <div className="contact-grid">
+          <div className="contact-item"><span className="contact-label">General Inquiries</span><a href="mailto:info@celestify.ai" className="contact-email">info@celestify.ai</a></div>
+          <div className="contact-item"><span className="contact-label">Discord Community</span><a href="https://discord.gg/2aHn4AygTs" target="_blank" className="contact-email">Join our Discord</a></div>
+          <div className="contact-item"><span className="contact-label">Careers</span><a href="mailto:ethan@celestify.ai" className="contact-email">ethan@celestify.ai</a></div>
+        </div>
+      </div>
+
+      <div id="view-team" className="view-section">
+        <div className="section-header"><h2>The Team</h2><p>Committed to creating the future of how work is done.</p></div>
+        <h3 className="team-section-title">FOUNDERS</h3>
+        <div className="team-grid">
+          <div className="member-card"><h4>Ken</h4><span className="member-role">Technical Founder</span></div>
+          <div className="member-card"><h4>Ethan</h4><span className="member-role">Founder & Strategist</span></div>
+          <div className="member-card"><h4>Yash</h4><span className="member-role">Technical Leader</span></div>
+        </div>
+        <h3 className="team-section-title">CORE TEAM</h3>
+        <div className="team-grid">
+          <div className="member-card"><h4>Ishaan</h4><span className="member-role">Growth Lead</span></div>
+          <div className="member-card"><h4>Kundana</h4><span className="member-role">ML Researcher</span></div>
+          <div className="member-card"><h4>Karthik</h4><span className="member-role">GTM & Sales</span></div>
+        </div>
+      </div>
+
+      <div className={`overlay ${isLoginOpen ? "active" : ""}`} id="loginOverlay">
+        <div className="login-card">
+          <h2>Welcome back</h2><p>Sign into your account</p>
+          <button className="btn-glass" style={{ width: '100%', padding: '16px', gap: '12px', marginBottom:'12px' }} onClick={() => handleOAuth('google')}>Continue with Google</button>
+          <button className="btn-glass btn-glass-secondary" style={{ width: '100%', padding: '16px', gap: '12px' }} onClick={() => handleOAuth('github')}>Continue with GitHub</button>
+          <button className="dismiss-btn" onClick={() => setIsLoginOpen(false)}>Cancel</button>
+        </div>
+      </div>
+    </main>
+  )
 }
