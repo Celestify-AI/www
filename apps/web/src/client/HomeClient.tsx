@@ -87,7 +87,7 @@ export default function Home() {
               </h1>
             </div>
             <h2 className="text-sm sm:text-base text-(--subtitle) text-center max-w-md">
-            An AI system that captures and understands everything flowing into your digital life.
+            An AI System that captures and understands everything flowing into your digital life.
             Your data is unified into a secure, high-signal knowledge system built for agentic execution.
             </h2>
           </div>
