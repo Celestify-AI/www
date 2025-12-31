@@ -12,7 +12,7 @@ export async function GET() {
     // Send request to backend
     try {
       const res = await fetch(
-        `${process.env.BACKEND_API_BASE_URL}/workflows/${userId}`,
+        `${process.env.BACKEND_API_BASE_URL}/workflows/list`,
         {
           method: "GET",
           headers: {
@@ -22,17 +22,16 @@ export async function GET() {
       );
 
       if (!res.ok) {
-        throw new Error(
-          `Failed to fetch suggested workflows: ${res.statusText}`,
-        );
+        throw new Error(`Failed to fetch workflows: ${res.statusText}`);
       }
 
-      const suggestedWorkflows = await res.json();
-      return NextResponse.json(suggestedWorkflows, { status: 200 });
+      const workflows = await res.json();
+      console.log(workflows);
+      return NextResponse.json(workflows.data, { status: 200 });
     } catch (err) {
       console.error(err);
       return NextResponse.json(
-        { error: "Failed to fetch suggested workflows" },
+        { error: "Failed to fetch workflows" },
         { status: 500 },
       );
     }

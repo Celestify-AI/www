@@ -21,7 +21,7 @@ const NotificationCard = ({
     <Link href={redirect}>
       <article className="relative group border border-(--border) rounded-2xl flex items-center gap-4 p-4 w-full bg-(--background) shadow-md/75">
         {!active && (
-          <div className="flex gap-1 items-center hidden group-hover:flex absolute top-3 right-3">
+          <div className="flex items-center hidden group-hover:flex absolute top-3 right-3 text-(--muted)">
             <button className="cursor-pointer hover:bg-(--highlight-background) p-1 rounded-sm hover:text-red-500">
               <X size={16} />
             </button>
